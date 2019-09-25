@@ -7,6 +7,7 @@ def cli(ctx):
     ctx.ensure_object(dict)
 
 def foo():
+    print("foo")
     print("bar")
 
 def main():
