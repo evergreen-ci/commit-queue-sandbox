@@ -12,12 +12,7 @@ functions:
     params:
       working_dir: src
       script: |
-        set -o errexit
-        virtualenv --python=/opt/mongodbtoolchain/v3/bin/python3 venv
-        . venv/bin/activate
-
-        pip install -r requirements.txt
-        pip install -e .
+        echo "noop"
 
 pre:
 - command: git.get_project
@@ -37,7 +32,4 @@ tasks:
     params:
       working_dir: src
       script: |
-        set -o errexit
-        . venv/bin/activate
-
-        pytest --flake8 --ignore=venv --junitxml=junit-bf-matching.xml
+        echo "noop"
