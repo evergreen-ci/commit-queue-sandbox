@@ -5,6 +5,7 @@ buildvariants:
   - ubuntu1604-test
   tasks:
   - name: unit_tests
+  - name: validate_commit_message
 
 functions:
   create virtualenv:
@@ -33,3 +34,21 @@ tasks:
       working_dir: src
       script: |
         echo "noop"
+
+- name: validate_commit_message
+  commands:
+  - command: shell.exec
+    params:
+      script: |
+        set -o verbose
+        set -o errexit
+        if [ "${is_commit_queue}" = "true" ]; then
+          cat > commit_message.txt <<END_OF_COMMIT_MSG
+          ${commit_message}
+        END_OF_COMMIT_MSG
+
+          commit_message_content=$(cat commit_message.txt)
+
+          echo "$commit_message_content"
+        fi
+
