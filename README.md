@@ -1,12 +1,9 @@
-/*  ï¿½  161  a1 */   BOOST_CC_PUNCT,
-/*  ï¿½  162  a2 */   BOOST_CC_PUNCT,
+/*  ¡  161  a1 */   '\0',
+/*  ¢  162  a2 */   '\0',
 
 # commit-queue-playground
 
 A repository to experiment with the commit queue.
-
-change 1
-sdadf
 
 ## Testing
 
@@ -24,5 +21,3 @@ $ pytest --cov=src --cov-report=html
 ```
 
 This will generate an html coverage report in `htmlcov/` directory.
-testing
-testing2
