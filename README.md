@@ -1,6 +1,3 @@
-/*  ¡  161  a1 */   '\0',
-/*  ¢  162  a2 */   '\0',
-
 # commit-queue-playground
 
 A repository to experiment with the commit queue.
