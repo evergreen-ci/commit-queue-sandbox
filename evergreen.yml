@@ -52,3 +52,9 @@ tasks:
           echo "$commit_message_content"
         fi
 
+modules:
+- name: self
+  repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
+  prefix: src/module
+  branch: master
+
