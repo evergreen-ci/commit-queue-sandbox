@@ -3,6 +3,7 @@
 A repository to experiment with the commit queue.
 
 ## Testing
+## These tests actually do nothing.
 Run tests with pytest
 ```
 $ pip install -r requirements.txt
