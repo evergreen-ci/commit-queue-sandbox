@@ -1,0 +1,25 @@
+{
+  "tasks": [
+    {
+      "name": "generated",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "vars": {
+            "target": "lint-evergreen"
+          }
+        }
+      ]
+    }
+  ],
+  "buildvariants": [
+    {
+      "name": "ubuntu1604",
+      "tasks": [
+        {
+          "name": "generated"
+        }
+      ]
+    }
+  ]
+}
