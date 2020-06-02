@@ -1,0 +1,47 @@
+buildvariants:
+  - display_name: Ubuntu 16.04
+    name: ubuntu1604
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: validate_git_tag_message
+      - name: my_git_tag_generator
+
+functions:
+  create virtualenv:
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          echo "noop"
+pre:
+  - command: git.get_project
+    params:
+      directory: src
+  - func: create virtualenv
+
+tasks:
+  - name: validate_git_tag_message
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            set -o verbose
+            set -o errexit
+            if [ "${is_commit_queue}" = "true" ]; then
+              cat > commit_message.txt <<END_OF_COMMIT_MSG
+              ${commit_message}
+            END_OF_COMMIT_MSG
+
+              commit_message_content=$(cat commit_message.txt)
+
+              echo "$commit_message_content"
+            fi
+  - name: my_git_tag_generator
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/evergreen.json
+
+
