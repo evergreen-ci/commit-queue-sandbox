@@ -35,6 +35,14 @@ tasks:
           working_dir: src
           script: |
             echo "noop"
+  - name: git_tags_tests
+    git_tag_only: true
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "noop"
 
   - name: validate_commit_message
     commands:
