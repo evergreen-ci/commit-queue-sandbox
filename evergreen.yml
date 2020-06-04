@@ -7,7 +7,7 @@ buildvariants:
       - name: unit_tests
       - name: validate_commit_message
       - name: my_first_generator
-
+      - name: git_tags_tests
 functions:
   create virtualenv:
     - command: shell.exec
