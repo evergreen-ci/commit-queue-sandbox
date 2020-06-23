@@ -4,7 +4,7 @@ import click
 @click.group()
 @click.pass_context
 def cli(ctx):
-    '''This is a docstring.'''
+    '''This is a docstring'''
     ctx.ensure_object(dict)
 
 def foo():
