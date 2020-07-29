@@ -7,7 +7,6 @@ buildvariants:
   - name: unit_tests
   - name: validate_commit_message
   - name: my_first_generator
-  - name: git_tags_tests
 functions:
   create virtualenv:
   - command: shell.exec
@@ -29,14 +28,6 @@ post:
 
 tasks:
 - name: unit_tests
-  commands:
-  - command: shell.exec
-    params:
-      working_dir: src
-      script: |
-        echo "noop"
-- name: git_tags_tests
-  git_tag_only: true
   commands:
   - command: shell.exec
     params:
