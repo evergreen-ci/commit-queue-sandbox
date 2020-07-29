@@ -1,0 +1,27 @@
+{
+  "tasks": [
+    {
+      "name": "generated",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "vars": {
+            "target": "lint-evergreen"
+          }
+        }
+      ]
+    }
+  ],
+  "buildvariants": [
+    {
+      "name": "ubuntu1604-gen",
+      "display_name": "generated-bv",
+      "run_on": ["ubuntu1604-test"],
+      "tasks": [
+        {
+          "name": "generated"
+        }
+      ]
+    }
+  ]
+}
