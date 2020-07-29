@@ -6,7 +6,6 @@ buildvariants:
     tasks:
       - name: unit_tests
       - name: validate_commit_message
-      - name: my_first_generator
       - name: git_tags_tests
 functions:
   create virtualenv:
@@ -60,12 +59,6 @@ tasks:
 
               echo "$commit_message_content"
             fi
-  - name: my_first_generator
-    commands:
-      - command: generate.tasks
-        params:
-          files:
-            - src/evergreen.json
 
 modules:
   - name: self
