@@ -1,67 +1,67 @@
 buildvariants:
-  - display_name: Ubuntu 16.04
-    name: ubuntu1604
-    run_on:
-      - ubuntu1604-test
-    tasks:
-      - name: unit_tests
-      - name: validate_commit_message
-      - name: git_tags_tests
+- display_name: Ubuntu 16.04
+  name: ubuntu1604
+  run_on:
+  - ubuntu1604-test
+  tasks:
+  - name: unit_tests
+  - name: validate_commit_message
+  - name: git_tags_tests
 functions:
   create virtualenv:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          echo "noop"
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        echo "noop"
 
 pre:
-  - command: git.get_project
-    params:
-      directory: src
-  - func: create virtualenv
+- command: git.get_project
+  params:
+    directory: src
+- func: create virtualenv
 
 post:
-  - command: attach.xunit_results
-    params:
-      file: src/junit-*.xml
+- command: attach.xunit_results
+  params:
+    file: src/junit-*.xml
 
 tasks:
-  - name: unit_tests
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "noop"
-  - name: git_tags_tests
-    git_tag_only: true
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "noop"
+- name: unit_tests
+  commands:
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        echo "noop"
+- name: git_tags_tests
+  git_tag_only: true
+  commands:
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        echo "noop"
 
-  - name: validate_commit_message
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
+- name: validate_commit_message
+  commands:
+  - command: shell.exec
+    params:
+      script: |
+        set -o verbose
+        set -o errexit
+        if [ "${is_commit_queue}" = "true" ]; then
+          cat > commit_message.txt <<END_OF_COMMIT_MSG
+          ${commit_message}
+        END_OF_COMMIT_MSG
 
-              commit_message_content=$(cat commit_message.txt)
+          commit_message_content=$(cat commit_message.txt)
 
-              echo "$commit_message_content"
-            fi
+          echo "$commit_message_content"
+        fi
 
 modules:
-  - name: self
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: src/module
-    branch: master
+- name: self
+  repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
+  prefix: src/module
+  branch: master
