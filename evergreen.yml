@@ -22,6 +22,11 @@ functions:
       script: |
         echo "noop"
 
+parameters:
+- key: my_param
+  value: hello world!
+  description: something to test parameters
+
 pre:
 - command: git.get_project
   params:
