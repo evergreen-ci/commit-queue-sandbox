@@ -91,7 +91,7 @@ tasks:
             echo "i am patch only"
   - name: task_to_add_via_generator
     depends_on:
-      - name: "*"
+      - name: patch_only_task
         variant: ubuntu1604
         status: "*"
     commands:
