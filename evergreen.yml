@@ -6,13 +6,13 @@ buildvariants:
     tasks:
       - name: unit_tests
       - name: validate_commit_message
-      - name: my_first_generator
   - display_name: Test Tags
     name: release
     run_on:
       - ubuntu1604-test
     tasks:
       - name: test_release
+      - name: my_first_generator
 
 functions:
   create virtualenv:
