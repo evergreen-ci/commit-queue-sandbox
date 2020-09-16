@@ -90,10 +90,6 @@ tasks:
           script: |
             echo "i am patch only"
   - name: task_to_add_via_generator
-    depends_on:
-      - name: patch_only_task
-        variant: ubuntu1604
-        status: "*"
     commands:
       - command: shell.exec
         params:
