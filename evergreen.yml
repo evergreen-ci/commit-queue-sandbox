@@ -40,13 +40,13 @@ post:
       file: src/junit-*.xml
 
 tasks:
-  - name: unit_tests
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "${my_param}"
+- name: unit_tests
+  commands:
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        echo "my_param: ${my_param} \nbuggy: {$buggy} \nteam: {$evergreen}"
 
   - name: validate_commit_message
     commands:
