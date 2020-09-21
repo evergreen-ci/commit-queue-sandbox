@@ -10,7 +10,7 @@ A repository to experiment with the commit queue.
 Run tests with pytest
 ```
 $ pip install -r requirements.txt
-$ pytestme
+$ pytestme please
 ```
 ## need a later commit to put a tag on 
 To get code coverage information, use the --cov flag.
