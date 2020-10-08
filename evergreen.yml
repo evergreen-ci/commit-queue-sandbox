@@ -8,7 +8,7 @@ buildvariants:
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
-        cron: "@hourly"
+        batchtime: 5
   - display_name: Test Tags
     name: release
     run_on:
