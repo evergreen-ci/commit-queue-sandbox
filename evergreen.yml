@@ -1,88 +1,112 @@
 buildvariants:
-- display_name: Ubuntu 16.04
-  name: ubuntu1604
-  run_on:
-  - ubuntu1604-test
-  tasks:
-  - name: unit_tests
-  - name: validate_commit_message
-  - name: my_first_generator
-- display_name: Test Tags
-  name: release
-  run_on:
-  - ubuntu1604-test
-  tasks:
-  - name: test_release
+  - display_name: Ubuntu 16.04
+    name: ubuntu1604
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: unit_tests
+      - name: validate_commit_message
+      - name: patch_only_task
+      - name: batchtime_task
+        batchtime: 5
+  - display_name: Test Tags
+    name: release
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: test_release
+      - name: my_first_generator
 
 functions:
   create virtualenv:
-  - command: shell.exec
-    params:
-      working_dir: src
-      script: |
-        echo "noop"
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          echo "noop"
 
 parameters:
-- key: my_param
-  value: hello world!
-  description: something to test parameters
+  - key: my_param
+    value: hello world!
+    description: something to test parameters
 
 pre:
-- command: git.get_project
-  params:
-    directory: src
-- func: create virtualenv
+  - command: git.get_project
+    params:
+      directory: src
+  - func: create virtualenv
 
 post:
-- command: attach.xunit_results
-  params:
-    file: src/junit-*.xml
+  - command: attach.xunit_results
+    params:
+      file: src/junit-*.xml
 
 tasks:
-- name: unit_tests
-  commands:
-  - command: shell.exec
-    params:
-      working_dir: src
-      script: |
-        echo "${my_param}"
-
-- name: validate_commit_message
-  commands:
-  - command: shell.exec
-    params:
-      script: |
-        set -o verbose
-        set -o errexit
-        if [ "${is_commit_queue}" = "true" ]; then
-          cat > commit_message.txt <<END_OF_COMMIT_MSG
-          ${commit_message}
-        END_OF_COMMIT_MSG
-
-          commit_message_content=$(cat commit_message.txt)
-
-          echo "$commit_message_content"
-        fi
-
-- name: my_first_generator
-  commands:
-  - command: generate.tasks
-    params:
-      files:
-      - src/evergreen.json
-- name: test_release
-  depends_on:
   - name: unit_tests
-    variant: '*'
-  commands:
-  - command: shell.exec
-    params: 
-      working_dir: src
-      script: |
-        echo "noop"
+    commands:
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          echo "my_param: ${my_param} \nbuggy: ${buggy} \nteam: ${team}"
+  - name: batchtime_task
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "this is occasional"
+  - name: validate_commit_message
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            set -o verbose
+            set -o errexit
+            if [ "${is_commit_queue}" = "true" ]; then
+              cat > commit_message.txt <<END_OF_COMMIT_MSG
+              ${commit_message}
+            END_OF_COMMIT_MSG
+
+              commit_message_content=$(cat commit_message.txt)
+
+              echo "$commit_message_content"
+            fi
+
+  - name: my_first_generator
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/evergreen.json
+  - name: test_release
+    depends_on:
+      - name: unit_tests
+        variant: "*"
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "noop"
+  - name: patch_only_task
+    patch_only: true
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "i am patch only"
+  - name: task_to_add_via_generator
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "42"
 
 modules:
-- name: self
-  repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-  prefix: src/module
-  branch: master 
+  - name: self
+    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
+    prefix: src/module
+    branch: master

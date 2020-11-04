@@ -2,12 +2,13 @@
 
 A repository to experiment with the commit queue.
 
+
 ## Testing
 ## will this merge?
 Run tests with pytest
 ```
 $ pip install -r requirements.txt
-$ pytest
+$ pytestme please
 ```
 ## need a later commit to put a tag on 
 To get code coverage information, use the --cov flag.
