@@ -28,7 +28,7 @@ functions:
 parameters:
   - key: my_param
     value: hello world!
-    description: something to test parameters
+    description: something to test params
 
 pre:
   - command: git.get_project
