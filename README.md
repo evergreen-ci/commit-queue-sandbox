@@ -4,7 +4,7 @@ A repository to experiment with the commit queue.
 
 
 ## Testing
-## will this merge?
+## will this merge? maybe
 Run tests with pytest
 ```
 $ pip install -r requirements.txt
@@ -21,3 +21,4 @@ $ pytest --cov=src --cov-report=html
 This will generate an html coverage report in `htmlcov/` directory.
 readme change
 and another
+yet one more
