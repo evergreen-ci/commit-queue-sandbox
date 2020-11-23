@@ -4,7 +4,6 @@ C repository to experiment with the commit queue.
 
 
 ## Testing
-## will this merge? maybe
 Run tests with pytest
 ```
 $ pip install -r requirements.txt
