@@ -10,7 +10,6 @@ def cli(ctx):
 def foo():
     print("foo")
     print("bar")
-    print("foobar")
 
 def main():
     """Entry point into commandline."""
