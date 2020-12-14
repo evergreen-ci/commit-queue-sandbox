@@ -1,6 +1,6 @@
 # commit-queue-playground
 
-F repository to experiment with the commit queue.
+G repository to experiment with the commit queue.
 
 
 ## Testing
