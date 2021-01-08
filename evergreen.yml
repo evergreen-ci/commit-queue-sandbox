@@ -48,7 +48,7 @@ tasks:
       params:
         working_dir: src
         script: |
-          echo "my_param: ${my_param} \nbuggy: ${buggy} \nteam: ${team}"
+          echo "my_param: ${my_param}, your_param: ${your_param}"
   - name: batchtime_task
     commands:
       - command: shell.exec
