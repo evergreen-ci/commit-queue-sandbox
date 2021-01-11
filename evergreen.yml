@@ -6,8 +6,17 @@ buildvariants:
     tasks:
       - name: unit_tests
       - name: validate_commit_message
+      - name: patch_only_task
+      - name: batchtime_task
+        batchtime: 5
+  - display_name: Test Tags
+    name: release
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: test_release
       - name: my_first_generator
-      - name: git_tags_tests
+
 functions:
   create virtualenv:
     - command: shell.exec
@@ -15,6 +24,11 @@ functions:
         working_dir: src
         script: |
           echo "noop"
+
+parameters:
+  - key: my_param
+    value: hello world!
+    description: something to test parameters
 
 pre:
   - command: git.get_project
@@ -30,20 +44,18 @@ post:
 tasks:
   - name: unit_tests
     commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "noop"
-  - name: git_tags_tests
-    git_tag_only: true
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          echo "my_param: ${my_param}, your_param: ${your_param}"
+  - name: batchtime_task
     commands:
       - command: shell.exec
         params:
           working_dir: src
           script: |
             echo "noop"
-
   - name: validate_commit_message
     commands:
       - command: shell.exec
@@ -60,12 +72,38 @@ tasks:
 
               echo "$commit_message_content"
             fi
+
   - name: my_first_generator
     commands:
       - command: generate.tasks
         params:
           files:
             - src/evergreen.json
+  - name: test_release
+    depends_on:
+      - name: unit_tests
+        variant: "*"
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            exit 1 
+  - name: patch_only_task
+    patch_only: true
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "i am patch only"
+  - name: task_to_add_via_generator
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "42"
 
 modules:
   - name: self

@@ -1,36 +1,10 @@
 {
-  "tasks": [
-    {
-      "name": "generated",
-      "commands": [
-        {
-          "command": "shell.exec",
-          "vars": {
-            "target": "lint-evergreen"
-          }
-        }
-      ]
-    }
-  ],
   "buildvariants": [
     {
-      "name": "ubuntu1604-gen",
-      "display_name": "generated-bv",
-      "batchtime": 60,
-      "run_on": ["ubuntu1604-test"],
+      "name": "ubuntu1604",
       "tasks": [
         {
-          "name": "generated"
-        }
-      ]
-    },
-    {
-      "name": "ubuntu1604-gen2",
-      "display_name": "generated-bv2",
-      "run_on": ["ubuntu1604-test"],
-      "tasks": [
-        {
-          "name": "generated"
+          "name": "task_to_add_via_generator"
         }
       ]
     }
