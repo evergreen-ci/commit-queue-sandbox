@@ -49,7 +49,7 @@ tasks:
         working_dir: src
         script: |
           echo "my_param: ${my_param}, your_param: ${your_param}"
-  - name: batchtime_task
+  - name: unit_tests
     commands:
       - command: shell.exec
         params:
