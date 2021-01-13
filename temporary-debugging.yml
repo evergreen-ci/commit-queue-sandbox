@@ -1,0 +1,57 @@
+parameters:
+- key: registry
+  value: 268558157000.dkr.ecr.us-east-1.amazonaws.com
+  description: Development ECR registry
+
+functions:
+  pipeline:
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          echo "noop"
+
+tasks:
+- name: periodic_build_operator
+  commands:
+  - func: pipeline
+    vars:
+      image_name: operator-daily
+
+- name: periodic_build_init_appdb
+  commands:
+  - func: pipeline
+    vars:
+      image_name: init-appdb-daily
+
+- name: periodic_build_init_database
+  commands:
+  - func: pipeline
+    vars:
+      image_name: init-database-daily
+
+- name: periodic_build_init_opsmanager
+  commands:
+  - func: pipeline
+    vars:
+      image_name: init-ops-manager-daily
+
+
+task_groups:
+- name: periodic_build_all
+  setup_group:
+  - func: pipeline
+
+  tasks:
+  - periodic_build_operator
+  - periodic_build_init_appdb
+  - periodic_build_init_database
+  - periodic_build_init_opsmanager
+
+buildvariants:
+- name: periodic_build
+  display_name: periodic_build
+  run_on:
+  - ubuntu1604-build
+  tasks:
+  - name: periodic_build_all
