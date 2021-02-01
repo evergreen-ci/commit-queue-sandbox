@@ -55,7 +55,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "noop1"
+            echo "noop2"
   - name: validate_commit_message
     commands:
       - command: shell.exec
