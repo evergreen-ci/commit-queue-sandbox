@@ -4,7 +4,7 @@ repository to experiment with the commit queue.
 
 ## Testing
 
-Run tests with pytest
+iRun tests with pytest
 
 ```
 $ pip install -r requirements.txt
