@@ -23,4 +23,3 @@ $ pytest --cov=src --cov-report=html
 
 This will generate an html coverage report in `htmlcov/` directory.
 
-
