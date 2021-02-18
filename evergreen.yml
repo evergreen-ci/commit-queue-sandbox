@@ -7,6 +7,8 @@ buildvariants:
       - name: unit_tests
       - name: validate_commit_message
       - name: patch_only_task
+      - name: batchtime_task
+        batchtime: 5
   - display_name: Test Tags
     name: release
     run_on:
@@ -47,7 +49,13 @@ tasks:
         working_dir: src
         script: |
           echo "my_param: ${my_param} \nbuggy: ${buggy} \nteam: ${team}"
-
+  - name: batchtime_task
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "this is occasional"
   - name: validate_commit_message
     commands:
       - command: shell.exec
