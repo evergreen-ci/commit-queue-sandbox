@@ -12,7 +12,7 @@ buildvariants:
     display_tasks:
       - name: display_task
         execution_tasks:
-        - validate_commit_message
+          - validate_commit_message
   - display_name: Test Tags
     name: release
     run_on:
@@ -107,7 +107,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "42"
+            git log --oneline --n 10
 
 modules:
   - name: self
