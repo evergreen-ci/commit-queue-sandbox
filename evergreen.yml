@@ -107,7 +107,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            git log --oneline --n 10
+            git log --oneline -n 10
 
 modules:
   - name: self
