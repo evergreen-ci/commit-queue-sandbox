@@ -100,7 +100,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "i am patch only1"
+            echo "i am patch only"
   - name: task_to_add_via_generator
     commands:
       - command: shell.exec
