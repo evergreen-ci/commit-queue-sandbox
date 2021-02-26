@@ -32,7 +32,7 @@ functions:
 parameters:
   - key: my_param
     value: hello world!
-    description: 1something to test parameters1
+    description: something to test parameters1
 
 pre:
   - command: git.get_project
