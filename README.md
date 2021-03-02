@@ -1,4 +1,4 @@
-# 3commit-queue-playground
+# commit-queue-playground
 
 repository to experiment with the commit queue.
 
