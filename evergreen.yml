@@ -8,7 +8,7 @@ buildvariants:
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
-        batchtime: 5
+        batchtime: 4
     display_tasks:
       - name: display_task
         execution_tasks:
