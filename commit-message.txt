@@ -1,4 +1,4 @@
-iUpdate the READMiE
+Update the READMiE
 
 See what happens a multiple commit queue message
 is given to the commit queue.
