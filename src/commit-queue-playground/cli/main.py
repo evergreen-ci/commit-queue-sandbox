@@ -7,7 +7,7 @@ def cli(ctx):
     '''This is a docstring'''
     ctx.ensure_object(dict)
 
-# Whenever . m wherever 
+# Whenever . m nwherever 
 
 def foo():
     print("foo")
