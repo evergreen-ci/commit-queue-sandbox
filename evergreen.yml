@@ -92,7 +92,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            exit 1
+            exit 0
   - name: patch_only_task
     patch_only: true
     commands:
