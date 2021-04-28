@@ -63,7 +63,6 @@ tasks:
         params:
           working_dir: src
           script: |
-            sleep 600
             echo "noop2"
   - name: validate_commit_message
     commands:
