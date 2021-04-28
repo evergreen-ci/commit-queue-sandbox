@@ -1,8 +1,12 @@
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
+    modules:
+      - self
     run_on:
       - ubuntu1604-test
+    expansions:
+      module_prefix: hello
     tasks:
       - name: unit_tests
       - name: validate_commit_message
@@ -59,6 +63,7 @@ tasks:
         params:
           working_dir: src
           script: |
+            sleep 600
             echo "noop2"
   - name: validate_commit_message
     commands:
@@ -112,5 +117,5 @@ tasks:
 modules:
   - name: self
     repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: src/module
+    prefix: modules/${module_prefix}
     branch: master
