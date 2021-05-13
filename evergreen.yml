@@ -1,6 +1,7 @@
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
+    activated: false
     modules:
       - self
     run_on:
@@ -10,6 +11,7 @@ buildvariants:
     tasks:
       - name: unit_tests
       - name: validate_commit_message
+        activated: true
       - name: patch_only_task
       - name: batchtime_task
         batchtime: 4
