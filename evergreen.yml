@@ -1,7 +1,6 @@
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
-    activate: false
     modules:
       - self
     run_on:
@@ -11,7 +10,7 @@ buildvariants:
     tasks:
       - name: unit_tests
       - name: validate_commit_message
-        activate: true
+        activate: false
       - name: patch_only_task
       - name: batchtime_task
         batchtime: 4
@@ -27,6 +26,7 @@ buildvariants:
     tasks:
       - name: test_release
       - name: my_first_generator
+        activate: true
 
 functions:
   create virtualenv:
