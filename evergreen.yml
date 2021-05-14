@@ -21,6 +21,7 @@ buildvariants:
           - validate_commit_message
   - display_name: Test Tags
     name: release
+    activate: false
     run_on:
       - ubuntu1604-test
     tasks:
@@ -90,9 +91,6 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
-    depends_on:
-      - name: unit_tests
-        variant: "*"
     commands:
       - command: shell.exec
         params:
