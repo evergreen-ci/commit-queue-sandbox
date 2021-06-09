@@ -1,11 +1,16 @@
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
+    modules:
+      - self
     run_on:
       - ubuntu1604-test
+    expansions:
+      module_prefix: hello
     tasks:
       - name: unit_tests
       - name: validate_commit_message
+        activate: false
       - name: patch_only_task
       - name: batchtime_task
         batchtime: 4
@@ -15,11 +20,13 @@ buildvariants:
           - validate_commit_message
   - display_name: Test Tags
     name: release
+    activate: false
     run_on:
       - ubuntu1604-test
     tasks:
       - name: test_release
       - name: my_first_generator
+        activate: true
 
 functions:
   create virtualenv:
@@ -27,7 +34,7 @@ functions:
       params:
         working_dir: src
         script: |
-          echo "noop"
+          echo "noooop"
 
 parameters:
   - key: my_param
@@ -84,15 +91,12 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
-    depends_on:
-      - name: unit_tests
-        variant: "*"
     commands:
       - command: shell.exec
         params:
           working_dir: src
           script: |
-            exit 0
+            exit 1
   - name: patch_only_task
     patch_only: true
     commands:
@@ -112,5 +116,5 @@ tasks:
 modules:
   - name: self
     repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: src/module
+    prefix: modules/${module_prefix}
     branch: master
