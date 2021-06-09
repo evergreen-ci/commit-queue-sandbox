@@ -34,7 +34,7 @@ functions:
       params:
         working_dir: src
         script: |
-          echo "noop"
+          echo "noooop"
 
 parameters:
   - key: my_param
