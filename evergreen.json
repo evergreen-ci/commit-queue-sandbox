@@ -4,7 +4,8 @@
       "name": "ubuntu1604",
       "tasks": [
         {
-          "name": "task_to_add_via_generator"
+          "name": "task_to_add_via_generator",
+          "activate": false
         }
       ]
     }
