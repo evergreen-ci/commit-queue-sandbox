@@ -112,7 +112,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            git log --oneline -n 10
+            exit 1
 
 modules:
   - name: self
