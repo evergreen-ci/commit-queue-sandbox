@@ -5,7 +5,7 @@
       "display_tasks": [
         {
           "name": "display_task",
-          "execution_tasks": "task_to_add_via_generator"
+          "execution_tasks": ["task_to_add_via_generator"]
         }
       ]
     }
