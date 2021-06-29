@@ -2,10 +2,10 @@
   "buildvariants": [
     {
       "name": "ubuntu1604",
-      "display_tasks": [{
+      "display_tasks": {
         "name": "display_task",
         "execution_tasks": "task_to_add_via_generator"
-      }]
+      }
     }
   ]
 }
