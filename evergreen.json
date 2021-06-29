@@ -12,7 +12,7 @@
   ],
   "tasks":  [
     {
-      "name": "ubunttask_to_add_via_generatoru1604",
+      "name": "task_to_add_via_generator",
       "commands": [
         {
           "command": "shell.exec",
