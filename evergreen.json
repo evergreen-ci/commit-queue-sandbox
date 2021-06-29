@@ -9,5 +9,20 @@
         }
       ]
     }
+  ],
+  "tasks":  [
+    {
+      "name": "ubunttask_to_add_via_generatoru1604",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": 
+            {
+              "working_dir": "src",
+              "script": " git log --oneline -n 10"
+            }
+        }
+      ]
+    } 
   ]
 }
