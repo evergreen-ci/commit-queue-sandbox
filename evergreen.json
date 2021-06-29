@@ -2,11 +2,15 @@
   "buildvariants": [
     {
       "name": "ubuntu1604",
-      "tasks": [
-        {
-          "name": "task_to_add_via_generator"
-        }
-      ]
+      "display_tasks": [{
+        "name": "display_task",
+        "execution_tasks": [
+           {
+              "name": "task_to_add_via_generator",
+              "activate": false
+            }
+         ]
+      }]
     }
   ]
 }
