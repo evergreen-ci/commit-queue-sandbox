@@ -1,3 +1,4 @@
+stepback: true
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
@@ -10,6 +11,7 @@ buildvariants:
     tasks:
       - name: unit_tests
       - name: validate_commit_message
+        activate: false
       - name: patch_only_task
       - name: batchtime_task
         batchtime: 4
@@ -19,11 +21,13 @@ buildvariants:
           - validate_commit_message
   - display_name: Test Tags
     name: release
+    activate: false
     run_on:
       - ubuntu1604-test
     tasks:
       - name: test_release
       - name: my_first_generator
+        activate: true
 
 functions:
   create virtualenv:
@@ -88,9 +92,6 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
-    depends_on:
-      - name: unit_tests
-        variant: "*"
     commands:
       - command: shell.exec
         params:
@@ -111,7 +112,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            git log --oneline -n 10
+            exit 1
 
 modules:
   - name: self
