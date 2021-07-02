@@ -2,6 +2,7 @@
   "buildvariants": [
     {
       "name": "ubuntu1604",
+      "display_name": "myUbuntu",
       "display_tasks": [
         {
           "name": "display_task",
