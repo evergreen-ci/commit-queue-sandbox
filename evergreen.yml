@@ -106,14 +106,6 @@ tasks:
           working_dir: src
           script: |
             echo "i am patch only"
-  - name: task_to_add_via_generator
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            exit 1
-
 modules:
   - name: self
     repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
