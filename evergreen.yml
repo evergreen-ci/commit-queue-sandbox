@@ -1,4 +1,3 @@
-stepback: true
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
@@ -11,7 +10,6 @@ buildvariants:
     tasks:
       - name: unit_tests
       - name: validate_commit_message
-        activate: false
       - name: patch_only_task
       - name: batchtime_task
         batchtime: 4
@@ -21,13 +19,11 @@ buildvariants:
           - validate_commit_message
   - display_name: Test Tags
     name: release
-    activate: false
     run_on:
       - ubuntu1604-test
     tasks:
       - name: test_release
       - name: my_first_generator
-        activate: true
 
 functions:
   create virtualenv:
@@ -92,6 +88,9 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
+    depends_on:
+      - name: unit_tests
+        variant: "*"
     commands:
       - command: shell.exec
         params:
@@ -106,14 +105,6 @@ tasks:
           working_dir: src
           script: |
             echo "i am patch only"
-  - name: task_to_add_via_generator
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            exit 1
-
 modules:
   - name: self
     repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
