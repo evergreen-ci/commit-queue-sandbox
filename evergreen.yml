@@ -40,7 +40,7 @@ functions:
 parameters:
   - key: my_param
     value: hello world1!
-    description: something to test parameters1
+    description: something to test parameters woot
 
 pre:
   - command: git.get_project
