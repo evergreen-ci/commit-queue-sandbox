@@ -10,10 +10,7 @@
       ],
       "tasks": [
         {
-          "name": "task_to_add_via_generator",
-          "distros": [
-            "rhel80-medium"
-        ]
+          "name": "task_to_add_via_generator"
         }
       ]
     }

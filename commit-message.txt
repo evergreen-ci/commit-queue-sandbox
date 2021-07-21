@@ -1,5 +1,4 @@
 Update the README
-a
 
 See what happens a multiple commit queue message
 is given to the commit queue.
