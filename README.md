@@ -14,7 +14,7 @@ $ pytestme please
 ## need a later commit to put a tag on
 
 To get code coverage information, use the --cov flag.
-// adding a comment
+// add a comment
 
 ```
 $ pip install -r requirements.txt
