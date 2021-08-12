@@ -51,6 +51,11 @@ post:
       file: src/junit-*.xml
 
 tasks:
+  - name: pass_param
+    commands:
+      - command: downstream_expansions.set
+        params:
+          file: downstream_expansions.yaml
   - name: unit_tests
     commands:
       - command: shell.exec
