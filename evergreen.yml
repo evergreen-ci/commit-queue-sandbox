@@ -104,7 +104,7 @@ tasks:
   - name: patch_only_task
     patch_only: true
     commands:
-    - command: downstream_expansions.set
+      - command: downstream_expansions.set
         params:
           file: downstream_expansions.yaml
       - command: shell.exec
