@@ -58,7 +58,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            exit 1
+            echo "my_param: ${my_param}, your_param: ${your_param}"
   - name: batchtime_task
     commands:
       - command: shell.exec
