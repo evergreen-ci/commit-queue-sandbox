@@ -57,6 +57,11 @@ tasks:
       - command: downstream_expansions.set
         params:
           file: downstream_expansions.yaml
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "my_param: ${my_param}, your_param: ${your_param}"
   - name: unit_tests
     commands:
       - command: shell.exec
