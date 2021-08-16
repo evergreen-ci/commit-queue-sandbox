@@ -24,7 +24,7 @@
           "params": 
             {
               "working_dir": "src",
-              "script": "is_stepback: ${is_stepback}"
+              "script": "exit 1"
             }
         }
       ]
