@@ -1,2 +1,2 @@
-parent_1: this_is_the_parent_speaking_1
-parent_2: this_is_the_parent_speaking_2
+my_param: this_is_the_parent_speaking_1
+your_param: this_is_the_parent_speaking_2
