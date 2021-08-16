@@ -58,7 +58,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "is_stepback: ${is_stepback}"
+            exit 1
   - name: batchtime_task
     commands:
       - command: shell.exec
