@@ -13,6 +13,7 @@ buildvariants:
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
+      - name: pass_param
         batchtime: 1
     display_tasks:
       - name: display_task
