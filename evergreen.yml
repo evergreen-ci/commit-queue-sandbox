@@ -56,7 +56,7 @@ tasks:
     commands:
       - command: downstream_expansions.set
         params:
-          file: downstream_expansions.yaml
+          file: commit-queue-sandbox/downstream_expansions.yml
       - command: shell.exec
         params:
           working_dir: src
@@ -112,7 +112,7 @@ tasks:
     commands:
       - command: downstream_expansions.set
         params:
-          file: downstream_expansions.yaml
+          file: commit-queue-sandbox/downstream_expansions.yml
       - command: shell.exec
         params:
           working_dir: src
@@ -122,4 +122,4 @@ modules:
   - name: self
     repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
     prefix: modules/${module_prefix}
-    branch: master
+    branch: main
