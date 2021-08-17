@@ -13,7 +13,8 @@ buildvariants:
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
-      - name: pass_param
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
         batchtime: 1
     display_tasks:
       - name: display_task
@@ -52,16 +53,18 @@ post:
       file: src/junit-*.xml
 
 tasks:
-  - name: pass_param
+  - name: test_passing_param_to_child
     commands:
       - command: downstream_expansions.set
         params:
-          file: commit-queue-sandbox/downstream_expansions.yml
+          file: downstream_expansions.yml
+  - name: test-receiving-parent-param
+    commands:
       - command: shell.exec
         params:
           working_dir: src
           script: |
-            echo "my_param: ${my_param}, your_param: ${your_param}"
+            echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_1}"
   - name: unit_tests
     commands:
       - command: shell.exec
