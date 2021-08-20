@@ -1,5 +1,5 @@
 tasks:
-  - name: print_stuff
+  - name: print-stuff
     commands:
       - command: shell.exec
         params:
