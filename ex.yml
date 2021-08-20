@@ -1,0 +1,8 @@
+tasks:
+  - name: print_stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
