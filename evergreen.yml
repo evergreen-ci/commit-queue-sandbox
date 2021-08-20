@@ -18,7 +18,7 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      - namd: print_stuff
+      - name: print_stuff
         batchtime: 1
     display_tasks:
       - name: display_task
