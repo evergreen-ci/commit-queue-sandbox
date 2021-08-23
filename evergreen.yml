@@ -71,6 +71,7 @@ tasks:
         params:
           working_dir: src
           script: |
+            sleep 300
             echo "my_param: ${my_param}, your_param: ${your_param}"
   - name: batchtime_task
     commands:
@@ -120,6 +121,7 @@ tasks:
         params:
           working_dir: src
           script: |
+            sleep 300
             echo "i am patch only"
 modules:
   - name: self
