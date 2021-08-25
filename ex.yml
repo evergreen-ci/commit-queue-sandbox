@@ -1,3 +1,10 @@
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
 tasks:
   - name: print-stuff
     commands:
