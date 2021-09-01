@@ -1,5 +1,3 @@
-include:
-  - filename: ex.yml
 stepback: true
 
 buildvariants:
