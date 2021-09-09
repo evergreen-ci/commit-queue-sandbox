@@ -122,7 +122,7 @@ tasks:
           script: |
             echo "i am patch only"
 modules:
-  - name: self
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: modules/${module_prefix}
+  - name: evergreen
+    repo: git@github.com:evergreen-ci/evergreen.git
+    prefix: ${workdir}/src
     branch: main
