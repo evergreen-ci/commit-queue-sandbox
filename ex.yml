@@ -1,0 +1,559 @@
+stepback: true
+buildvariants:
+  - display_name: Ubuntu 16.04
+    name: ubuntu1604
+    batchtime: 4
+    modules:
+      - self
+    run_on:
+      - ubuntu1604-test
+    expansions:
+      module_prefix: hello
+    tasks:
+      - name: unit_tests
+      - name: validate_commit_message
+      - name: patch_only_task
+      - name: batchtime_task
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
+      - name: print-stuff
+        batchtime: 1
+    display_tasks:
+      - name: display_task
+"evergreen.yml" 132L, 3144B
+include:
+❯ cd work
+❯ cd commit-queue-sandbox
+❯ git status
+On branch abc
+Your branch is up to date with 'origin/abc'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   ex.yml
+
+no changes added to commit (use "git add" and/or "git commit -a")
+❯ evergreen validate -f evergreen.yml
+❯ vim evergreen.yml
+❯
+❯ evergreen -c ~/.evergreen-local.yml validate -f self-tests.yml
+configuration file self-tests.yml does not exist
+
+NAME:
+   evergreen validate - verify that an evergreen project config is valid
+
+USAGE:
+   evergreen validate [command options] [arguments...]
+
+OPTIONS:
+   --quiet, -q							suppress warnings
+   --long, -l							include long validation checks (only applies if the check is over some threshold, in which case a warning is issued)
+   --path value, --filename value, --file value, -f value	path to an evergreen project configuration file
+
+configuration file self-tests.yml does not exist
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): error reading project config: open ex.yml: no such file or directory
+evergreen.yml is an invalid configuration
+❯ vim ex.yml
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): error reading project config: open ex.yml: no such file or directory
+evergreen.yml is an invalid configuration
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): error reading project config: open ex.yml: no such file or directory
+evergreen.yml is an invalid configuration
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): error reading project config: open ex.yml: no such file or directory
+evergreen.yml is an invalid configuration
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): can't get Github OAuth token from configuration: no 'github' token in settings
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+"ex.yml" 23L, 493B
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+evergreen.yml is an invalid configuration
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): can't get Github OAuth token from configuration: no 'github' token in settings
+evergreen.yml is an invalid configuration
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): can't get Github OAuth token from configuration: no 'github' token in settings
+buildvariants:
+evergreen.yml is an invalid configuration
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): can't get Github OAuth token from configuration: no 'github' token in settings
+evergreen.yml is an invalid configuration
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+ERROR: load project error(s): error translating project: evaluating task selector: print-stuff: nothing named 'print-stuff'
+print-stuff: nothing named 'print-stuff'
+evergreen.yml is an invalid configuration
+❯ vim ex.yml
+❯
+❯ evergreen -c ~/.evergreen-local.yml validate -f evergreen.yml
+Banner: This is an important notification
+WARNING: buildvariant 'ubuntu1604' in project '' references a nonexistent distro 'ubuntu1604-test'.
+
+WARNING: buildvariant 'release' in project '' references a nonexistent distro 'ubuntu1604-test'.
+evergreen.yml is valid with warnings
+❯ vim ex.yml
+❯
+❯ evergreen -c ~/.evergreen-staging.yml patch -u
+Enter a description for this patch (optional):
+ evergreen.yml |  2 +-
+ ex.yml        | 17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 2 deletions(-)
+e13ed70 a
+0170916 a
+dd939b8 a
+0506f47 a
+f217ad2 a
+940b647 a
+3997691 a
+eb76c5e a
+df41824 a
+3386942 a
+217c2bd a
+c0a3f03 a
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+"ex.yml" 23L, 486B
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+14d885e a
+6c83492 a
+c1a4c80 a
+3b7b914 a
+8cbfe23 a
+5bf97d4 a
+e278fc8 a
+43ce972 no a
+47e317a a
+350c322 Merge branch 'main' into abc
+44bf48b fix
+This is a summary of the patch to be submitted. Continue? (y/n):
+Patch successfully created.
+
+	     ID : 613faedc9dbe326a6e19cc21
+	Created : 2021-09-13 20:04:44.749 +0000 UTC
+    Description : abc: a
+	  Build : https://evergreen-staging.corp.mongodb.com/patch/613faedc9dbe326a6e19cc21?redirect_spruce_users=true
+	 Status : created
+
+
+❯ vim ex.yml
+❯ evergreen -c ~/.evergreen-staging.yml patch -u
+Enter a description for this patch (optional):
+ evergreen.yml |  2 +-
+ ex.yml        | 17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 2 deletions(-)
+e13ed70 a
+0170916 a
+dd939b8 a
+0506f47 a
+f217ad2 a
+940b647 a
+3997691 a
+eb76c5e a
+df41824 a
+3386942 a
+217c2bd a
+c0a3f03 a
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+"ex.yml" 23L, 486B
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+buildvariants:
+    - name: binbinbin
+      display_name: bin bin bin
+      run_on:
+        - ubuntu1604-test
+      tasks:
+        - name: print-stuff
+        - name: print-bynn
+tasks:
+  - name: print-stuff
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            sleep 1h
+  - name: print-bynn
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "bynnbynn"
+~
+
+14d885e a
+6c83492 a
+c1a4c80 a
+3b7b914 a
+8cbfe23 a
+5bf97d4 a
+e278fc8 a
+43ce972 no a
+47e317a a
+350c322 Merge branch 'main' into abc
+44bf48b fix
+This is a summary of the patch to be submitted. Continue? (y/n):
+Patch successfully created.
+
+	     ID : 61401c8e97b1d313501ad9ad
+	Created : 2021-09-14 03:52:46.626 +0000 UTC
+    Description : abc: a
+	  Build : https://evergreen-staging.corp.mongodb.com/patch/61401c8e97b1d313501ad9ad?redirect_spruce_users=true
+	 Status : created
+
+
+❯ vim ex.yml
+❯ gpu
+Branch 'abc' set up to track remote branch 'abc' from 'origin'.
+Everything up-to-date
+❯ git commit -am "stub"
+[abc 834aad8] stub
+ 1 file changed, 15 deletions(-)
+❯ git push
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 12 threads
+include:
+  - filename: ex.yml
+stepback: true
+buildvariants:
+  - display_name: Ubuntu 16.04
+    name: ubuntu1604
+    batchtime: 4
+    modules:
+      - self
+    run_on:
+      - ubuntu1604-test
+    expansions:
+      module_prefix: hello
+    tasks:
+      - name: unit_tests
+      - name: validate_commit_message
+      - name: patch_only_task
+      - name: batchtime_task
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
+      - name: print-stuff
+        batchtime: 1
+    display_tasks:
+      - name: display_task
+-- VISUAL LINE --
+  - name: test_release
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 253 bytes | 253.00 KiB/s, done.
+
+  - name: test_release
+    depends_on:
+      - name: unit_tests
+        variant: "*"
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+  - name: patch_only_task
+    patch_only: true
+    commands:
+      - command: downstream_expansions.set
+        params:
+          file: commit-queue-sandbox/downstream_expansions.yml
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "i am patch only"
+modules:
+  - name: self
+    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
+    prefix: modules/${module_prefix}
+    branch: main
