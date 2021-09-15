@@ -3,7 +3,7 @@ buildvariants:
     name: ubuntu1604
     batchtime: 4
     modules:
-      - self
+      - evergreen
     run_on:
       - ubuntu1604-test
     expansions:
