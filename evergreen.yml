@@ -1,3 +1,5 @@
+include:
+  - filename: ex.yml
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
