@@ -1,4 +1,4 @@
-bUpdate the README
+Update the README
 
 
 See what happens a multiple commit queue message
