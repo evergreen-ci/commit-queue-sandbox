@@ -58,7 +58,7 @@ tasks:
     commands:
       - command: downstream_expansions.set
         params:
-          file: downstream_expansions.yml
+          file: src/downstream_expansions.yml
   - name: test-receiving-parent-param
     commands:
       - command: shell.exec
@@ -116,7 +116,7 @@ tasks:
     commands:
       - command: downstream_expansions.set
         params:
-          file: commit-queue-sandbox/downstream_expansions.yml
+          file: src/downstream_expansions.yml
       - command: shell.exec
         params:
           working_dir: src
