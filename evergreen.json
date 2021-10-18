@@ -24,7 +24,7 @@
           "params": 
             {
               "working_dir": "src",
-              "script": " git log --oneline -n 10"
+              "script": "exit 1"
             }
         }
       ]
