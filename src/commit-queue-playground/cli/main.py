@@ -7,13 +7,15 @@ def cli(ctx):
     '''This is a docstring'''
     ctx.ensure_object(dict)
 
-# Whenever . wherever 
+
 
 def foo():
     print("foo")
     print("bar")
     print("foobar")
 
+
 def main():
     """Entry point into commandline."""
     return cli(obj={})
+
