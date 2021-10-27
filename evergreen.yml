@@ -1,13 +1,9 @@
-include:
-  - filename: ex.yml
-stepback: true
-
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
     batchtime: 4
     modules:
-      - self
+      - evergreen
     run_on:
       - ubuntu1604-test
     expansions:
@@ -19,7 +15,6 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      - name: print_stuff
         batchtime: 1
     display_tasks:
       - name: display_task
@@ -59,17 +54,18 @@ post:
 
 tasks:
   - name: test_passing_param_to_child
+    tags: ["my_tag"]
     commands:
       - command: downstream_expansions.set
         params:
-          file: downstream_expansions.yml
+          file: src/downstream_expansions.yml
   - name: test-receiving-parent-param
     commands:
       - command: shell.exec
         params:
           working_dir: src
           script: |
-            echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_1}"
+            echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
   - name: unit_tests
     commands:
       - command: shell.exec
@@ -120,14 +116,14 @@ tasks:
     commands:
       - command: downstream_expansions.set
         params:
-          file: commit-queue-sandbox/downstream_expansions.yml
+          file: src/downstream_expansions.yml
       - command: shell.exec
         params:
           working_dir: src
           script: |
             echo "i am patch only"
 modules:
-  - name: self
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: modules/${module_prefix}
+  - name: evergreen
+    repo: git@github.com:evergreen-ci/evergreen.git
+    prefix: ${workdir}/src
     branch: main
