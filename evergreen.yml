@@ -54,7 +54,6 @@ post:
 
 tasks:
   - name: test_passing_param_to_child
-    disable: true
     tags: ["my_tag"]
     commands:
       - command: downstream_expansions.set
