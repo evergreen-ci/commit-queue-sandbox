@@ -10,6 +10,7 @@ buildvariants:
       module_prefix: hello
     tasks:
       - name: unit_tests
+        disable: true
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
@@ -54,12 +55,14 @@ post:
 
 tasks:
   - name: test_passing_param_to_child
+    disable: true
     tags: ["my_tag"]
     commands:
       - command: downstream_expansions.set
         params:
           file: src/downstream_expansions.yml
   - name: test-receiving-parent-param
+    disable: true
     commands:
       - command: shell.exec
         params:
@@ -67,6 +70,7 @@ tasks:
           script: |
             echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
   - name: unit_tests
+    disable: true
     commands:
       - command: shell.exec
         params:
@@ -74,6 +78,7 @@ tasks:
           script: |
             echo "my_param: ${my_param}, your_param: ${your_param}"
   - name: batchtime_task
+    disable: true
     commands:
       - command: shell.exec
         params:
@@ -81,6 +86,7 @@ tasks:
           script: |
             echo "noop2"
   - name: validate_commit_message
+    disable: true
     commands:
       - command: shell.exec
         params:
@@ -98,12 +104,14 @@ tasks:
             fi
 
   - name: my_first_generator
+    disable: true
     commands:
       - command: generate.tasks
         params:
           files:
             - src/evergreen.json
   - name: test_release
+    disable: true
     depends_on:
       - name: unit_tests
         variant: "*"
@@ -112,6 +120,7 @@ tasks:
         params:
           working_dir: src
   - name: patch_only_task
+    disable: true
     patch_only: true
     commands:
       - command: downstream_expansions.set
