@@ -10,7 +10,6 @@ buildvariants:
       module_prefix: hello
     tasks:
       - name: unit_tests
-        disable: true
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
