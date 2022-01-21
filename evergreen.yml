@@ -1,3 +1,6 @@
+include:
+  - filename: new_file.yml
+
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
@@ -20,13 +23,6 @@ buildvariants:
       - name: display_task
         execution_tasks:
           - validate_commit_message
-  - display_name: Test Tags
-    name: release
-    run_on:
-      - ubuntu1604-test
-    tasks:
-      - name: test_release
-      - name: my_first_generator
 
 functions:
   create virtualenv:
@@ -60,7 +56,6 @@ tasks:
         params:
           file: src/downstream_expansions.yml
   - name: test-receiving-parent-param
-    disable: true
     commands:
       - command: shell.exec
         params:
@@ -68,7 +63,6 @@ tasks:
           script: |
             echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
   - name: unit_tests
-    disable: true
     commands:
       - command: shell.exec
         params:
@@ -76,7 +70,6 @@ tasks:
           script: |
             echo "my_param: ${my_param}, your_param: ${your_param}"
   - name: batchtime_task
-    disable: true
     commands:
       - command: shell.exec
         params:
@@ -84,7 +77,6 @@ tasks:
           script: |
             echo "noop2"
   - name: validate_commit_message
-    disable: true
     commands:
       - command: shell.exec
         params:
@@ -101,18 +93,12 @@ tasks:
               echo "$commit_message_content"
             fi
 
-  - name: my_first_generator
-    disable: true
-    commands:
-      - command: generate.tasks
-        params:
-          files:
-            - src/evergreen.json
+
   - name: test_release
-    disable: true
     depends_on:
       - name: unit_tests
-        variant: "*"
+        variant: release
+        status: '*'
     commands:
       - command: shell.exec
         params:

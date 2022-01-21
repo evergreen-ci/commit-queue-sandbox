@@ -1,0 +1,29 @@
+buildvariants:
+  - display_name: Test Tags
+    name: release
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: unit_tests
+      - name: test_release
+      - name: my_first_generator
+  - display_name: Test Duplicates
+    name: something_else
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: unit_tests
+      - name: test_release
+      - name: my_first_generator
+
+tasks:
+  - name: my_first_generator
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/evergreen.json
+    depends_on:
+      - name: unit_tests
+        variant: release
+        status: '*'
