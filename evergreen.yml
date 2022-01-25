@@ -133,3 +133,9 @@ modules:
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
     branch: main
+
+patch_aliases:
+  - alias: "test2"
+    variant: "^ubuntu1604$"
+    task: "^test.*$"
+    remote_path: ""
