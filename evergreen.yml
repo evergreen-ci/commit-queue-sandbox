@@ -83,7 +83,6 @@ tasks:
           script: |
             echo "noop2"
   - name: validate_commit_message
-    disable: true
     commands:
       - command: shell.exec
         params:
