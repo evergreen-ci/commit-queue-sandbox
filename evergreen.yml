@@ -59,6 +59,13 @@ tasks:
       - command: downstream_expansions.set
         params:
           file: src/downstream_expansions.yml
+  - name: bynntask
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "admin bynn: ${bynnbynn}"
   - name: test-receiving-parent-param
     disable: true
     commands:
