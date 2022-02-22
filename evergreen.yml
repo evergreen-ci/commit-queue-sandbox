@@ -99,6 +99,7 @@ tasks:
             fi
 
   - name: my_first_generator
+    disable: true
     commands:
       - command: generate.tasks
         params:
