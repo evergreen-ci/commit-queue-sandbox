@@ -75,7 +75,6 @@ tasks:
           script: |
             echo "my_param: ${my_param}, your_param: ${your_param}"
   - name: batchtime_task
-    disable: true
     commands:
       - command: shell.exec
         params:
@@ -100,14 +99,12 @@ tasks:
             fi
 
   - name: my_first_generator
-    disable: true
     commands:
       - command: generate.tasks
         params:
           files:
             - src/evergreen.json
   - name: test_release
-    disable: true
     depends_on:
       - name: unit_tests
         variant: "*"
@@ -116,7 +113,6 @@ tasks:
         params:
           working_dir: src
   - name: patch_only_task
-    disable: true
     patch_only: true
     commands:
       - command: downstream_expansions.set
