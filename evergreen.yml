@@ -106,7 +106,6 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
-    disable: true
     depends_on:
       - name: unit_tests
         variant: "*"
