@@ -13,7 +13,7 @@ buildvariants:
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
-      - name: test_passing_param_to_chil
+      - name: test_passing_param_to_child
       - name: test-receiving-parent-param
       - name: bynntask
         batchtime: 1
