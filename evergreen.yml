@@ -15,6 +15,7 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
+      - name: bynntask
         batchtime: 1
     display_tasks:
       - name: display_task
@@ -53,6 +54,13 @@ post:
       file: src/junit-*.xml
 
 tasks:
+  - name: bynntask
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "admin bynn: ${bynnbynn}"
   - name: test_passing_param_to_child
     tags: ["my_tag"]
     commands:
