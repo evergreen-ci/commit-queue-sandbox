@@ -1,3 +1,5 @@
+ignore:
+  - "*.md" # don't schedule tests if a commit only changes markdown files
 stepback: true
 buildvariants:
   - display_name: Ubuntu 16.04
