@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.1.0 - 2019-07-30
-- Initial Release changed
+- Initial Release change
 
 more changes
 more changes
