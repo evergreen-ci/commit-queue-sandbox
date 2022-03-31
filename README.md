@@ -1,6 +1,6 @@
 # icommit-queue-playground
 
-repository to experiment with the commit queue. (changed) ahhhhh
+repository to experiment with the commit queue. (changed) ahh
 
 ## Testing
 
