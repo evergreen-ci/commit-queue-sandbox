@@ -42,7 +42,7 @@ functions:
 
 parameters:
   - key: my_param
-    value: hello world1!
+    value: hello world!
     description: something to test parameters woot
 
 pre:
