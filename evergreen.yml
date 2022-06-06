@@ -16,9 +16,8 @@ buildvariants:
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
-      - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      - name: bynntask
+      - name: existing
         batchtime: 1
     display_tasks:
       - name: display_task
@@ -56,9 +55,20 @@ post:
     params:
       file: src/junit-*.xml
 
+task_groups:
+  - name: existing
+    max_hosts: 1
+    tasks:
+      - bynntask
+      - test_passing_param_to_child
+
 tasks:
   - name: bynntask
     commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/generated.json
       - command: shell.exec
         params:
           working_dir: src
@@ -111,7 +121,6 @@ tasks:
             fi
 
   - name: my_first_generator
-    disable: true
     commands:
       - command: generate.tasks
         params:
