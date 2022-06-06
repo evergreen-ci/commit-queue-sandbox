@@ -29,5 +29,13 @@
         }
       ]
     } 
+  ],
+  "task_groups": [
+    {
+      "name": "existing",
+      "tasks": [
+        "task_to_add_via_generator"
+      ]
+    }
   ]
 }
