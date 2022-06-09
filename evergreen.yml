@@ -59,6 +59,7 @@ functions:
         working_dir: src
         script: |
           echo "noop"
+          git describe
 
 parameters:
   - key: my_param
