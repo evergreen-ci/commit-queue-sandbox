@@ -47,9 +47,9 @@ buildvariants:
     run_on:
       - ubuntu1604-test
     tasks:
-      - name: core_TG
-      - name: unittest_TG
-      - name: dbtest_TG
+      - name: validate_commit_message
+      - name: validate_commit_message2
+      - name: validate_commit_message3
       - name: bynntask
 
 functions:
