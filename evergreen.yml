@@ -46,27 +46,10 @@ buildvariants:
     run_on:
       - ubuntu1604-test
     tasks:
-      - name: core_TG
-      - name: unittest_TG
-      - name: dbtest_TG
+      - name: validate_commit_message
+      - name: validate_commit_message2
+      - name: validate_commit_message3
       - name: bynntask
-
-task_groups:
-  - name: core_TG
-    setup_group:
-      *pre
-    tasks:
-      - validate_commit_message
-  - name: unittest_TG
-    setup_group:
-      *pre
-    tasks:
-      - validate_commit_message2
-  - name: dbtest_TG
-    setup_group:
-      *pre
-    tasks:
-      - validate_commit_message3
 
 functions:
   create virtualenv:
@@ -74,9 +57,7 @@ functions:
       params:
         working_dir: src
         script: |
-          echo "noop3"
-          echo "MALIK"
-          git describe
+          echo "noop"
 
 parameters:
   - key: my_param
