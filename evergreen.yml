@@ -1,6 +1,13 @@
 ignore:
   - "*.md" # don't schedule tests if a commit only changes markdown files
 stepback: true
+
+pre: &pre
+  - command: git.get_project
+    params:
+      directory: src
+  - func: create virtualenv
+
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
@@ -32,24 +39,50 @@ buildvariants:
       - name: test_release
       - name: my_first_generator
 
+  - name: git-env-test
+    display_name: "Giv Env Test"
+    modules:
+      - evergreen
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: core_TG
+      - name: unittest_TG
+      - name: dbtest_TG
+      - name: bynntask
+
+task_groups:
+  - name: core_TG
+    setup_group:
+      *pre
+    tasks:
+      - validate_commit_message
+  - name: unittest_TG
+    setup_group:
+      *pre
+    tasks:
+      - validate_commit_message2
+  - name: dbtest_TG
+    setup_group:
+      *pre
+    tasks:
+      - validate_commit_message3
+
 functions:
   create virtualenv:
     - command: shell.exec
       params:
         working_dir: src
         script: |
-          echo "noop"
+          echo "noop3"
+          echo "MALIK"
+          git describe
 
 parameters:
   - key: my_param
     value: hello world1!
     description: something to test parameters woot
 
-pre:
-  - command: git.get_project
-    params:
-      directory: src
-  - func: create virtualenv
 
 post:
   - command: attach.xunit_results
@@ -94,6 +127,38 @@ tasks:
           script: |
             echo "noop2"
   - name: validate_commit_message
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            set -o verbose
+            set -o errexit
+            if [ "${is_commit_queue}" = "true" ]; then
+              cat > commit_message.txt <<END_OF_COMMIT_MSG
+              ${commit_message}
+            END_OF_COMMIT_MSG
+
+              commit_message_content=$(cat commit_message.txt)
+
+              echo "$commit_message_content"
+            fi
+  - name: validate_commit_message2
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            set -o verbose
+            set -o errexit
+            if [ "${is_commit_queue}" = "true" ]; then
+              cat > commit_message.txt <<END_OF_COMMIT_MSG
+              ${commit_message}
+            END_OF_COMMIT_MSG
+
+              commit_message_content=$(cat commit_message.txt)
+
+              echo "$commit_message_content"
+            fi
+  - name: validate_commit_message3
     commands:
       - command: shell.exec
         params:
