@@ -72,6 +72,7 @@ post:
     params:
       file: src/junit-*.xml
 
+
 tasks:
   - name: bynntask
     commands:
