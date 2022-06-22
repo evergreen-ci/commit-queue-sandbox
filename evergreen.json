@@ -2,11 +2,32 @@
   "buildvariants": [
     {
       "name": "ubuntu1604",
+      "display_tasks": [
+        {
+          "name": "display_task",
+          "execution_tasks": ["task_to_add_via_generator"]
+        }
+      ],
       "tasks": [
         {
           "name": "task_to_add_via_generator"
         }
       ]
     }
+  ],
+  "tasks":  [
+    {
+      "name": "task_to_add_via_generator",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": 
+            {
+              "working_dir": "src",
+              "script": "exit 1"
+            }
+        }
+      ]
+    } 
   ]
 }

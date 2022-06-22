@@ -1,14 +1,3 @@
-ignore:
-  - "*.md" # don't schedule tests if a commit only changes markdown files
-stepback: true
-
-pre: &pre
-  - command: git.get_project
-    params:
-      directory: src
-  - func: create virtualenv
-
-
 buildvariants:
   - display_name: Ubuntu 16.04
     name: ubuntu1604
@@ -26,7 +15,6 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      - name: bynntask
         batchtime: 1
     display_tasks:
       - name: display_task
@@ -40,18 +28,6 @@ buildvariants:
       - name: test_release
       - name: my_first_generator
 
-  - name: git-env-test
-    display_name: "Giv Env Test"
-    modules:
-      - evergreen
-    run_on:
-      - ubuntu1604-test
-    tasks:
-      - name: validate_commit_message
-      - name: validate_commit_message2
-      - name: validate_commit_message3
-      - name: bynntask
-
 functions:
   create virtualenv:
     - command: shell.exec
@@ -59,36 +35,29 @@ functions:
         working_dir: src
         script: |
           echo "noop"
-          git describe
-
 parameters:
   - key: my_param
     value: hello world1!
     description: something to test parameters woot
 
+pre:
+  - command: git.get_project
+    params:
+      directory: src
+  - func: create virtualenv
 
 post:
   - command: attach.xunit_results
     params:
       file: src/junit-*.xml
 
-
 tasks:
-  - name: bynntask
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "admin bynn: ${bynnbynn}"
   - name: test_passing_param_to_child
-    tags: ["my_tag"]
     commands:
       - command: downstream_expansions.set
         params:
-          file: src/downstream_expansions.yml
+          file: downstream_expansions.yml
   - name: test-receiving-parent-param
-    disable: true
     commands:
       - command: shell.exec
         params:
@@ -101,8 +70,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "my_param: ${my_param}, your_param: ${your_param}" yeeeeeeeeee
-            exit 1
+            echo "my_param: ${my_param}, your_param: ${your_param}"
   - name: batchtime_task
     commands:
       - command: shell.exec
@@ -121,46 +89,10 @@ tasks:
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
             END_OF_COMMIT_MSG
-
               commit_message_content=$(cat commit_message.txt)
-
               echo "$commit_message_content"
             fi
-  - name: validate_commit_message2
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-  - name: validate_commit_message3
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-
   - name: my_first_generator
-    disable: true
     commands:
       - command: generate.tasks
         params:
@@ -179,7 +111,7 @@ tasks:
     commands:
       - command: downstream_expansions.set
         params:
-          file: src/downstream_expansions.yml
+          file: commit-queue-sandbox/downstream_expansions.yml
       - command: shell.exec
         params:
           working_dir: src
@@ -190,13 +122,3 @@ modules:
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
     branch: main
-
-patch_aliases:
-  - alias: "test2"
-    variant: "^ubuntu1604$"
-    task: "^test.*$"
-    remote_path: ""
-
-build_baron_settings:
-  ticket_create_project: "EVG"
-  ticket_search_projects: ["EVG"]
