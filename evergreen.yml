@@ -203,5 +203,5 @@ build_baron_settings:
   ticket_search_projects: ["EVG"]
 
 github_pr_aliases:
-  - variant: "^ubuntu1604$"
-    task: "^unit.*$"
+  - variant: "^git-env-test$"
+    task: ".*"
