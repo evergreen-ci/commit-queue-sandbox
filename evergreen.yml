@@ -201,3 +201,4 @@ patch_aliases:
 build_baron_settings:
   ticket_create_project: "EVG"
   ticket_search_projects: ["EVG"]
+
