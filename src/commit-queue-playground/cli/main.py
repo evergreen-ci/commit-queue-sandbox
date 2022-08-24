@@ -7,7 +7,7 @@ def cli(ctx):
     '''This is a docstring'''
     ctx.ensure_object(dict)
 
-
+#hi
 def foo():
     print("foo")
     print("bar")
