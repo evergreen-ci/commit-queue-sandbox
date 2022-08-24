@@ -204,4 +204,4 @@ build_baron_settings:
 
 github_pr_aliases:
   - variant: "^ubuntu1604$"
-  - tasks: ".*"
+    task: ".*"
