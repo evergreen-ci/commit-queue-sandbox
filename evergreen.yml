@@ -40,6 +40,7 @@ buildvariants:
     tasks:
       - name: test_release
       - name: my_first_generator
+      - name: validate_commit_message
 
   - name: git-env-test
     display_name: "Giv Env Test"
@@ -103,7 +104,7 @@ tasks:
           working_dir: src
           script: |
             echo "my_param: ${my_param}, your_param: ${your_param}" yeeeeeeeeee
-            exit 1
+            exit 0
   - name: batchtime_task
     commands:
       - command: shell.exec
@@ -160,8 +161,7 @@ tasks:
               echo "$commit_message_content"
             fi
 
-  - name: my_first_generator
-    disable: true
+  - name: my_first_generator 
     commands:
       - command: generate.tasks
         params:

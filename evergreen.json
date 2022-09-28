@@ -27,6 +27,16 @@
               "script": "exit 1"
             }
         }
+      ],
+      "depends_on": [
+        {
+          "name": "unit_tests",
+          "variant": "ubuntu1604"
+        },
+        {
+          "name": "validate_commit_message",
+          "variant": "release"
+        }
       ]
     } 
   ]
