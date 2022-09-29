@@ -2,12 +2,6 @@
   "buildvariants": [
     {
       "name": "ubuntu1604",
-      "display_tasks": [
-        {
-          "name": "display_task",
-          "execution_tasks": ["task_to_add_via_generator"]
-        }
-      ],
       "tasks": [
         {
           "name": "task_to_add_via_generator"
@@ -24,18 +18,8 @@
           "params": 
             {
               "working_dir": "src",
-              "script": "exit 1"
+              "script": "exit 0"
             }
-        }
-      ],
-      "depends_on": [
-        {
-          "name": "unit_tests",
-          "variant": "ubuntu1604"
-        },
-        {
-          "name": "validate_commit_message",
-          "variant": "release"
         }
       ]
     } 
