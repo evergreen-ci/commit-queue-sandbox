@@ -18,7 +18,7 @@
           "params": 
             {
               "working_dir": "src",
-              "script": "exit 0"
+              "script": "exit 1"
             }
         }
       ]
