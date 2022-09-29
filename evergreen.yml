@@ -82,7 +82,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "admin bynn: ${bynnbynn}"
+            echo "admin bynn: ${bynnbynn} more stuff"
   - name: test_passing_param_to_child
     tags: ["my_tag"]
     commands:
