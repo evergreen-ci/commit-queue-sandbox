@@ -1,3 +1,4 @@
+## verify cq isn't bonkers broken
 # commit-queue-playground
 
 repository to experiment with the commit queue.
