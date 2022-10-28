@@ -108,6 +108,10 @@ tasks:
   - name: batchtime_task
     commands:
       - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "hi"
   - name: validate_commit_message
     commands:
       - command: shell.exec
