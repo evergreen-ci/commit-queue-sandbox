@@ -190,7 +190,7 @@ modules:
   - name: evergreen
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
-    branch: test-modules
+    branch: main
 
 patch_aliases:
   - alias: "test2"
