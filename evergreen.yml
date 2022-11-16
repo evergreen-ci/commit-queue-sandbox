@@ -76,6 +76,16 @@ post:
 
 
 tasks:
+  - name: gen_task_template
+    depends_on:
+      - name: my_first_generator
+        variant: release
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "noop2"
   - name: bynntask
     commands:
       - command: shell.exec
