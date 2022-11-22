@@ -22,6 +22,7 @@ buildvariants:
       module_prefix: hello
     tasks:
       - name: unit_tests
+        batchtime: 10
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
@@ -178,6 +179,7 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
+    activate: false
     depends_on:
       - name: unit_tests
         variant: "*"
