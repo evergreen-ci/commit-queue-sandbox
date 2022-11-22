@@ -22,7 +22,7 @@ buildvariants:
       module_prefix: hello
     tasks:
       - name: unit_tests
-        batchtime: 10
+        activate: false
       - name: validate_commit_message
       - name: patch_only_task
       - name: batchtime_task
@@ -40,6 +40,7 @@ buildvariants:
       - ubuntu1604-test
     tasks:
       - name: test_release
+        cron: 20 11 * * *
       - name: my_first_generator
       - name: validate_commit_message
 
@@ -179,7 +180,6 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
-    activate: false
     depends_on:
       - name: unit_tests
         variant: "*"
