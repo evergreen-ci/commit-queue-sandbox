@@ -4,24 +4,24 @@
       "name": "ubuntu1604",
       "tasks": [
         {
-          "name": "task_to_add_via_generator"
+          "name": "task_to_add_via_generator",
+          "activate": false
         }
       ]
     }
   ],
-  "tasks":  [
+  "tasks": [
     {
       "name": "task_to_add_via_generator",
       "commands": [
         {
           "command": "shell.exec",
-          "params": 
-            {
-              "working_dir": "src",
-              "script": "exit 1"
-            }
+          "params": {
+            "working_dir": "src",
+            "script": "exit 1"
+          }
         }
       ]
-    } 
+    }
   ]
 }
