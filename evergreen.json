@@ -1,27 +1,71 @@
 {
   "buildvariants": [
     {
-      "name": "ubuntu1604",
+      "name": "testBV1",
       "tasks": [
         {
-          "name": "task_to_add_via_generator"
+          "name": "shouldDependOnVersionGen",
+          "activate": false
         }
-      ]
+      ],
+      "activate": false
+    },
+    {
+      "name": "testBV2",
+      "tasks": [
+        {
+          "name": "shouldDependOnDependencyTask",
+          "activate": false
+        }
+      ],
+      "activate": false
+    },
+    {
+      "name": "testBV3",
+      "tasks": [
+        {
+          "name": "shouldDependOnDependencyTask",
+          "activate": false
+        }
+      ],
+      "activate": false
+    },
+    {
+      "name": "testBV4",
+      "activate": false
     }
   ],
   "tasks":  [
     {
-      "name": "task_to_add_via_generator",
+      "name": "shouldDependOnVersionGen",
       "commands": [
         {
           "command": "shell.exec",
-          "params": 
-            {
-              "working_dir": "src",
-              "script": "exit 1"
-            }
+          "params":
+          {
+            "working_dir": "src",
+            "script": "echo noop"
+          }
         }
       ]
-    } 
+    },
+    {
+      "name": "shouldDependOnDependencyTask",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params":
+          {
+            "working_dir": "src",
+            "script": "echo noop"
+          }
+        }
+      ],
+      "depends_on": [
+        {
+          "name": "dependencyTask"
+        }
+      ]
+    }
   ]
 }

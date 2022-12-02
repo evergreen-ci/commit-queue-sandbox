@@ -21,12 +21,12 @@ buildvariants:
         execution_tasks:
           - validate_commit_message
   - display_name: Test Tags
-    name: release
+    name: generate-tasks-for-version
     run_on:
       - ubuntu1604-test
     tasks:
       - name: test_release
-      - name: my_first_generator
+      - name: version_gen
 
 functions:
   create virtualenv:
@@ -92,7 +92,7 @@ tasks:
               commit_message_content=$(cat commit_message.txt)
               echo "$commit_message_content"
             fi
-  - name: my_first_generator
+  - name: version_gen
     commands:
       - command: generate.tasks
         params:
