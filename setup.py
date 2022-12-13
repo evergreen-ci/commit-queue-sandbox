@@ -10,7 +10,7 @@ from os.path import splitext
 from setuptools import find_packages
 from setuptools import setup
 
-# hello
+# hellos
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
