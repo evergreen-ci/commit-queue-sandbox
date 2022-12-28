@@ -183,10 +183,6 @@ tasks:
     depends_on:
       - name: unit_tests
         variant: "*"
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
   - name: patch_only_task
     patch_only: true
     commands:
