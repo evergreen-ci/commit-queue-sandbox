@@ -9,7 +9,6 @@ pre: &pre
       directory: src
   - func: create virtualenv
 
-
 buildvariants:
   - display_name: Ubuntu 16.04000000
     name: ubuntu1604
@@ -70,12 +69,10 @@ parameters:
     value: hello world1!
     description: something to test parameters woot
 
-
 post:
   - command: attach.xunit_results
     params:
       file: src/junit-*.xml
-
 
 tasks:
   - name: gen_task_template
@@ -173,7 +170,7 @@ tasks:
               echo "$commit_message_content"
             fi
 
-  - name: my_first_generator 
+  - name: my_first_generator
     commands:
       - command: generate.tasks
         params:
@@ -187,6 +184,8 @@ tasks:
       - command: shell.exec
         params:
           working_dir: src
+          script: |
+            echo "i am a script"
   - name: patch_only_task
     patch_only: true
     commands:
