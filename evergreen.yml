@@ -9,52 +9,10 @@ pre: &pre
       directory: src
   - func: create virtualenv
 
-
-buildvariants:
-  - display_name: Ubuntu 16.04000000
-    name: ubuntu1604
-    batchtime: 4
-    modules:
-      - evergreen
-    run_on:
-      - ubuntu1604-test
-    expansions:
-      module_prefix: hello
-    tasks:
-      - name: unit_tests
-        activate: false
-      - name: validate_commit_message
-      - name: patch_only_task
-      - name: batchtime_task
-      - name: test_passing_param_to_child
-      - name: test-receiving-parent-param
-      - name: bynntask
-        batchtime: 1
-    display_tasks:
-      - name: display_task
-        execution_tasks:
-          - validate_commit_message
-  - display_name: Test Tags
-    name: release
-    run_on:
-      - ubuntu1604-test
-    tasks:
-      - name: test_release
-        cron: 20 11 * * *
-      - name: my_first_generator
-      - name: validate_commit_message
-
-  - name: git-env-test
-    display_name: "Giv Env Test"
-    modules:
-      - evergreen
-    run_on:
-      - ubuntu1604-test
-    tasks:
-      - name: validate_commit_message
-      - name: validate_commit_message2
-      - name: validate_commit_message3
-      - name: bynntask
+post:
+  - command: attach.xunit_results
+    params:
+      file: src/junit-*.xml
 
 functions:
   create virtualenv:
@@ -65,147 +23,133 @@ functions:
           echo "noop"
           git describe
 
-parameters:
-  - key: my_param
-    value: hello world1!
-    description: something to test parameters woot
 
+task_groups:
+  - name: task_group1
+    max_hosts: 1
+    tasks:
+      - dependencyTask2
+      - dependencyTask3
+      - dependencyTask4
 
-post:
-  - command: attach.xunit_results
-    params:
-      file: src/junit-*.xml
+buildvariants:
+  - display_name: Generate Tasks for Version
+    name: generate-tasks-for-version
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: version_gen
 
+  - display_name: TestBV1
+    name: testBV1
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: placeholder
+    depends_on:
+      - name: version_gen
+        variant: generate-tasks-for-version
+        omit_generated_tasks: true
+
+  - name: testBV2
+    display_name: TestBV2
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: dependencyTask
+      - name: placeholder
+
+  - name: testBV3
+    display_name: TestBV3
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: placeholder
+    depends_on:
+      - name: version_gen
+        variant: generate-tasks-for-version
+      - name: dependencyTask
+        variant: testBV4
+
+  - name: testBV5
+    display_name: TestBV5
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: placeholder
+    depends_on:
+      - name: dependencyTask2
+        variant: testBV4
+
+  - name: testBV6
+    display_name: TestBV6
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: task_group1
+
+  - name: testBV4
+    display_name: TestBV4
+    run_on:
+      - ubuntu1604-test
+    tasks:
+      - name: dependencyTask
+      - name: dependencyTask2
+      - name: shouldNotActivate
 
 tasks:
-  - name: gen_task_template
+  - name: placeholder
     depends_on:
-      - name: my_first_generator
-        variant: release
+      - name: version_gen
+        variant: generate-tasks-for-version
     commands:
       - command: shell.exec
         params:
           working_dir: src
+          script: |
+            echo "noop"
+
+  - name: dependencyTask
+    depends_on:
+      - name: shouldNotActivate
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "noop"
+
+  - name: dependencyTask2
+    commands:
+      - command: shell.exec
+        params:
           script: |
             echo "noop2"
-  - name: bynntask
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "admin bynn: ${bynnbynn}"
-  - name: test_passing_param_to_child
-    tags: ["my_tag"]
-    commands:
-      - command: downstream_expansions.set
-        params:
-          file: src/downstream_expansions.yml
-  - name: test-receiving-parent-param
-    disable: true
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
-  - name: unit_tests
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "my_param: ${my_param}, your_param: ${your_param}" yis
-            exit 0
-  - name: batchtime_task
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "noop2"
-  - name: validate_commit_message
+
+  - name: dependencyTask3
     commands:
       - command: shell.exec
         params:
           script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
+            exit 1
 
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-  - name: validate_commit_message2
+  - name: dependencyTask4
     commands:
       - command: shell.exec
         params:
           script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
+            echo "noop"
 
-              commit_message_content=$(cat commit_message.txt)
 
-              echo "$commit_message_content"
-            fi
-  - name: validate_commit_message3
+  - name: shouldNotActivate
     commands:
       - command: shell.exec
         params:
           script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
+            echo "noop"
 
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-
-  - name: my_first_generator 
+  - name: version_gen
     commands:
       - command: generate.tasks
         params:
           files:
             - src/evergreen.json
-  - name: test_release
-    depends_on:
-      - name: unit_tests
-        variant: "*"
-  - name: patch_only_task
-    patch_only: true
-    commands:
-      - command: downstream_expansions.set
-        params:
-          file: src/downstream_expansions.yml
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "i am patch only"
-modules:
-  - name: evergreen
-    repo: git@github.com:evergreen-ci/evergreen.git
-    prefix: ${workdir}/src
-    branch: main
-
-patch_aliases:
-  - alias: "test2"
-    variant: "^ubuntu1604$"
-    task: "^test.*$"
-    remote_path: ""
-
-build_baron_settings:
-  ticket_create_project: "EVG"
-  ticket_search_projects: ["EVG"]
