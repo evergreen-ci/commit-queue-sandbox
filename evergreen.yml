@@ -1,6 +1,6 @@
 ## this is a change
 ignore:
-  - "*.md" # don't schedule tests if a commit only changes markdown files
+  - "*.md" # dont schedule tests if a commit only changes markdown files
 stepback: true
 
 pre: &pre
@@ -183,12 +183,6 @@ tasks:
     depends_on:
       - name: unit_tests
         variant: "*"
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "i am a script"
   - name: patch_only_task
     patch_only: true
     commands:
