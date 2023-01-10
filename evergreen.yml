@@ -69,7 +69,7 @@ task_groups:
       - fourth_task_in_task_group
 
 buildvariants:
-  - name: localhost
+  - name: ubuntu1604
     display_name: localhost
     run_on:
       - ubuntu1604-test
@@ -83,7 +83,7 @@ buildvariants:
       - name: version_gen
 
   - display_name: TestBV1
-    name: testBV1
+    name: release
     run_on:
       - ubuntu1604-test
     tasks:
@@ -93,7 +93,7 @@ buildvariants:
         variant: generate-tasks-for-version
         omit_generated_tasks: true
 
-  - name: testBV2
+  - name: git-env-test
     display_name: TestBV2
     run_on:
       - ubuntu1604-test
