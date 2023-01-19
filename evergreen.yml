@@ -19,7 +19,7 @@ buildvariants:
       - name: version_gen
 
   - display_name: TestBV1
-    name: testBV1
+    name: ubuntu1604
     run_on:
       - ubuntu1604-test
     tasks:
@@ -29,7 +29,7 @@ buildvariants:
             variant: generate-tasks-for-version
             omit_generated_tasks: true
 
-  - name: testBV2
+  - name: release
     display_name: TestBV2
     run_on:
       - ubuntu1604-test
@@ -37,7 +37,7 @@ buildvariants:
       - name: dependencyTask
       - name: placeholder
 
-  - name: testBV3
+  - name: git-env-test
     display_name: TestBV3
     run_on:
       - ubuntu1604-test
