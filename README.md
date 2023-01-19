@@ -4,7 +4,7 @@ Repository to experiment with the commit queue.
 
 ## Testing
 
-Run tests with pytest
+Run tests with pytest.
 # something new
 
 ```
