@@ -120,7 +120,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "noop2"
+            echo "noop"
   - name: validate_commit_message
     commands:
       - command: shell.exec
