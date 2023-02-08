@@ -12,7 +12,6 @@ pre: &pre
 buildvariants:
   - display_name: Ubuntu 16.04000000
     name: ubuntu1604
-    disabled: true
     batchtime: 4
     modules:
       - evergreen
