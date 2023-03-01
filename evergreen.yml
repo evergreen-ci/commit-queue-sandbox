@@ -108,7 +108,7 @@ tasks:
           script: |
             echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
   - name: unit_tests
-    priority: 2
+    priority: -1
     commands:
       - command: shell.exec
         params:
