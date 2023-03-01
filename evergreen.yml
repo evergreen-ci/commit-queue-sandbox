@@ -138,6 +138,7 @@ tasks:
               echo "$commit_message_content"
             fi
   - name: validate_commit_message2
+    priority: -1
     commands:
       - command: shell.exec
         params:
@@ -154,6 +155,7 @@ tasks:
               echo "$commit_message_content"
             fi
   - name: validate_commit_message3
+    priority: 3
     commands:
       - command: shell.exec
         params:
