@@ -86,6 +86,7 @@ tasks:
           script: |
             echo "noop2"
   - name: bynntask
+    priority: -1
     commands:
       - command: shell.exec
         params:
@@ -107,6 +108,7 @@ tasks:
           script: |
             echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
   - name: unit_tests
+    priority: 2
     commands:
       - command: shell.exec
         params:
