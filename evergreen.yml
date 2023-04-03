@@ -10,8 +10,8 @@ pre: &pre
   - func: create virtualenv
 
 buildvariants:
-  - display_name: Ubuntu 16.04000000
-    name: ubuntu1604
+  - display_name: Ubuntu 20.04
+    name: ubuntu2004
     batchtime: 4
     modules:
       - evergreen
@@ -207,7 +207,7 @@ modules:
 
 patch_aliases:
   - alias: "test2"
-    variant: "^ubuntu1604$"
+    variant: "^ubuntu2004$"
     task: "^test.*$"
     remote_path: ""
 
