@@ -16,7 +16,7 @@ buildvariants:
     modules:
       - evergreen
     run_on:
-      - ubuntu1604-test
+      - ubuntu2004-small
     expansions:
       module_prefix: hello
     tasks:
@@ -36,7 +36,7 @@ buildvariants:
   - display_name: Test Tags
     name: release
     run_on:
-      - ubuntu1604-test
+      - ubuntu2004-small
     tasks:
       - name: test_release
         cron: 20 11 * * *
@@ -48,7 +48,7 @@ buildvariants:
     modules:
       - evergreen
     run_on:
-      - ubuntu1604-test
+      - ubuntu2004-small
     tasks:
       - name: validate_commit_message
       - name: validate_commit_message2
