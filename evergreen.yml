@@ -62,6 +62,7 @@ functions:
         working_dir: src
         script: |
           echo "noop"
+          echo hello world
           git describe
 
 parameters:
