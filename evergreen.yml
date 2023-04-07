@@ -9,6 +9,17 @@ pre: &pre
       directory: src
   - func: create virtualenv
 
+containers:
+  - name: evg-container
+    working_dir: /
+    image: "hadjri/evg-e2e-test-ubuntu"
+    resources:
+      cpu: 2048
+      memory_mb: 3880
+    system:
+      cpu_architecture: x86_64
+      operating_system: linux
+
 buildvariants:
   - display_name: Ubuntu 20.04
     name: ubuntu2004
