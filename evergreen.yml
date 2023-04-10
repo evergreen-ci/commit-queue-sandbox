@@ -138,6 +138,7 @@ tasks:
       - command: shell.exec
         params:
           script: |
+            sleep 120
             set -o verbose
             set -o errexit
             if [ "${is_commit_queue}" = "true" ]; then
@@ -155,6 +156,7 @@ tasks:
       - command: shell.exec
         params:
           script: |
+            sleep 120
             set -o verbose
             set -o errexit
             if [ "${is_commit_queue}" = "true" ]; then
@@ -172,6 +174,7 @@ tasks:
       - command: shell.exec
         params:
           script: |
+            sleep 120
             set -o verbose
             set -o errexit
             if [ "${is_commit_queue}" = "true" ]; then
