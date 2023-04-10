@@ -1,6 +1,6 @@
 ## this is a changes
 ignore:
-  - "*.md" # dont schedule tests if a commit only changes markdown files
+  - "*.md" # dont schedule tests if a commit only changes markdown files.
 stepback: true
 
 pre: &pre
@@ -151,7 +151,6 @@ tasks:
               echo "$commit_message_content"
             fi
   - name: validate_commit_message2
-    priority: -1
     commands:
       - command: shell.exec
         params:
