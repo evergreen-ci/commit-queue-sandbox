@@ -1,22 +1,35 @@
-## this is a chang
+## this is a change
 ignore:
   - "*.md" # dont schedule tests if a commit only changes markdown files
 stepback: true
+pre_error_fails_task: true
 
 pre: &pre
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        echo "chaya this is shell exec in pre"
+        exit 1
   - command: git.get_project
     params:
       directory: src
   - func: create virtualenv
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        echo "chaya this is shell exec in pre"
+        exit 1
 
 buildvariants:
-  - display_name: Ubuntu 16.04000000
-    name: ubuntu1604
+  - display_name: Ubuntu 20.04000000
+    name: ubuntu2004
     batchtime: 4
     modules:
       - evergreen
     run_on:
-      - ubuntu1604-test
+      - ubuntu2004-test
     expansions:
       module_prefix: hello
     tasks:
@@ -36,7 +49,7 @@ buildvariants:
   - display_name: Test Tags
     name: release
     run_on:
-      - ubuntu1604-test
+      - ubuntu2004-test
     tasks:
       - name: test_release
         cron: 20 11 * * *
@@ -48,7 +61,7 @@ buildvariants:
     modules:
       - evergreen
     run_on:
-      - ubuntu1604-test
+      - ubuntu2004-test
     tasks:
       - name: validate_commit_message
       - name: validate_commit_message2
@@ -205,7 +218,7 @@ modules:
 
 patch_aliases:
   - alias: "test2"
-    variant: "^ubuntu1604$"
+    variant: "^ubuntu2004$"
     task: "^test.*$"
     remote_path: ""
 
