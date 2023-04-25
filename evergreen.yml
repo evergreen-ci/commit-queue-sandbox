@@ -1,4 +1,4 @@
-## this is a changee
+## this is a change
 ignore:
   - "*.md" # dont schedule tests if a commit only changes markdown files
 stepback: true
