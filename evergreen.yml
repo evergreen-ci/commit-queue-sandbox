@@ -1,4 +1,4 @@
-## this is a changee
+## this is a changes
 ignore:
   - "*.md" # dont schedule tests if a commit only changes markdown files
 stepback: true
@@ -9,7 +9,38 @@ pre: &pre
       directory: src
   - func: create virtualenv
 
+containers:
+  - name: evg-container
+    working_dir: /
+    image: "hadjri/evg-container-self-tests"
+    resources:
+      cpu: 4096
+      memory_mb: 8192
+    system:
+      cpu_architecture: x86_64
+      operating_system: linux
+
 buildvariants:
+  - name: ubuntu2004-container
+    display_name: Ubuntu 20.04 (Container)
+    run_on:
+      - evg-container
+    expansions:
+      goos: linux
+      goarch: amd64
+      IS_DOCKER: true
+      GOROOT: /usr/local/go
+      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2004-5.0.14.tgz
+      decompress: tar zxvf
+    tasks:
+      - name: unit_tests
+        activate: false
+      - name: validate_commit_message
+      - name: patch_only_task
+      - name: batchtime_task
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
+      - name: bynntask
   - display_name: Ubuntu 16.04000000
     name: ubuntu1604
     batchtime: 4
