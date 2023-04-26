@@ -5,6 +5,7 @@ Repository to experiment with the commit queue.
 ## Testing
 
 Run tests with pytest.
+=======
 
 ```
 $ pip install -r requirements.txt
