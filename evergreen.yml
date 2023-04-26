@@ -45,6 +45,7 @@ buildvariants:
     name: ubuntu2004
     tags: [commit-queue-variant]
     batchtime: 4
+    tags: [commit-queue-variant, something-else]
     modules:
       - evergreen
     run_on:
