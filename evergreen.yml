@@ -43,7 +43,7 @@ buildvariants:
       - name: bynntask
   - display_name: Ubuntu 20.04
     name: ubuntu2004
-    tags: [commit-queue-variant]
+    tags: [commit-queue-variant, merge-conflict?]
     batchtime: 4
     modules:
       - evergreen
