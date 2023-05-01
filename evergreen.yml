@@ -1,4 +1,4 @@
-## this is a chang
+## this is a chan
 ignore:
   - "*.md" # dont schedule tests if a commit only changes markdown files.
 stepback: true
