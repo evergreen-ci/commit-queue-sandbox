@@ -1,6 +1,6 @@
 ## this is a changes
 ignore:
-  - "*.md" # dont schedule tests if a commit only changes markdown files.2
+  - "*.md" # dont schedule tests if a commit only changes markdown files.3
 stepback: true
 
 pre: &pre

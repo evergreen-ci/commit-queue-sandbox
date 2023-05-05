@@ -9,7 +9,7 @@ functions:
       params:
         working_dir: src
         script: |
-          echo "noop"
+          echo "noop2"
 
 tasks:
 - name: periodic_build_operator
