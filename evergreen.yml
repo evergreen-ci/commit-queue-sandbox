@@ -12,7 +12,7 @@ pre: &pre
 containers:
   - name: evg-container
     working_dir: /
-    image: "hadjri/evg-container-self-tests"
+    image: "hadjri/evg-container-self-testing"
     resources:
       cpu: 4096
       memory_mb: 8192
