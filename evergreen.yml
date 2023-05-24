@@ -146,8 +146,7 @@ tasks:
           working_dir: src
           script: |
             echo "my_param: ${my_param}, your_param: ${your_param}" yis
-            # Intentionally exit the program with an error so the task fails
-            exit 1
+            exit 0
   - name: batchtime_task
     commands:
       - command: shell.exec
@@ -162,7 +161,6 @@ tasks:
           script: |
             set -o verbose
             set -o errexit
-            exit 1
             if [ "${is_commit_queue}" = "true" ]; then
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
@@ -173,7 +171,6 @@ tasks:
               echo "$commit_message_content"
             fi
   - name: validate_commit_message2
-    priority: -1
     commands:
       - command: shell.exec
         params:
