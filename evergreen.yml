@@ -43,7 +43,6 @@ buildvariants:
       - name: bynntask
   - display_name: Ubuntu 20.04
     name: ubuntu2004
-    batchtime: 4
     tags: [commit-queue-variant, whaat]
     modules:
       - evergreen
@@ -71,7 +70,7 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: test_release
-        cron: 20 11 * * *
+        cron: "*/5 * * * *"
       - name: my_first_generator
       - name: validate_commit_message
 
