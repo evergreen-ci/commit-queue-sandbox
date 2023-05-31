@@ -1,4 +1,4 @@
-Something is in here now, a full sentence.
+Something is in this branch, a full sentence.
 NOT
 YES
 trigger mainline
