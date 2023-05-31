@@ -1,4 +1,4 @@
-Something is new now, some sentence.
+Something is new now, some sentence2.
 NOT
 YES
 trigger mainline
