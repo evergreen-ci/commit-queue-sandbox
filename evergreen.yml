@@ -48,7 +48,7 @@ buildvariants:
     modules:
       - evergreen
     run_on:
-      - ubuntu2004-small
+      - ubuntu2004
     expansions:
       module_prefix: hello
     tasks:
