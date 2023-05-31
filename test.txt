@@ -1,4 +1,4 @@
-Something is in now, another full sentence.
+Something is here now, some sentence.
 NOT
 YES
 trigger mainline
