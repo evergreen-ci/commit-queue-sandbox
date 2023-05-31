@@ -65,6 +65,7 @@ import NDSClusterFormName from 'js/project/nds/clusterEditor/NDSClusterForm/NDSC
 import NDSClusterFormProviderButtons from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormProviderButtons';
 import NDSClusterFormRegionSection from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormRegionSection';
 import NDSClusterFormSharding from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormSharding';
+import NDSClusterFormTags from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormTags';
 import NDSClusterFormTerminationProtection from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormTerminationProtection';
 import NDSClusterFormVersion from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormVersion';
 import { PROVIDER_TEXT } from 'js/project/nds/clusterEditor/NDSClusterForm/schema';
@@ -119,7 +120,7 @@ export const ACCORDION_NAMES = {
     name: 'additionalSettings',
     headlineText: 'Additional Settings',
   },
-  NAME_CLUSTER: { name: 'nameCluster', headlineText: `Cluster Name` },
+  NAME_CLUSTER: { name: 'nameCluster', headlineText: `Cluster Details` },
 };
 
 const DEFAULT_NODE_TYPE_SET = new Set<NodeTypeFamily>().add(NodeTypeFamily.BASE).add(NodeTypeFamily.ANALYTICS);
@@ -187,10 +188,13 @@ interface State {
   selectedClusterTierTab: number;
   showSqlInterfaceBanner: boolean;
   dataProtectionSettings: DataProtectionSettings | null;
+  numTags: number;
 }
 
 class NDSClusterForm extends Component<Props, State> {
   static contextType = NDSClusterFormContext;
+
+  isResourceTaggingEnabled = this.props.settingsModel.hasProjectFeature('RESOURCE_TAG_COMPONENT');
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { formValues } = nextProps;
@@ -225,6 +229,7 @@ class NDSClusterForm extends Component<Props, State> {
     selectedClusterTierTab: 0,
     showSqlInterfaceBanner: localStorage.getItem(this.getDismissKey()) !== 'dismissed',
     dataProtectionSettings: null,
+    numTags: 0,
   };
 
   getDismissKey() {
@@ -749,6 +754,7 @@ class NDSClusterForm extends Component<Props, State> {
       newFormSelectedReplicationSpecId,
       selectedClusterTierTab,
       showSqlInterfaceBanner,
+      numTags,
     } = this.state;
 
     const currentProviders = replicationSpecListUtils
@@ -1421,8 +1427,9 @@ class NDSClusterForm extends Component<Props, State> {
             ref={(ref) => {
               this[ACCORDION_NAMES.NAME_CLUSTER.name] = ref;
             }}
-            headlineText={ACCORDION_NAMES.NAME_CLUSTER.headlineText}
+            headlineText={this.isResourceTaggingEnabled ? ACCORDION_NAMES.NAME_CLUSTER.headlineText : 'Cluster Name'}
             secondaryText={`${formValues.name || 'Please Enter a Name'}`}
+            secondarySubText={this.isResourceTaggingEnabled ? `${numTags} Tags` : ''}
             onHeadlineClick={this.toggleActive(ACCORDION_NAMES.NAME_CLUSTER)}
             active={!!openAccordions[ACCORDION_NAMES.NAME_CLUSTER.name]}
             highlightSecondaryText={highlightAccordions[ACCORDION_NAMES.NAME_CLUSTER.name]}
@@ -1443,8 +1450,19 @@ class NDSClusterForm extends Component<Props, State> {
               isNamePrefixUnique={isNamePrefixUnique}
               isNameEndWithHyphen={isNameEndWithHyphen}
               isNameInUseByClusterWithBackupSnapshots={isNameInUseByClusterWithBackupSnapshots}
+              isResourceTaggingEnabled={this.isResourceTaggingEnabled}
               computeUnit="cluster"
             />
+            {this.isResourceTaggingEnabled && (
+              <NDSClusterFormTags
+                clusterId={originalCluster.uniqueId}
+                groupId={settingsModel.getCurrentGroupId()}
+                setClusterFormValue={setClusterFormValue}
+                setNumTags={(nTags) => {
+                  this.setState({ numTags: nTags });
+                }}
+              />
+            )}
           </Accordion>
         )}
         {!isEdit && error && (
