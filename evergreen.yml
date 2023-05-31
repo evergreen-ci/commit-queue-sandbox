@@ -3,6 +3,8 @@ ignore:
   - "*.md" # dont schedule tests if a commit only changes markdown files.
 stepback: true
 
+pre_error_fails_task: true
+
 pre: &pre
   - command: git.get_project
     params:
