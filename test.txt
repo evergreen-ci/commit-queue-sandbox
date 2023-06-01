@@ -1,4 +1,5 @@
 Something is new here, some sentence3.
 NOT
 YES
+add line 1
 trigger mainline
