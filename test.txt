@@ -1,6 +1,4 @@
 Something is new here, some sentence3.
 NOT
-add line 2
 YES
-add line 1
 trigger mainline
