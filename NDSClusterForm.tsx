@@ -67,7 +67,6 @@ import NDSClusterFormRegionSection from 'js/project/nds/clusterEditor/NDSCluster
 import NDSClusterFormSharding from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormSharding';
 import NDSClusterFormTerminationProtection from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormTerminationProtection';
 import NDSClusterFormVersion from 'js/project/nds/clusterEditor/NDSClusterForm/NDSClusterFormVersion';
-import { NDSSearchDeploymentFormInstanceSize } from 'js/project/nds/clusterEditor/NDSClusterForm/NDSSearchDeploymentFormInstanceSize';
 import { PROVIDER_TEXT } from 'js/project/nds/clusterEditor/NDSClusterForm/schema';
 import backupUtils from 'js/project/nds/clusters/backup/utils/backupUtils';
 import UseCaseBasedClusterTemplatesTooltipCard from 'js/project/nds/clusters/components/UseCaseBasedClusterTemplatesPage/UseCaseBasedClusterTemplatesTooltipCard';
@@ -312,22 +311,7 @@ class NDSClusterForm extends Component<Props, State> {
     if (!prevProps.error && this.props.error) {
       window.scrollTo(0, 0);
     }
-
-    this._maybeResetClusterTierSelectedTab(prevProps);
   }
-
-  /**
-   * Reset selected Cluster tier tab when Analytics/Search nodes were added or removed.
-   */
-  _maybeResetClusterTierSelectedTab = (prevProps) => {
-    const hasAnalyticsNodes =
-      clusterDescriptionUtils.getTotalAnalyticsNodes(this.props.formValues.replicationSpecList) > 0;
-    const hasAnalyticsNodesPrev =
-      clusterDescriptionUtils.getTotalAnalyticsNodes(prevProps.formValues.replicationSpecList) > 0;
-    if (this.props.searchNodesEnabled !== prevProps.searchNodesEnabled || hasAnalyticsNodes !== hasAnalyticsNodesPrev) {
-      this.setSelectedClusterTierTab(0);
-    }
-  };
 
   getBackupSubtext = (diskBackupAllowed) => {
     if (diskBackupAllowed) {
@@ -537,7 +521,7 @@ class NDSClusterForm extends Component<Props, State> {
     );
   };
 
-  setSelectedClusterTierTab = (index: number): void => {
+  setSelected = (index: number): void => {
     this.setState({ selectedClusterTierTab: index });
   };
 
@@ -860,7 +844,6 @@ class NDSClusterForm extends Component<Props, State> {
         settingsModel.hasProjectFeature('CPS_GCP_AND_AZURE_NEW_CLUSTERS_ONLY_CPS'));
 
     const hasAnalyticsNodes = clusterDescriptionUtils.getTotalAnalyticsNodes(formValues.replicationSpecList) > 0;
-    const hasConfigurableNodes = hasAnalyticsNodes || searchNodesEnabled;
     const defaultTemplateKey = currentInstanceSizeName === 'M0' ? 'm0' : 'replicaSet';
     const customRoleVersions = new Set(
       customRoles.map((role) => role.minimumMongoVersion).filter((role) => role !== null)
@@ -887,15 +870,6 @@ class NDSClusterForm extends Component<Props, State> {
         Analytics Tier
         <span css={{ paddingLeft: 5 }}>
           <Badge variant="blue">New!</Badge>
-        </span>
-      </span>
-    );
-
-    const searchTierHeader = (
-      <span>
-        Search Tier
-        <span css={{ paddingLeft: 5 }}>
-          <Badge variant="blue">Preview</Badge>
         </span>
       </span>
     );
@@ -1034,11 +1008,7 @@ class NDSClusterForm extends Component<Props, State> {
           }}
           data-testid={ACCORDION_NAMES.INSTANCE_TIER.name}
           headline={clusterTierHeader}
-          secondary={getClusterTierSubtext(providerOptionsToUse, this.props.formValues, {
-            searchNodesEnabled,
-            searchConsiderationConfirmed,
-            searchDeploymentSpec,
-          })}
+          secondaryText={getClusterTierSubtext(providerOptionsToUse, this.props.formValues)}
           secondarySubText={getClusterTierSecondarySubtext(
             useInstanceSizeMaxStorage,
             isNVMe,
@@ -1052,7 +1022,7 @@ class NDSClusterForm extends Component<Props, State> {
           animate
           inheritOverflow
         >
-          {!hasConfigurableNodes && (
+          {!hasAnalyticsNodes && (
             <NDSClusterFormInstanceSize
               providerOptions={providerOptions}
               crossCloudProviderOptions={crossCloudProviderOptions}
@@ -1117,8 +1087,8 @@ class NDSClusterForm extends Component<Props, State> {
               isOriginalClusterSharded={isOriginalClusterSharded}
             />
           )}
-          {hasConfigurableNodes && (
-            <Tabs aria-label="test" selected={selectedClusterTierTab} setSelected={this.setSelectedClusterTierTab}>
+          {hasAnalyticsNodes && (
+            <Tabs aria-label="test" selected={selectedClusterTierTab} setSelected={this.setSelected}>
               <Tab name="Base Tier">
                 <NDSClusterFormInstanceSize
                   providerOptions={providerOptions}
@@ -1186,85 +1156,73 @@ class NDSClusterForm extends Component<Props, State> {
                   isOriginalClusterSharded={isOriginalClusterSharded}
                 />
               </Tab>
-              {/* Note(vm-mishchenko): LG-3214 Analytics/Search tabs might be rendered not in the specified order. */}
-              {hasAnalyticsNodes && (
-                <Tab name={analyticsTierHeader}>
-                  <NDSClusterFormInstanceSize
-                    providerOptions={providerOptions}
-                    crossCloudProviderOptions={crossCloudProviderOptions}
-                    providers={currentBackingProviders}
-                    clusterType={formValues.clusterType}
-                    instanceSize={currentAnalyticsInstanceSizeName}
-                    replicationSpecList={formValues.replicationSpecList}
-                    setAutoScaling={(a) => setAutoScaling(a, new Set<NodeTypeFamily>().add(NodeTypeFamily.ANALYTICS))}
-                    setClusterFormValue={setClusterFormValue}
-                    setInstanceSize={(instanceSize, nodeTypeFamilySet) =>
-                      this.setInstanceSize(instanceSize, nodeTypeFamilySet)
-                    }
-                    originalInstanceSize={originalAnalyticsInstanceSizeName}
-                    isEdit={isEdit}
-                    hasFreeCluster={hasFreeCluster}
-                    isTenantUpgrade={isTenantUpgrade}
-                    isCrossRegionEnabled={isCrossRegionEnabled}
-                    isPrivateIPModeEnabled={isPrivateIPModeEnabled}
-                    autoScaling={analyticsAutoScaling}
-                    diskSizeGB={formValues.diskSizeGB}
-                    diskIOPS={replicationSpecListUtils.getIOPSToDisplay(
-                      providerOptions,
-                      formValues.diskSizeGB,
-                      formValues.replicationSpecList
-                    )}
-                    originalProviders={originalBackingProviders}
-                    useInstanceSizeMaxStorage={useInstanceSizeMaxStorage}
-                    originalEncryptEBSVolume={
-                      replicationSpecListUtils.getFirstProviderAnalyticsHardwareSpec(
-                        originalCluster.replicationSpecList,
-                        CloudProvider.AWS
-                      )?.encryptEBSVolume
-                    }
-                    encryptEBSVolume={
-                      replicationSpecListUtils.getFirstProviderAnalyticsHardwareSpec(
-                        formValues.replicationSpecList,
-                        CloudProvider.AWS
-                      )?.encryptEBSVolume
-                    }
-                    ebsVolumeType={
-                      replicationSpecListUtils.getFirstProviderAnalyticsHardwareSpec(
-                        formValues.replicationSpecList,
-                        CloudProvider.AWS
-                      )?.volumeType || null
-                    }
-                    diskBackupAllowed={diskBackupAllowed}
-                    instanceClass={analyticsInstanceClass}
-                    cloudContainers={cloudContainers}
-                    backupEnabled={formValues.backupEnabled}
-                    isInstanceSizeVisible={isInstanceSizeVisible}
-                    isNDSGovEnabled={settingsModel.isNdsGovEnabled()}
-                    useCNRegionsOnly={useCNRegionsOnly}
-                    selectedVersion={selectedVersion}
-                    isAutoIndexingEnabled={settingsModel.isAutoIndexingEnabled()}
-                    isAutoIndexingEligible={isAutoIndexingEligible}
-                    isAwsGravitonEnabled={isAwsGravitonEnabled}
-                    awsGravitonMinimumMongoDBVersion={settingsModel.getAwsGravitonMinimumMongoDBVersion()}
-                    originalPreferredCpuArchitecture={originalClusterPreferredCpuArch}
-                    isAnalyticsTier
-                    hasAnalyticsNodes={hasAnalyticsNodes}
-                    shouldShowReplicationLagWarning={shouldShowReplicationLagWarning}
-                    areInstanceClassesAsymmetric={areInstanceClassesAsymmetric}
-                    hasUnsetOplogMinRetentionHours={hasUnsetOplogMinRetentionHours}
-                    isOriginalClusterSharded={isOriginalClusterSharded}
-                  />
-                </Tab>
-              )}
-              {searchNodesEnabled && (
-                <Tab name={searchTierHeader}>
-                  <NDSSearchDeploymentFormInstanceSize
-                    searchDeploymentSpec={searchDeploymentSpec}
-                    replicationSpecList={formValues.replicationSpecList}
-                    setClusterFormValue={setClusterFormValue}
-                  />
-                </Tab>
-              )}
+              <Tab name={analyticsTierHeader}>
+                <NDSClusterFormInstanceSize
+                  providerOptions={providerOptions}
+                  crossCloudProviderOptions={crossCloudProviderOptions}
+                  providers={currentBackingProviders}
+                  clusterType={formValues.clusterType}
+                  instanceSize={currentAnalyticsInstanceSizeName}
+                  replicationSpecList={formValues.replicationSpecList}
+                  setAutoScaling={(a) => setAutoScaling(a, new Set<NodeTypeFamily>().add(NodeTypeFamily.ANALYTICS))}
+                  setClusterFormValue={setClusterFormValue}
+                  setInstanceSize={(instanceSize, nodeTypeFamilySet) =>
+                    this.setInstanceSize(instanceSize, nodeTypeFamilySet)
+                  }
+                  originalInstanceSize={originalAnalyticsInstanceSizeName}
+                  isEdit={isEdit}
+                  hasFreeCluster={hasFreeCluster}
+                  isTenantUpgrade={isTenantUpgrade}
+                  isCrossRegionEnabled={isCrossRegionEnabled}
+                  isPrivateIPModeEnabled={isPrivateIPModeEnabled}
+                  autoScaling={analyticsAutoScaling}
+                  diskSizeGB={formValues.diskSizeGB}
+                  diskIOPS={replicationSpecListUtils.getIOPSToDisplay(
+                    providerOptions,
+                    formValues.diskSizeGB,
+                    formValues.replicationSpecList
+                  )}
+                  originalProviders={originalBackingProviders}
+                  useInstanceSizeMaxStorage={useInstanceSizeMaxStorage}
+                  originalEncryptEBSVolume={
+                    replicationSpecListUtils.getFirstProviderAnalyticsHardwareSpec(
+                      originalCluster.replicationSpecList,
+                      CloudProvider.AWS
+                    )?.encryptEBSVolume
+                  }
+                  encryptEBSVolume={
+                    replicationSpecListUtils.getFirstProviderAnalyticsHardwareSpec(
+                      formValues.replicationSpecList,
+                      CloudProvider.AWS
+                    )?.encryptEBSVolume
+                  }
+                  ebsVolumeType={
+                    replicationSpecListUtils.getFirstProviderAnalyticsHardwareSpec(
+                      formValues.replicationSpecList,
+                      CloudProvider.AWS
+                    )?.volumeType || null
+                  }
+                  diskBackupAllowed={diskBackupAllowed}
+                  instanceClass={analyticsInstanceClass}
+                  cloudContainers={cloudContainers}
+                  backupEnabled={formValues.backupEnabled}
+                  isInstanceSizeVisible={isInstanceSizeVisible}
+                  isNDSGovEnabled={settingsModel.isNdsGovEnabled()}
+                  useCNRegionsOnly={useCNRegionsOnly}
+                  selectedVersion={selectedVersion}
+                  isAutoIndexingEnabled={settingsModel.isAutoIndexingEnabled()}
+                  isAutoIndexingEligible={isAutoIndexingEligible}
+                  isAwsGravitonEnabled={isAwsGravitonEnabled}
+                  awsGravitonMinimumMongoDBVersion={settingsModel.getAwsGravitonMinimumMongoDBVersion()}
+                  originalPreferredCpuArchitecture={originalClusterPreferredCpuArch}
+                  isAnalyticsTier
+                  hasAnalyticsNodes={hasAnalyticsNodes}
+                  shouldShowReplicationLagWarning={shouldShowReplicationLagWarning}
+                  areInstanceClassesAsymmetric={areInstanceClassesAsymmetric}
+                  hasUnsetOplogMinRetentionHours={hasUnsetOplogMinRetentionHours}
+                  isOriginalClusterSharded={isOriginalClusterSharded}
+                />
+              </Tab>
             </Tabs>
           )}
         </Accordion>
