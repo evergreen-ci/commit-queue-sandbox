@@ -1,4 +1,4 @@
-sSomething is new here, some sentence3.
+ssSomething is new here, some sentence3.
 add line 2
 NOT
 YES
