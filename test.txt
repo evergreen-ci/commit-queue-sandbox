@@ -1,4 +1,4 @@
-Something is new here, some sentence3.
+sSomething is new here, some sentence3.
 add line 2
 NOT
 add line 1
