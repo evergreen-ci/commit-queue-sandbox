@@ -11,7 +11,6 @@ from setuptools import find_packages
 from setuptools import setup
 
 # hello
-# it's me
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
