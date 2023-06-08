@@ -7,4 +7,3 @@ is given to the commit queue.
 This commit queue message is from a file
 
 more stuff is here
-a
