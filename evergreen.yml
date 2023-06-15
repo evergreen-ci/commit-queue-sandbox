@@ -122,6 +122,7 @@ tasks:
         params:
           working_dir: src
           script: |
+            sleep 120
             echo "admin bynn: ${bynnbynn}"
   - name: test_passing_param_to_child
     tags: ["my_tag"]
