@@ -8,3 +8,4 @@ This commit queue message is from a file
 
 more stuff is here
 a
+b
