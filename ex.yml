@@ -37,7 +37,7 @@ functions:
           echo "noop"
 parameters:
   - key: my_param
-    value: hello world1!
+    value: hello world1!!
     description: something to test parameters woot
 
 pre:
