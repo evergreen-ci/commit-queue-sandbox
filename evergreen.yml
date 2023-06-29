@@ -236,7 +236,7 @@ tasks:
             echo "i am patch only"
 modules:
   - name: evergreen
-    repo: git@github.com:evergreen-ci/evergreen.git
+    repo: https://github.com/evergreen-ci/evergreen.git
     prefix: ${workdir}/src
     branch: main
 
