@@ -22,7 +22,7 @@ containers:
 
 buildvariants:
   - name: ubuntu2004-container
-    display_name: Ubuntu 20.04 (Container!)
+    display_name: Ubuntu 20.04 (Container)
     modules:
       - evergreen
     run_on:
