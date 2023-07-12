@@ -121,9 +121,12 @@ tasks:
       - command: shell.exec
         params:
           working_dir: src
+          shell: bash
+          env:
+            TASK_EXECUTION: ${execution}
           script: |
-            sleep 120
-            echo "admin bynn: ${bynnbynn}"
+            [[ "${TASK_EXECUTION}" != "2" ]] && exit 1
+            exit 0
   - name: test_passing_param_to_child
     tags: ["my_tag"]
     commands:
