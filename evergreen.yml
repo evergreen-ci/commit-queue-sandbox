@@ -41,6 +41,7 @@ buildvariants:
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
       - name: bynntask
+      - name: always-pass
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     tags: [commit-queue-variant, whaat]
@@ -60,6 +61,7 @@ buildvariants:
       - name: test-receiving-parent-param
       - name: bynntask
         batchtime: 1
+      - name: always-pass
     display_tasks:
       - name: display_task
         execution_tasks:
@@ -126,6 +128,14 @@ tasks:
             TASK_EXECUTION: ${execution}
           script: |
             [[ "${TASK_EXECUTION}" != "2" ]] && exit 1
+            exit 0
+  - name: always-pass
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          shell: bash
+          script: |
             exit 0
   - name: test_passing_param_to_child
     tags: ["my_tag"]
