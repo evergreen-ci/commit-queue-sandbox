@@ -93,9 +93,11 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: validate_commit_message
-      - name: validate_commit_message2
+        activate: false
       - name: validate_commit_message3
+        activate: false
       - name: bynntask
+        activate: false
 
 functions:
   create virtualenv:
