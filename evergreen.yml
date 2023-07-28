@@ -86,6 +86,17 @@ buildvariants:
       - name: validate_commit_message3
       - name: bynntask
 
+  - name: cron-test
+    cron: "*/5 * * * *"
+    display_name: "Cron Test"
+    run_on:
+      - ubuntu2004-small
+    tasks:
+      - name: validate_commit_message
+      - name: validate_commit_message2
+      - name: validate_commit_message3
+      - name: bynntask
+
 functions:
   create virtualenv:
     - command: shell.exec
