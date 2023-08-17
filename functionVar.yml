@@ -1,0 +1,39 @@
+unset_function_vars: true
+
+#######################################
+#              Functions              #
+#######################################
+functions:
+  test-vars:
+    - command: shell.exec
+      params:
+        script: |
+          echo "value of foo in function: '${foo}'"
+          echo "expected: function-var"
+#######################################
+#                Tasks                #
+#######################################
+
+tasks:
+  - name: my-task
+    commands:
+      - func: test-vars
+        vars:
+          foo: "function-var"
+      - command: shell.exec
+        params:
+          script: |
+            echo "value of foo in task after the function ran: '${foo}'"
+            echo "expected: undefined"
+
+#######################################
+#            Buildvariants            #
+#######################################
+buildvariants:
+  - name: build-variant
+    display_name: Build Variant
+    run_on:
+      - ubuntu2204-small
+      - ubuntu2204-large
+    tasks:
+      - name: my-task
