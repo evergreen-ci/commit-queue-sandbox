@@ -41,6 +41,9 @@ buildvariants:
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
       - name: bynntask
+      - name: test_release
+      - name: test_release2
+        
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     tags: [commit-queue-variant, whaat]
@@ -73,6 +76,7 @@ buildvariants:
         cron: "*/5 * * * *"
       - name: my_first_generator
       - name: validate_commit_message
+      - name: test_release2
 
   - name: git-env-test
     display_name: "Giv Env Test"
@@ -158,8 +162,9 @@ tasks:
         params:
           working_dir: src
           script: |
+            sleep 120
             echo "my_param: ${my_param}, your_param: ${your_param}" yis
-            exit 0
+            exit 1
   - name: batchtime_task
     commands:
       - command: shell.exec
@@ -225,9 +230,14 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
+    batchtime: 5
     depends_on:
       - name: unit_tests
         variant: "*"
+  - name: test_release2
+    batchtime: 5
+    depends_on:
+      - name: test_release
     commands:
       - command: shell.exec
         params:
