@@ -265,7 +265,6 @@ patch_aliases:
   - alias: "test2"
     variant: "^ubuntu2004$"
     task: "^test.*$"
-    remote_path: ""
 
 build_baron_settings:
   ticket_create_project: "EVG"
