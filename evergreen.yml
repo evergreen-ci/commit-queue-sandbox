@@ -9,6 +9,12 @@ pre: &pre
       directory: src
   - func: create virtualenv
 
+github_pr_aliases:
+  - alias: "test2"
+    variant: "^ubuntu2004$"
+    task: "^test.*$"
+
+
 containers:
   - name: evg-container
     working_dir: /
