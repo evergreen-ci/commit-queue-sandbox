@@ -162,7 +162,6 @@ tasks:
         params:
           working_dir: src
           script: |
-            sleep 120
             echo "my_param: ${my_param}, your_param: ${your_param}" yis
             exit 1
   - name: batchtime_task
