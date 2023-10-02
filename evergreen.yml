@@ -1,6 +1,6 @@
 ## this is a changes
 ignore:
-  - "*.md" # dont schedule tests if a commit only changes markdown files
+  - "*.md" # don't schedule tests if a commit only changes markdown files.
 stepback: true
 
 pre: &pre
@@ -8,6 +8,12 @@ pre: &pre
     params:
       directory: src
   - func: create virtualenv
+
+github_pr_aliases:
+  - alias: "test2"
+    variant: "^ubuntu2004$"
+    task: "^test.*$"
+
 
 containers:
   - name: evg-container
