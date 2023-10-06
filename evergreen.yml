@@ -4,6 +4,11 @@ ignore:
 stepback: true
 
 pre: &pre
+  - command: expansions.update
+    params:
+      updates:
+        - key: testexp
+          value: EVG-17331
   - command: git.get_project
     params:
       directory: src
@@ -259,7 +264,7 @@ modules:
   - name: evergreen
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
-    branch: main
+    branch: ${testexp}
 
 patch_aliases:
   - alias: "test2"
