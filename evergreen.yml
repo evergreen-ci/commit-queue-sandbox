@@ -254,7 +254,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "i am patch"
+            echo "i am patch only"
 modules:
   - name: evergreen
     repo: git@github.com:evergreen-ci/evergreen.git
