@@ -264,7 +264,7 @@ modules:
   - name: evergreen
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
-    branch: ${testexp}
+    branch: ${var1}
 
 patch_aliases:
   - alias: "test2"
