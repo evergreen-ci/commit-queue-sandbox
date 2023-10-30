@@ -10,3 +10,4 @@ anotha one
 yet anotha one
 more
 a test
+it ignores md files
