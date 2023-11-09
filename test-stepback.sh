@@ -14,5 +14,6 @@ git commit --allow-empty -m "10"
 perl -i -pe 's/# (exit 1)/$1/g' evergreen.yml
 
 git commit -am "Failing commit"
+git push
 
 perl -i -pe 's/(?<!# )(exit 1)/# $1/g' evergreen.yml
