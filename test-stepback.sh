@@ -1,4 +1,4 @@
-perl -i -pe 's/(?<!#)(exit 1)/# $1/g' evergreen.yml
+perl -i -pe 's/(?<!# )(exit 1)/# $1/g' evergreen.yml
 
 git commit --allow-empty -m "1"
 git commit --allow-empty -m "2"
@@ -15,4 +15,4 @@ perl -i -pe 's/# (exit 1)/$1/g' evergreen.yml
 
 git commit -am "Failing commit"
 
-perl -i -pe 's/(?<!#)exit 1/#exit 1/g' evergreen.yml
+perl -i -pe 's/(?<!# )(exit 1)/# $1/g' evergreen.yml
