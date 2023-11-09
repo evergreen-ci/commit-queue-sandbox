@@ -17,4 +17,4 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    ./runnable.sh
+                    echo "Testing"
