@@ -16,7 +16,6 @@ tasks:
       commands:
           - command: shell.exec
             params:
-                working_dir: src
                 script: |
                     echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
                     echo "hello world"
