@@ -18,3 +18,4 @@ tasks:
             params:
                 script: |
                     echo "Testing 10"
+                    exit 1
