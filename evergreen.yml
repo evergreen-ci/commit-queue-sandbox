@@ -17,5 +17,4 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    echo "Testing 10"
-                    exit 1
+                    echo "Testing new"
