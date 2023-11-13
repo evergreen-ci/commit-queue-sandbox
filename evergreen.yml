@@ -48,10 +48,10 @@ buildvariants:
       - name: bynntask
       - name: test_release
       - name: test_release2
-        
+
   - display_name: Ubuntu 20.04
     name: ubuntu2004
-    tags: [commit-queue-variant, whaat]
+    tags: [ commit-queue-variant, whaat ]
     modules:
       - evergreen
     run_on:
@@ -89,10 +89,16 @@ buildvariants:
       - evergreen
     run_on:
       - ubuntu2004-small
+    display_tasks:
+      - name: displayTask1
+        execution_tasks:
+          - test-restart
+          - validate_commit_message
+          - validate_commit_message2
     tasks:
       - name: validate_commit_message
       - name: validate_commit_message2
-      - name: validate_commit_message3
+      - name: test-restart
       - name: bynntask
 
   - name: cron-test
@@ -103,7 +109,7 @@ buildvariants:
     tasks:
       - name: validate_commit_message
         activate: false
-      - name: validate_commit_message3
+      - name: test-restart
         activate: false
       - name: bynntask
         activate: false
@@ -127,6 +133,19 @@ post:
     params:
       file: src/junit-*.xml
 
+
+task_groups:
+  - name: group1
+    max_hosts: 1
+    setup_group:
+    - command: git.get_project
+      params:
+        directory: src
+    tasks:
+      - test-restart
+      - validate_commit_message
+      - validate_commit_message2
+
 tasks:
   - name: gen_task_template
     depends_on:
@@ -147,7 +166,7 @@ tasks:
             sleep 120
             echo "admin bynn: ${bynnbynn}"
   - name: test_passing_param_to_child
-    tags: ["my_tag"]
+    tags: [ "my_tag" ]
     commands:
       - command: downstream_expansions.set
         params:
@@ -184,6 +203,7 @@ tasks:
           script: |
             set -o verbose
             set -o errexit
+            sleep 240
             if [ "${is_commit_queue}" = "true" ]; then
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
@@ -194,13 +214,13 @@ tasks:
               echo "$commit_message_content"
             fi
   - name: validate_commit_message2
-    priority: -1
     commands:
       - command: shell.exec
         params:
           script: |
             set -o verbose
             set -o errexit
+            sleep 240
             if [ "${is_commit_queue}" = "true" ]; then
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
@@ -210,23 +230,28 @@ tasks:
 
               echo "$commit_message_content"
             fi
-  - name: validate_commit_message3
+  - name: test-restart
     priority: 3
     commands:
       - command: shell.exec
         params:
           script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
+            echo "sleeping"
+            ls src
+            sleep 10
+            . src/task.sh
+            echo "triggering restart"
+            post_evergreen_status failed test "test desc" false true
+      - command: shell.exec
+        params:
+          script: |
+            echo "sleeping 2"
+            sleep 10
+      - command: shell.exec
+        params:
+          script: |
+            echo "sleeping 3"
+            sleep 10
 
   - name: my_first_generator
     commands:
@@ -264,7 +289,7 @@ modules:
   - name: evergreen
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
-    branch: ${var1}
+    branch: main
 
 patch_aliases:
   - alias: "test2"
@@ -273,4 +298,4 @@ patch_aliases:
 
 build_baron_settings:
   ticket_create_project: "EVG"
-  ticket_search_projects: ["EVG"]
+  ticket_search_projects: [ "EVG" ]
