@@ -260,7 +260,7 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
-    batchtime: 5
+    batchtime: 6
     depends_on:
       - name: unit_tests
         variant: "*"
