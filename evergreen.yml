@@ -45,7 +45,7 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      - name: bynntask
+      - name: test-restart-on-fail
       - name: test_release
       - name: test_release2
 
@@ -66,7 +66,7 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      - name: bynntask
+      - name: test-restart-on-fail
         batchtime: 1
     display_tasks:
       - name: display_task
@@ -77,11 +77,7 @@ buildvariants:
     run_on:
       - ubuntu2004-small
     tasks:
-      - name: test_release
-        cron: "*/5 * * * *"
-      - name: my_first_generator
-      - name: validate_commit_message
-      - name: test_release2
+      - name: group1
 
   - name: git-env-test
     display_name: "Giv Env Test"
@@ -89,30 +85,24 @@ buildvariants:
       - evergreen
     run_on:
       - ubuntu2004-small
-    display_tasks:
-      - name: displayTask1
-        execution_tasks:
-          - test-restart
-          - validate_commit_message
-          - validate_commit_message2
     tasks:
-      - name: validate_commit_message
-      - name: validate_commit_message2
-      - name: test-restart
-      - name: bynntask
+      - name: test-restart-on-fail
 
   - name: cron-test
     cron: "*/5 * * * *"
     display_name: "Cron Test"
     run_on:
       - ubuntu2004-small
+    display_tasks:
+      - name: displayTask1
+        execution_tasks:
+          - test-restart-on-fail
+          - validate_commit_message
+          - validate_commit_message2
     tasks:
       - name: validate_commit_message
-        activate: false
-      - name: test-restart
-        activate: false
-      - name: bynntask
-        activate: false
+      - name: validate_commit_message2
+      - name: test-restart-on-fail
 
 functions:
   create virtualenv:
@@ -142,7 +132,7 @@ task_groups:
       params:
         directory: src
     tasks:
-      - test-restart
+      - test-restart-on-fail
       - validate_commit_message
       - validate_commit_message2
 
@@ -157,14 +147,15 @@ tasks:
           working_dir: src
           script: |
             echo "noop2"
-  - name: bynntask
+  - name: test-restart-on-fail
     commands:
       - command: shell.exec
+        retry_on_failure: true
         params:
           working_dir: src
           script: |
-            sleep 120
             echo "admin bynn: ${bynnbynn}"
+            exit 1
   - name: test_passing_param_to_child
     tags: [ "my_tag" ]
     commands:
@@ -290,6 +281,10 @@ modules:
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
     branch: main
+  - name: test-trigger
+    repo: https://github.com/evergreen-ci/commit-queue-sandbox.git
+    prefix: ${workdir}/src
+    branch: test-trigger
 
 patch_aliases:
   - alias: "test2"
