@@ -1,7 +1,6 @@
 Something is new here, some sentence3.
 add line 2
 3
-NOT
 add line 1
 YES
 trigger mainline
