@@ -1,203 +1,49 @@
-## this is a change
+## this is a changes
 ignore:
-  - "*.md" # don't schedule tests if a commit only changes markdown files
+    - "*.md" # don't schedule tests if a commit only changes markdown files
 stepback: true
 
-pre: &pre
-  - command: git.get_project
-    params:
-      directory: src
-  - func: create virtualenv
-
-
 buildvariants:
-  - display_name: Ubuntu 16.04
-    name: ubuntu1604
-    batchtime: 4
-    modules:
-      - evergreen
-    run_on:
-      - ubuntu1604-test
-    expansions:
-      module_prefix: hello
-    tasks:
-      - name: unit_tests
-      - name: validate_commit_message
-      - name: patch_only_task
-      - name: batchtime_task
-      - name: test_passing_param_to_child
-      - name: test-receiving-parent-param
-      - name: bynntask
-        batchtime: 1
-    display_tasks:
-      - name: display_task
-        execution_tasks:
-          - validate_commit_message
-  - display_name: Test Tags
-    name: release
-    run_on:
-      - ubuntu1604-test
-    tasks:
-      - name: test_release
-      - name: my_first_generator
-
-  - name: git-env-test
-    display_name: "Giv Env Test"
-    modules:
-      - evergreen
-    run_on:
-      - ubuntu1604-test
-    tasks:
-      - name: validate_commit_message
-      - name: validate_commit_message2
-      - name: validate_commit_message3
-      - name: bynntask
-
-functions:
-  create virtualenv:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          echo "noop"
-          git describe
-
-parameters:
-  - key: my_param
-    value: hello world1!
-    description: something to test parameters woot
-
-
-post:
-  - command: attach.xunit_results
-    params:
-      file: src/junit-*.xml
-
+    - display_name: Ubuntu 20.04
+      name: ubuntu2004
+      run_on:
+          - ubuntu2004
+      tasks:
+          - name: task1
 
 tasks:
-  - name: bynntask
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "admin bynn: ${bynnbynn}"
-  - name: test_passing_param_to_child
-    tags: ["my_tag"]
-    commands:
-      - command: downstream_expansions.set
-        params:
-          file: src/downstream_expansions.yml
-  - name: test-receiving-parent-param
-    disable: true
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
-  - name: unit_tests
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "my_param: ${my_param}, your_param: ${your_param}" yeeeeeeeeee
-            exit 1
-  - name: batchtime_task
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "noop2"
-  - name: validate_commit_message
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-  - name: validate_commit_message2
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-  - name: validate_commit_message3
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-
-  - name: my_first_generator
-    disable: true
-    commands:
-      - command: generate.tasks
-        params:
-          files:
-            - src/evergreen.json
-  - name: test_release
-    depends_on:
-      - name: unit_tests
-        variant: "*"
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-  - name: patch_only_task
-    patch_only: true
-    commands:
-      - command: downstream_expansions.set
-        params:
-          file: src/downstream_expansions.yml
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "i am patch only"
-modules:
-  - name: evergreen
-    repo: git@github.com:evergreen-ci/evergreen.git
-    prefix: ${workdir}/src
-    branch: main
-
-patch_aliases:
-  - alias: "test2"
-    variant: "^ubuntu1604$"
-    task: "^test.*$"
-    remote_path: ""
-
-build_baron_settings:
-  ticket_create_project: "EVG"
-  ticket_search_projects: ["EVG"]
+    - name: task1
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Testing new 10"
+                    echo "test1" > 1.yml
+                    echo "test2" > 2.yml
+          - command: s3.put
+            params:
+                aws_key: ${aws_key}
+                aws_secret: ${aws_secret}
+                local_files_include_filter:
+                    - 1.yml
+                    - 2.yml
+                # optional: true
+                remote_file: evergreen-test/test-
+                preserve_path: true
+                bucket: mciuploads
+                permissions: public-read
+                content_type: ${content_type|application/x-gzip}
+                display_name: test-
+          - command: s3.get
+            params:
+                aws_key: this-is-fals
+                aws_secret: ${aws_secret}
+                remote_file: evergreen-test/test-1.yml
+                bucket: mciuploads
+                local_file: test-from-s3.yml
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Testing new 10"
+                    echo "test1" > 1.yml
+                    echo "test2" > 2.yml
