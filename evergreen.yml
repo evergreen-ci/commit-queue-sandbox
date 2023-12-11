@@ -14,6 +14,7 @@ include:
   - filename: include8.yml
   - filename: include9.yml
   - filename: include10.yml
+  - filename: include11.yml
 
 
 pre_error_fails_task: true
