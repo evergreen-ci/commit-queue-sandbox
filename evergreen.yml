@@ -1,8 +1,22 @@
 ## this is a changes
 ignore:
-  - "*.md" # dont schedule tests if a commit only changes markdown files
+  - "*.md" # don't schedule tests if a commit only changes markdown files
 stepback: true
 
+include:
+  - filename: include1.yml
+  - filename: include2.yml
+  - filename: include3.yml
+  - filename: include4.yml
+  - filename: include5.yml
+  - filename: include6.yml
+  - filename: include7.yml
+  - filename: include8.yml
+  - filename: include9.yml
+  - filename: include10.yml
+
+
+pre_error_fails_task: true
 pre: &pre
   - command: git.get_project
     params:
@@ -40,13 +54,13 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      - name: bynntask
+      - name: test-restart-on-fail
       - name: test_release
       - name: test_release2
-        
+
   - display_name: Ubuntu 20.04
     name: ubuntu2004
-    tags: [commit-queue-variant, whaat]
+    tags: [ commit-queue-variant, whaat ]
     modules:
       - evergreen
     run_on:
@@ -61,7 +75,7 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      - name: bynntask
+      - name: test-restart-on-fail
         batchtime: 1
     display_tasks:
       - name: display_task
@@ -72,11 +86,7 @@ buildvariants:
     run_on:
       - ubuntu2004-small
     tasks:
-      - name: test_release
-        cron: "*/5 * * * *"
-      - name: my_first_generator
-      - name: validate_commit_message
-      - name: test_release2
+      - name: group1
 
   - name: git-env-test
     display_name: "Giv Env Test"
@@ -85,23 +95,23 @@ buildvariants:
     run_on:
       - ubuntu2004-small
     tasks:
-      - name: validate_commit_message
-      - name: validate_commit_message2
-      - name: validate_commit_message3
-      - name: bynntask
+      - name: test-restart-on-fail
 
   - name: cron-test
     cron: "*/5 * * * *"
     display_name: "Cron Test"
     run_on:
       - ubuntu2004-small
+    display_tasks:
+      - name: displayTask1
+        execution_tasks:
+          - test-restart-on-fail
+          - validate_commit_message
+          - validate_commit_message2
     tasks:
       - name: validate_commit_message
-        activate: false
-      - name: validate_commit_message3
-        activate: false
-      - name: bynntask
-        activate: false
+      - name: validate_commit_message2
+      - name: test-restart-on-fail
 
 functions:
   create virtualenv:
@@ -122,6 +132,19 @@ post:
     params:
       file: src/junit-*.xml
 
+
+task_groups:
+  - name: group1
+    max_hosts: 1
+    setup_group:
+    - command: git.get_project
+      params:
+        directory: src
+    tasks:
+      - test-restart-on-fail
+      - validate_commit_message
+      - validate_commit_message2
+
 tasks:
   - name: gen_task_template
     depends_on:
@@ -133,16 +156,17 @@ tasks:
           working_dir: src
           script: |
             echo "noop2"
-  - name: bynntask
+  - name: test-restart-on-fail
     commands:
       - command: shell.exec
+        retry_on_failure: true
         params:
           working_dir: src
           script: |
-            sleep 120
             echo "admin bynn: ${bynnbynn}"
+            exit 1
   - name: test_passing_param_to_child
-    tags: ["my_tag"]
+    tags: [ "my_tag" ]
     commands:
       - command: downstream_expansions.set
         params:
@@ -156,15 +180,20 @@ tasks:
           script: |
             echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
             echo "hello world"
+  
+  
   - name: unit_tests
     commands:
-      - command: shell.exec
+      - command: host.create
         params:
-          working_dir: src
-          script: |
-            sleep 120
-            echo "my_param: ${my_param}, your_param: ${your_param}" yis
-            exit 1
+          num_hosts: 1
+          provider: docker
+          background: false
+          command: "echo hello evan test"
+          distro: ubuntu1604-container
+          image: amazonlinux
+          stdout_file_name: ${workdir}/garasign_container.out.log
+          stderr_file_name: ${workdir}/garasign_container.err.log
   - name: batchtime_task
     commands:
       - command: shell.exec
@@ -179,6 +208,7 @@ tasks:
           script: |
             set -o verbose
             set -o errexit
+            sleep 240
             if [ "${is_commit_queue}" = "true" ]; then
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
@@ -189,13 +219,13 @@ tasks:
               echo "$commit_message_content"
             fi
   - name: validate_commit_message2
-    priority: -1
     commands:
       - command: shell.exec
         params:
           script: |
             set -o verbose
             set -o errexit
+            sleep 240
             if [ "${is_commit_queue}" = "true" ]; then
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
@@ -205,23 +235,28 @@ tasks:
 
               echo "$commit_message_content"
             fi
-  - name: validate_commit_message3
+  - name: test-restart
     priority: 3
     commands:
       - command: shell.exec
         params:
           script: |
-            set -o verbose
-            set -o errexit
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
+            echo "sleeping"
+            ls src
+            sleep 10
+            . src/task.sh
+            echo "triggering restart"
+            post_evergreen_status failed test "test desc" false true
+      - command: shell.exec
+        params:
+          script: |
+            echo "sleeping 2"
+            sleep 10
+      - command: shell.exec
+        params:
+          script: |
+            echo "sleeping 3"
+            sleep 10
 
   - name: my_first_generator
     commands:
@@ -254,9 +289,13 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "i am patch only"
+            echo "i am patch"
 modules:
   - name: evergreen
+    repo: git@github.com:evergreen-ci/evergreen.git
+    prefix: ${workdir}/src
+    branch: main
+  - name: test-trigger
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
     branch: main
@@ -268,4 +307,4 @@ patch_aliases:
 
 build_baron_settings:
   ticket_create_project: "EVG"
-  ticket_search_projects: ["EVG"]
+  ticket_search_projects: [ "EVG" ]

@@ -1,0 +1,9 @@
+buildvariants:
+  - name: generate-tasks-for-version5
+    display_name: "Generate tasks for evergreen version5"
+    batchtime: 0
+    activate: true
+    run_on:
+      - ubuntu2004
+    tasks:
+      - name: unit_tests
