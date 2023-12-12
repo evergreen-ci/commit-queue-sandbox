@@ -7,9 +7,9 @@ modules:
     repo: spruce
     branch: main
 
-  - name: logkeeper
+  - name: sample
     owner: evergreen-ci
-    repo: logkeeper
+    repo: sample
     branch: main
     auto_update: true
 
@@ -64,6 +64,6 @@ buildvariants:
       - name: test-clone
       - name: just-print
     modules:
-      - logkeeper
+      - sample
       - spruce
       - evergreen
