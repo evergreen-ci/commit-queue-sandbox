@@ -1,7 +1,7 @@
 {
   "buildvariants": [
     {
-      "name": "testBV1",
+      "name": "ttestBV1",
       "tasks": [
         {
           "name": "shouldDependOnVersionGen",
