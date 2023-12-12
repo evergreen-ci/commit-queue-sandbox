@@ -11,13 +11,11 @@ modules:
     owner: evergreen-ci
     repo: sample
     branch: main
-    auto_update: true
 
   - name: evergreen
     owner: evergreen-ci
     repo: evergreen
     branch: main
-    auto_update: true
 
 #######################################
 #              Functions              #
