@@ -9,5 +9,4 @@ more2
 more stuff is here
 a
 b
-c
 d
