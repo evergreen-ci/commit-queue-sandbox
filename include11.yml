@@ -1,9 +1,0 @@
-buildvariants:
-  - name: generate-tasks-for-version11
-    display_name: "Generate tasks for evergreen version11"
-    batchtime: 0
-    activate: true
-    run_on:
-      - ubuntu2004
-    tasks:
-      - name: unit_tests
