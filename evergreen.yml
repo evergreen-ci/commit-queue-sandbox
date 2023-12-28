@@ -20,4 +20,4 @@ tasks:
                     echo "Testing new 10"
                     echo "test1" > 1.yml
                     echo "test2" > 2.yml
-                    # exit 1
+                    exit 1
