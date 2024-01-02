@@ -1,5 +1,3 @@
-Update the README
-somethings
 
 See what happens a multiple commit queue message
 is given to the commit queue.
@@ -11,5 +9,4 @@ more2
 more stuff is here
 a
 b
-c
 d
