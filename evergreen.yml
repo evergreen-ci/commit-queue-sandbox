@@ -3,11 +3,6 @@ ignore:
   - "*.md" # don't schedule tests if a commit only changes markdown files
 stepback: true
 
-include:
-  - filename: include1.yml
-  - filename: include2.yml
-
-
 pre_error_fails_task: true
 pre: &pre
   - command: git.get_project
@@ -151,7 +146,6 @@ tasks:
   - name: test-restart-on-fail
     commands:
       - command: shell.exec
-        retry_on_failure: true
         params:
           working_dir: src
           script: |
@@ -257,12 +251,10 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
-    batchtime: 5
     depends_on:
       - name: unit_tests
         variant: "*"
   - name: test_release2
-    batchtime: 5
     depends_on:
       - name: test_release
     commands:
