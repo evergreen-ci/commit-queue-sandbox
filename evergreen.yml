@@ -6,15 +6,6 @@ stepback: true
 include:
   - filename: include1.yml
   - filename: include2.yml
-  - filename: include3.yml
-  - filename: include4.yml
-  - filename: include5.yml
-  - filename: include6.yml
-  - filename: include7.yml
-  - filename: include8.yml
-  - filename: include9.yml
-  - filename: include10.yml
-  - filename: include11.yml
 
 
 pre_error_fails_task: true
@@ -65,7 +56,7 @@ buildvariants:
     modules:
       - evergreen
     run_on:
-      - ubuntu2004
+      - ubuntu1604-large
     expansions:
       module_prefix: hello
     tasks:
@@ -283,9 +274,6 @@ tasks:
   - name: patch_only_task
     patch_only: true
     commands:
-      - command: downstream_expansions.set
-        params:
-          file: src/downstream_expansions.yml
       - command: shell.exec
         params:
           working_dir: src

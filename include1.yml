@@ -1,6 +1,6 @@
 buildvariants:
   - name: generate-tasks-for-version1
-    display_name: "Generate tasks for evergreen version1"
+    display_name: "Generate tasks for evergreen version"
     batchtime: 0
     activate: true
     run_on:
