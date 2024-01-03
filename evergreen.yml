@@ -1,6 +1,6 @@
 include:
-  - filename: a.yml
-  - filename: b.yml
+  - filename: ex.yml
+  - filename: functionVar.yml
 
 
 #######################################
@@ -25,27 +25,27 @@ modules:
 #######################################
 #              Functions              #
 #######################################
-functions:
-  get-project-and-modules:
-    - command: git.get_project
-      type: setup
-      params:
-        directory: evergreen
-        token: ${github_token}
-        shallow_clone: true
+# functions:
+#   get-project-and-modules:
+#     - command: git.get_project
+#       type: setup
+#       params:
+#         directory: evergreen
+#         token: ${github_token}
+#         shallow_clone: true
 
 #######################################
 #                Tasks                #
 #######################################
 
 tasks:
-  - name: just-print
-    commands:
-      - command: shell.exec
-        params:
-          shell: "bash"
-          script: |
-            echo "hello world"
+  # - name: just-print
+  #   commands:
+  #     - command: shell.exec
+  #       params:
+  #         shell: "bash"
+  #         script: |
+  #           echo "hello world"
   - name: test-clone
     commands:
       - func: get-project-and-modules
