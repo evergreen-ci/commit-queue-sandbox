@@ -17,4 +17,4 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    sleep 10000
+                    sleep 100000
