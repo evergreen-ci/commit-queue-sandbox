@@ -83,6 +83,7 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: test-restart-on-fail
+      - name: my_first_generator
 
   - name: cron-test
     cron: "*/5 * * * *"

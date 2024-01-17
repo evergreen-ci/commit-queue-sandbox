@@ -1,47 +1,19 @@
 {
   "buildvariants": [
     {
-      "name": "testBV1",
+      "name": "git-env-test",
       "tasks": [
         {
-          "name": "shouldDependOnVersionGen",
-          "activate": false
+          "name": "testtask1",
+          "activate": true
         }
       ],
-      "activate": false
-    },
-    {
-      "name": "testBV2",
-      "tasks": [
-        {
-          "name": "shouldDependOnDependencyTask",
-          "activate": false
-        }
-      ],
-      "activate": false
-    },
-    {
-      "name": "testBV3",
-      "tasks": [
-        {
-          "name": "shouldDependOnDependencyTask",
-          "activate": false
-        }
-      ],
-      "activate": false
-    },
-    {
-      "name": "testBV5",
-      "tasks": [
-        {
-          "name": "shouldDependOnDependencyTask"
-        }
-      ]
+      "activate": true
     }
   ],
   "tasks": [
     {
-      "name": "shouldDependOnVersionGen",
+      "name": "testtask1",
       "commands": [
         {
           "command": "shell.exec",
@@ -49,23 +21,6 @@
             "working_dir": "src",
             "script": "echo noop"
           }
-        }
-      ]
-    },
-    {
-      "name": "shouldDependOnDependencyTask",
-      "commands": [
-        {
-          "command": "shell.exec",
-          "params": {
-            "working_dir": "src",
-            "script": "echo noop"
-          }
-        }
-      ],
-      "depends_on": [
-        {
-          "name": "dependencyTask"
         }
       ]
     }
