@@ -6,6 +6,10 @@ stepback: true
 include:
   - filename: include1.yml
   - filename: include2.yml
+  - filename: include3.yml
+  - filename: include4.yml
+  - filename: include5.yml
+  - filename: include6.yml
 
 
 pre_error_fails_task: true
