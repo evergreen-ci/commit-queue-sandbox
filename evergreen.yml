@@ -4,7 +4,7 @@ ignore:
 stepback: true
 
 includes:
-  - include1.yml
+  - renamed.yml
 
 pre_error_fails_task: true
 pre: &pre
