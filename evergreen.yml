@@ -25,7 +25,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    # exit 1 #1
+                    exit 1 #1
     - name: another-task
       commands:
           - command: shell.exec
