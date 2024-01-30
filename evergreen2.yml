@@ -1,0 +1,24 @@
+modules:
+  - name: foo
+    repo: git@github.com:10gen/foo.git
+    branch: master
+  - name: bar
+    repo: git@github.com:10gen/bar.git
+    branch: master
+ 
+tasks:
+  - name: do_clone
+    commands:
+    - command: git.get_project
+      params:
+        directory: src
+        revisions:
+          foo: ${foo_rev}
+          bar: ${bar_rev}
+ 
+buildvariants:
+  - name: BV
+    display_name: BV1
+    modules: [foo]
+    run_on: [amazon2-build]
+    tasks: [{name: do_clone}]
