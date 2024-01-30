@@ -1,6 +1,3 @@
-## this is a changes
-ignore:
-    - "*.md" # don't schedule tests if a commit only changes markdown files
 stepback: true
 
 buildvariants:
@@ -9,12 +6,16 @@ buildvariants:
       run_on:
           - ubuntu2004
       tasks:
-          - name: task1
+          - name: SystemFail
 
 tasks:
-    - name: task1
+    - name: SystemFail
       commands:
+          - command: git.get_project
+            params:
+                directory: src
+                revisions:
+                foo: ${foo_rev}
           - command: shell.exec
             params:
-                script: |
-                    sleep 100000
+                script: sleep 1000
