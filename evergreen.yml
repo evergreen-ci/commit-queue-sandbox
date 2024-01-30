@@ -9,15 +9,69 @@ buildvariants:
       run_on:
           - ubuntu2004
       tasks:
-          - name: task1
+          - name: first-task
+          - name: another-task
+          - name: long-task
+          - name: short-task
+          - name: oops-another-task
+          - name: noise-task-1
+          - name: noise-task-2
+          - name: noise-task-3
 
 tasks:
-    - name: task1
+    - name: first-task
       commands:
           - command: shell.exec
             params:
                 script: |
-                    echo "Testing new 10"
-                    echo "test1" > 1.yml
-                    echo "test2" > 2.yml
-                    exit 1
+                    echo "Task"
+                    # exit 1 #1
+    - name: another-task
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Task"
+                    # exit 1 #2
+    - name: long-task
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Task"
+                    # exit 1 #8
+    - name: short-task
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Task"
+                    # exit 1 #5
+    - name: oops-another-task
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Task"
+                    # exit 1 #7
+    - name: noise-task-1
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Task"
+                    exit 0
+    - name: noise-task-2
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Task"
+                    exit 0
+    - name: noise-task-3
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Task"
+                    exit 0
