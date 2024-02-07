@@ -1,69 +1,44 @@
-#######################################
-#               Modules               #
-#######################################
-modules:
-  - name: spruce
-    owner: evergreen-ci
-    repo: spruce
-    branch: main
-
-  - name: sample
-    owner: evergreen-ci
-    repo: sample
-    branch: main
-    auto_update: true
-
-  - name: evergreen
-    owner: evergreen-ci
-    repo: evergreen
-    branch: main
-    auto_update: true
-
-#######################################
-#              Functions              #
-#######################################
-functions:
-  get-project-and-modules:
-    - command: git.get_project
-      type: setup
-      params:
-        directory: evergreen
-        token: ${github_token}
-        shallow_clone: true
-
-#######################################
-#                Tasks                #
-#######################################
-
 tasks:
-  - name: just-print
+  - name: performance-test
     commands:
       - command: shell.exec
         params:
-          shell: "bash"
-          script: |
-            echo "hello world"
-  - name: test-clone
+          script: echo "performance test"
+  - name: ycsb
     commands:
-      - func: get-project-and-modules
       - command: shell.exec
         params:
-          shell: "bash"
-          script: |
-            echo hi
-
-#######################################
-#            Buildvariants            #
-#######################################
+          script: echo "ycsb"
+  - name: print
+    commands:
+      - command: shell.exec
+        params:
+          script: echo "print"
 buildvariants:
-  - name: ubuntu2204-small
-    display_name: ubuntu2204-small
+  - name: performance-variant
+    tags: ["performance"]
+    display_name: performance-variant
     run_on:
-      - ubuntu2204-small
+      - ubuntu1604-small
     tasks:
-      - name: test-clone
-      - name: just-print
-    modules:
-      - sample
-      - spruce
-      - evergreen
+      - name: performance-test
+  - name: ycsb-variant
+    tags: ["ycsb"]
+    display_name: ycsb-variant
+    run_on:
+      - ubuntu1604-small
+    tasks:
+      - name: ycsb
+  - name: print-variant
+    tags: ["print"]
+    display_name: print-variant
+    run_on:
+      - ubuntu1604-small
+    tasks:
+      - name: print
+
+patch_aliases:
+  - alias: "my aliasss"
+    # Do not run variants tagged with performance or ycsb
+    variant_tags: ["!performance !ycsb"]
+    task: ".*"
