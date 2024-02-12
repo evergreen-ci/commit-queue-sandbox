@@ -89,6 +89,8 @@ buildvariants:
     tasks:
       - name: test-restart-on-fail
       - name: my_first_generator
+        create_check_run:
+          path_to_outputs: "path"
 
   - name: cron-test
     cron: "*/5 * * * *"
