@@ -29,6 +29,9 @@ buildvariants:
       - ubuntu1604-small
     tasks:
       - name: ycsb
+        reate_check_run:
+          path_to_outputs: ""
+
   - name: print-variant
     tags: ["print"]
     display_name: print-variant
