@@ -61,6 +61,8 @@ buildvariants:
       - name: unit_tests
         activate: false
       - name: validate_commit_message
+        create_check_run:
+          path_to_outputs: ""
       - name: patch_only_task
       - name: batchtime_task
       - name: test_passing_param_to_child
