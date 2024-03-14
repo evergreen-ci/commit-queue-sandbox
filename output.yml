@@ -22,4 +22,4 @@ buildvariants:
         create_check_run:
           path_to_outputs: "output.json"
     expansions:
-      checkcheckRun_key: apple
+      checkRun_key: apple
