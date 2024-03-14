@@ -20,6 +20,6 @@ buildvariants:
           path_to_outputs: "output.json"
       - name: "print_banana"
         create_check_run:
-          path_to_outputs: ""
+          path_to_outputs: "output.json"
     expansions:
       checkcheckRun_key: apple
