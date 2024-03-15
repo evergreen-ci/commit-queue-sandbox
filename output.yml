@@ -5,11 +5,18 @@ pre:
   - command: shell.exec
     params:
       script: |
-        echo "in pre"
+        set -o verbose
+        echo "chayaMtesting in pre"
         cat src/output.json
 tasks:
   - name: print_apple
     commands:
+      - command: shell.exec
+        params:
+          script: |
+          set -o verbose
+          echo "chayaMtesting in task"
+          cat src/output.json
       - command: shell.exec
         params:
           script: echo "apple"
