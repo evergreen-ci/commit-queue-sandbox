@@ -1,3 +1,7 @@
+pre:
+  - command: git.get_project
+    params:
+      directory: src
 tasks:
   - name: print_apple
     commands:
@@ -17,9 +21,9 @@ buildvariants:
     tasks:
       - name: "print_apple"
         create_check_run:
-          path_to_outputs: "output.json"
+          path_to_outputs: "src/output.json"
       - name: "print_banana"
         create_check_run:
-          path_to_outputs: "output.json"
+          path_to_outputs: ""
     expansions:
       checkRun_key: apple
