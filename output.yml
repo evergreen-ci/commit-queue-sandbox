@@ -2,9 +2,21 @@ pre:
   - command: git.get_project
     params:
       directory: src
+  - command: shell.exec
+    params:
+      script: |
+        set -o verbose
+        echo "chayaMtesting in pre"
+        cat src/output.json
 tasks:
   - name: print_apple
     commands:
+      - command: shell.exec
+        params:
+          script: |
+          set -o verbose
+          echo "chayaMtesting in task"
+          cat src/output.json
       - command: shell.exec
         params:
           script: echo "apple"
