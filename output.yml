@@ -27,6 +27,3 @@ buildvariants:
           path_to_outputs: "src/output.json"
     expansions:
       checkRun_key: apple
-
-
-// something
