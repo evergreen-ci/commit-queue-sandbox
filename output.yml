@@ -8,6 +8,7 @@ pre:
         set -o verbose
         echo "chayaMtesting in pre"
         cat src/output.json
+
 tasks:
   - name: print_apple
     commands:
@@ -26,3 +27,6 @@ buildvariants:
           path_to_outputs: "src/output.json"
     expansions:
       checkRun_key: apple
+
+
+// something
