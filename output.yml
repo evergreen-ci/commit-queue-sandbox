@@ -14,7 +14,7 @@ tasks:
       - command: shell.exec
         params:
           script: |
-            echo "chayaMtesting in task"
+            echo "this is a task"
 buildvariants:
   - name: ubuntu2204
     display_name: Ubuntu 22.04
