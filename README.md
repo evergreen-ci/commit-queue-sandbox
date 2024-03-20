@@ -1,11 +1,10 @@
 # commit-queue-playground
 
-Repository here to experiment with the commit queue.
+Repository here to experiment with the commit queue or other things.
 
 ## Testing
 
-Run tests with pytest.
-=======
+# Run tests with pytest.
 
 ```
 $ pip install -r requirements.txt
