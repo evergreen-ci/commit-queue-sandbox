@@ -1,12 +1,7 @@
 ## this is a changes
 ignore:
-  - "*.md" # don't schedule tests if a commit only changes markdown files
+  - "*.md" # don't schedule tests if a commit only changes markdown files!
 stepback: true
-
-include:
-  - filename: include1.yml
-
-
 pre_error_fails_task: true
 pre: &pre
   - command: git.get_project
@@ -17,7 +12,7 @@ pre: &pre
 containers:
   - name: evg-container
     working_dir: /
-    image: "hadjri/evg-container-self-tests"
+    image: "579766882180.dkr.ecr.us-east-2.amazonaws.com/evergreen/evg-e2e-test-ubuntu:94746024c00a64a5f5818aed197ab485fbc65e92"
     resources:
       cpu: 4096
       memory_mb: 8192
@@ -256,12 +251,10 @@ tasks:
           files:
             - src/evergreen.json
   - name: test_release
-    batchtime: 5
     depends_on:
       - name: unit_tests
         variant: "*"
   - name: test_release2
-    batchtime: 5
     depends_on:
       - name: test_release
     commands:
