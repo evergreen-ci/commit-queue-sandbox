@@ -17,7 +17,7 @@ containers:
     image: "579766882180.dkr.ecr.us-east-2.amazonaws.com/evergreen/evg-e2e-test-ubuntu:94746024c00a64a5f5818aed197ab485fbc65e92"
     resources:
       cpu: 4096
-      memory_mb: 8192
+      memory_mb: 8193
     system:
       cpu_architecture: x86_64
       operating_system: linux
