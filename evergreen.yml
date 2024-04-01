@@ -67,6 +67,9 @@ buildvariants:
       - name: test-receiving-parent-param
       - name: test-restart-on-fail
         batchtime: 1
+      - name: checkrun_test
+        create_check_run:
+          path_to_outputs: "output.json"
     display_tasks:
       - name: display_task
         execution_tasks:
@@ -275,6 +278,14 @@ tasks:
           working_dir: src
           script: |
             echo "i am patch"
+  - name: checkrun_test
+  commands:
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          echo "i am become checkrun"
+
 modules:
   - name: evergreen
     repo: git@github.com:evergreen-ci/evergreen.git
