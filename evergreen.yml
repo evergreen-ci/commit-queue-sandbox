@@ -1,10 +1,10 @@
 stepback: true
 
 buildvariants:
-    - display_name: Ubuntu 22.04
+    - display_name: Tests
       name: ubuntu
       run_on:
-          - ubuntu2204
+          - ubuntu2204-small
       tasks:
           - name: first-task
           - name: another-task
