@@ -14,6 +14,7 @@ buildvariants:
           - name: noise-task-1
           - name: noise-task-2
           - name: noise-task-3
+          - name: generator
 
 tasks:
     - name: first-task
