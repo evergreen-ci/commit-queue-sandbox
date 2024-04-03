@@ -1,0 +1,44 @@
+{
+  "buildvariants": [
+    {
+      "name": "zack-gen-task",
+      "tasks": [
+        {
+          "name": "testtask1",
+          "activate": true
+        },
+        {
+          "name": "testtask2",
+          "activate": true
+        }
+      ],
+      "activate": true
+    }
+  ],
+  "tasks": [
+    {
+      "name": "testtask1",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "working_dir": "src",
+            "script": "echo noop"
+          }
+        }
+      ]
+    },
+    {
+      "name": "testtask2",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "working_dir": "src",
+            "script": "echo noop"
+          }
+        }
+      ]
+    }
+  ]
+}
