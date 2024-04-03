@@ -78,4 +78,4 @@ tasks:
           - command: generate.tasks
             params:
                 files:
-                    - zack-generator-test.yml
+                  - zack-generator-test.yml
