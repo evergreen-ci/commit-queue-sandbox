@@ -1,7 +1,11 @@
 {
   "buildvariants": [
     {
-      "name": "ubuntu",
+      "name": "generated-ubuntu",
+      "display_name": "Generated Tests",
+      "run_on": [
+        "ubuntu2204-small"
+      ],
       "tasks": [
         {
           "name": "testtask1",
