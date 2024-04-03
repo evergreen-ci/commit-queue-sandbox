@@ -78,4 +78,5 @@ tasks:
           - command: generate.tasks
             params:
                 files:
-                  - zack-generator-test.json
+                    - src/zack-generator-test.json
+                  
