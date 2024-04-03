@@ -1,13 +1,10 @@
-## this is a changes
-ignore:
-    - "*.md" # don't schedule tests if a commit only changes markdown files
 stepback: true
 
 buildvariants:
-    - display_name: Ubuntu 20.04
-      name: ubuntu2004
+    - display_name: Ubuntu 22.04
+      name: ubuntu
       run_on:
-          - ubuntu2004
+          - ubuntu2204
       tasks:
           - name: first-task
           - name: another-task
@@ -75,3 +72,9 @@ tasks:
                 script: |
                     echo "Task"
                     exit 0
+    - name: generator
+      commands:
+          - command: generate.tasks
+            params:
+                files:
+                    - zack-generator-test.yml
