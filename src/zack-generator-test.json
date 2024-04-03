@@ -1,7 +1,7 @@
 {
   "buildvariants": [
     {
-      "name": "zack-gen-task",
+      "name": "ubuntu",
       "tasks": [
         {
           "name": "testtask1",
@@ -22,7 +22,6 @@
         {
           "command": "shell.exec",
           "params": {
-            "working_dir": "src",
             "script": "echo noop"
           }
         }
@@ -34,7 +33,6 @@
         {
           "command": "shell.exec",
           "params": {
-            "working_dir": "src",
             "script": "echo noop"
           }
         }
