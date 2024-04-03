@@ -78,5 +78,5 @@ tasks:
           - command: generate.tasks
             params:
                 files:
-                    - *.json
+                    - \*.json
                   
