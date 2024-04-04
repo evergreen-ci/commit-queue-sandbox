@@ -31,7 +31,7 @@
         {
           "command": "shell.exec",
           "params": {
-            "script": "exit 1"
+            "script": "echo 1"
           }
         }
       ]
@@ -42,7 +42,7 @@
         {
           "command": "shell.exec",
           "params": {
-            "script": "exit 2"
+            "script": "echo 2"
           }
         }
       ]
