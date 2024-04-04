@@ -8,11 +8,11 @@
       ],
       "tasks": [
         {
-          "name": "testtask1",
+          "name": "generated-task-1",
           "activate": true
         },
         {
-          "name": "testtask2",
+          "name": "generated-task-2",
           "activate": true
         }
       ],
@@ -21,7 +21,7 @@
   ],
   "tasks": [
     {
-      "name": "testtask1",
+      "name": "generated-task-1",
       "commands": [
         {
           "command": "shell.exec",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "name": "testtask2",
+      "name": "generated-task-2",
       "commands": [
         {
           "command": "shell.exec",
