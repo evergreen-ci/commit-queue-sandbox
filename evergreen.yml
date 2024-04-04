@@ -16,6 +16,10 @@ buildvariants:
           - name: noise-task-3
           - name: generator
 
+functions:
+    clone-project:
+        command: git.get_project
+
 tasks:
     - name: first-task
       commands:
@@ -75,6 +79,7 @@ tasks:
                     exit 0
     - name: generator
       commands:
+          - func: clone-project
           - command: generate.tasks
             params:
                 files:
