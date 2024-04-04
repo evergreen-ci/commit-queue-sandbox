@@ -1,0 +1,42 @@
+{
+  "buildvariants": [
+    {
+      "name": "ubuntu",
+      "tasks": [
+        {
+          "name": "testtask1",
+          "activate": true
+        },
+        {
+          "name": "testtask2",
+          "activate": true
+        }
+      ],
+      "activate": true
+    }
+  ],
+  "tasks": [
+    {
+      "name": "testtask1",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo noop"
+          }
+        }
+      ]
+    },
+    {
+      "name": "testtask2",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo noop"
+          }
+        }
+      ]
+    }
+  ]
+}
