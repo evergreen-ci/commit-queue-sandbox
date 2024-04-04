@@ -42,7 +42,7 @@
         {
           "command": "shell.exec",
           "params": {
-            "script": "echo 2"
+            "script": "exit 2"
           }
         }
       ]
