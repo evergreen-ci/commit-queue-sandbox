@@ -19,6 +19,9 @@ buildvariants:
 functions:
     clone-project:
         command: git.get_project
+        params:
+            directory: src
+
 
 tasks:
     - name: first-task
@@ -83,6 +86,6 @@ tasks:
           - command: generate.tasks
             params:
                 files:
-                    - evergreen.json
-                    - evergreen2.json
+                    - src/evergreen.json
+                    - src/evergreen2.json
                   
