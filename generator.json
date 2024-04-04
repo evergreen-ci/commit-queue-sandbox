@@ -8,11 +8,16 @@
       ],
       "tasks": [
         {
-          "name": "generated-task-1",
-          "activate": true
+          "name": "generated-task-1"
         },
         {
-          "name": "generated-task-2",
+          "name": "generated-task-2"
+        },
+        {
+          "name": "generated-task-3"
+        },
+        {
+          "name": "generated-task-4",
           "activate": true
         }
       ],
@@ -26,7 +31,7 @@
         {
           "command": "shell.exec",
           "params": {
-            "script": "exit 1"
+            "script": "echo 1"
           }
         }
       ]
@@ -37,7 +42,29 @@
         {
           "command": "shell.exec",
           "params": {
-            "script": "exit 2"
+            "script": "echo 2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "generated-task-3",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo 3"
+          }
+        }
+      ]
+    },
+    {
+      "name": "generated-task-4",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo 4"
           }
         }
       ]

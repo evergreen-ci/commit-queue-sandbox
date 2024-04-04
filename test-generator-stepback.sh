@@ -14,7 +14,7 @@ git commit --allow-empty -m "10"
 git commit --allow-empty -m "Latest commit"
 
 # Reset the file to its original state
-perl -i -pe 's/exit 2/echo 2/g' generator.json # fail 1
+perl -i -pe 's/exit 1/echo 1/g' generator.json # fail 1
 perl -i -pe 's/exit 2/echo 2/g' generator.json # fail 1
 
 git push
