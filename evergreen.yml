@@ -84,4 +84,5 @@ tasks:
             params:
                 files:
                     - evergreen.json
+                    - evergreen2.json
                   
