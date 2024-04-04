@@ -4,11 +4,11 @@
       "name": "ubuntu",
       "tasks": [
         {
-          "name": "testtask1",
+          "name": "testingtask1",
           "activate": true
         },
         {
-          "name": "testtask2",
+          "name": "testingtask2",
           "activate": true
         }
       ],
@@ -17,7 +17,7 @@
   ],
   "tasks": [
     {
-      "name": "testtask1",
+      "name": "testingtask1",
       "commands": [
         {
           "command": "shell.exec",
@@ -28,7 +28,7 @@
       ]
     },
     {
-      "name": "testtask2",
+      "name": "testingtask2",
       "commands": [
         {
           "command": "shell.exec",
