@@ -24,7 +24,7 @@ tasks:
     commands:
       - command: shell.exec
         params:
-          script: echo "banana"
+          script: echo "gross banana"
 buildvariants:
   - name: ubuntu2204
     display_name: Ubuntu 22.04
