@@ -30,35 +30,35 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    exit 1 #1
+                    # exit 1 #1
     - name: another-task
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #2
+                    # exit 1 #2
     - name: long-task
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #8
+                    # exit 1 #8
     - name: short-task
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #5
+                    # exit 1 #5
     - name: oops-another-task
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #7
+                    # exit 1 #7
     - name: noise-task-1
       commands:
           - command: shell.exec
