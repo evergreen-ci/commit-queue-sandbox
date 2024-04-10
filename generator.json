@@ -30,7 +30,7 @@
         {
           "command": "shell.exec",
           "params": {
-            "script": "echo 1"
+            "script": "exit 1"
           }
         }
       ]
