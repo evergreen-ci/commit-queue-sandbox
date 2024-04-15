@@ -24,3 +24,4 @@ This will generate an html coverage report in `htmlcov/` directory.
 yes
 no
 yup
+nope
