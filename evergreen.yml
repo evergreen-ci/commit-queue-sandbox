@@ -50,7 +50,7 @@ buildvariants:
 
   - display_name: Ubuntu 20.04
     name: ubuntu2004
-    tags: [ commit-queue-variant, whaat ]
+    tags: [commit-queue-variant, whaat]
     modules:
       - evergreen
     run_on:
@@ -126,7 +126,6 @@ post:
     params:
       file: src/junit-*.xml
 
-
 task_groups:
   - name: group1
     max_hosts: 1
@@ -159,7 +158,7 @@ tasks:
             echo "admin bynn: ${bynnbynn}"
             exit 1
   - name: test_passing_param_to_child
-    tags: [ "my_tag" ]
+    tags: ["my_tag"]
     commands:
       - command: downstream_expansions.set
         params:
@@ -173,7 +172,6 @@ tasks:
           script: |
             echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
             echo "hello world"
-
 
   - name: unit_tests
     commands:
@@ -279,12 +277,12 @@ tasks:
           script: |
             echo "i am patch"
   - name: checkrun_test
-  commands:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          echo "i am become checkrun"
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "i am become checkrun"
 
 modules:
   - name: evergreen
@@ -303,4 +301,4 @@ patch_aliases:
 
 build_baron_settings:
   ticket_create_project: "EVG"
-  ticket_search_projects: [ "EVG" ]
+  ticket_search_projects: ["EVG"]
