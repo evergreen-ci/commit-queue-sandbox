@@ -3,9 +3,6 @@ ignore:
   - "*.md" # don't schedule tests if a commit only changes markdown files!
 stepback: true
 
-includes:
-  - include1.yml
-
 pre_error_fails_task: true
 pre: &pre
   - command: git.get_project
@@ -24,89 +21,9 @@ containers:
       cpu_architecture: x86_64
       operating_system: linux
 
-buildvariants:
-  - name: ubuntu2004-container
-    display_name: Ubuntu 20.04 (Container)
-    run_on:
-      - evg-container
-    expansions:
-      goos: linux
-      goarch: amd64
-      IS_DOCKER: true
-      GOROOT: /usr/local/go
-      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2004-5.0.14.tgz
-      decompress: tar zxvf
-    tasks:
-      - name: unit_tests
-        activate: false
-      - name: validate_commit_message
-      - name: patch_only_task
-      - name: batchtime_task
-      - name: test_passing_param_to_child
-      - name: test-receiving-parent-param
-      - name: test-restart-on-fail
-      - name: test_release
-      - name: test_release2
-
-  - display_name: Ubuntu 20.04
-    name: ubuntu2004
-    tags: [ commit-queue-variant, whaat ]
-    modules:
-      - evergreen
-    run_on:
-      - ubuntu1604-large
-    expansions:
-      module_prefix: hello
-    tasks:
-      - name: unit_tests
-        activate: false
-      - name: validate_commit_message
-      - name: patch_only_task
-      - name: batchtime_task
-      - name: test_passing_param_to_child
-      - name: test-receiving-parent-param
-      - name: test-restart-on-fail
-        batchtime: 1
-      - name: checkrun_test
-        create_check_run:
-          path_to_outputs: "output.json"
-    display_tasks:
-      - name: display_task
-        execution_tasks:
-          - validate_commit_message
-  - display_name: Test Tags
-    name: release
-    run_on:
-      - ubuntu2004-small
-    tasks:
-      - name: group1
-
-  - name: git-env-test
-    display_name: "Giv Env Test"
-    modules:
-      - evergreen
-    run_on:
-      - ubuntu2004-small
-    tasks:
-      - name: test-restart-on-fail
-      - name: my_first_generator
-
-  - name: cron-test
-    cron: "*/5 * * * *"
-    display_name: "Cron Test"
-    run_on:
-      - ubuntu2004-small
-    display_tasks:
-      - name: displayTask1
-        execution_tasks:
-          - test-restart-on-fail
-          - validate_commit_message
-          - validate_commit_message2
-    tasks:
-      - name: validate_commit_message
-      - name: validate_commit_message2
-      - name: test-restart-on-fail
-
+#######################################
+#              Functions              #
+#######################################
 functions:
   create virtualenv:
     - command: shell.exec
@@ -115,29 +32,9 @@ functions:
         script: |
           echo "noop"
           git describe
-
-parameters:
-  - key: my_param
-    value: hello world1!
-    description: something to test parameters woot
-
-post:
-  - command: attach.xunit_results
-    params:
-      file: src/junit-*.xml
-
-
-task_groups:
-  - name: group1
-    max_hosts: 1
-    setup_group:
-      - command: git.get_project
-        params:
-          directory: src
-    tasks:
-      - test-restart-on-fail
-      - validate_commit_message
-      - validate_commit_message2
+#######################################
+#                Tasks                #
+#######################################
 
 tasks:
   - name: gen_task_template
@@ -149,7 +46,8 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "noop2"
+            echo "admin bynn: ${bynnbynn}"
+            exit 1
   - name: test-restart-on-fail
     commands:
       - command: shell.exec
@@ -159,7 +57,7 @@ tasks:
             echo "admin bynn: ${bynnbynn}"
             exit 1
   - name: test_passing_param_to_child
-    tags: [ "my_tag" ]
+    tags: ["my_tag"]
     commands:
       - command: downstream_expansions.set
         params:
@@ -173,7 +71,6 @@ tasks:
           script: |
             echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
             echo "hello world"
-
 
   - name: unit_tests
     commands:
@@ -279,12 +176,125 @@ tasks:
           script: |
             echo "i am patch"
   - name: checkrun_test
-  commands:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          echo "i am become checkrun"
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "i am become checkrun"
+
+#######################################
+#            Buildvariants            #
+#######################################
+buildvariants:
+  - name: build-variant
+    display_name: Build Variant
+    run_on:
+      - ubuntu2204-small
+      - ubuntu2204-large
+    tasks:
+      - name: gen_task_template
+  - name: ubuntu2004-container
+    display_name: Ubuntu 20.04 (Container)
+    run_on:
+      - evg-container
+    expansions:
+      goos: linux
+      goarch: amd64
+      IS_DOCKER: true
+      GOROOT: /usr/local/go
+      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2004-5.0.14.tgz
+      decompress: tar zxvf
+    tasks:
+      - name: unit_tests
+        activate: false
+      - name: validate_commit_message
+      - name: patch_only_task
+      - name: batchtime_task
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
+      - name: test-restart-on-fail
+      - name: test_release
+      - name: test_release2
+
+  - display_name: Ubuntu 20.04
+    name: ubuntu2004
+    tags: [commit-queue-variant, whaat]
+    modules:
+      - evergreen
+    run_on:
+      - ubuntu1604-large
+    expansions:
+      module_prefix: hello
+    tasks:
+      - name: unit_tests
+        activate: false
+      - name: validate_commit_message
+      - name: patch_only_task
+      - name: batchtime_task
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
+      - name: test-restart-on-fail
+        batchtime: 1
+      - name: checkrun_test
+        create_check_run:
+          path_to_outputs: "output.json"
+    display_tasks:
+      - name: display_task
+        execution_tasks:
+          - validate_commit_message
+  - display_name: Test Tags
+    name: release
+    run_on:
+      - ubuntu2004-small
+    tasks:
+      - name: group1
+
+  - name: git-env-test
+    display_name: "Giv Env Test"
+    modules:
+      - evergreen
+    run_on:
+      - ubuntu2004-small
+    tasks:
+      - name: test-restart-on-fail
+      - name: my_first_generator
+
+  - name: cron-test
+    cron: "*/5 * * * *"
+    display_name: "Cron Test"
+    run_on:
+      - ubuntu2004-small
+    display_tasks:
+      - name: displayTask1
+        execution_tasks:
+          - test-restart-on-fail
+          - validate_commit_message
+          - validate_commit_message2
+    tasks:
+      - name: validate_commit_message
+      - name: validate_commit_message2
+      - name: test-restart-on-fail
+
+parameters:
+  - key: my_param
+    value: hello world1!
+    description: something to test parameters woot
+post:
+  - command: attach.xunit_results
+    params:
+      file: src/junit-*.xml
+task_groups:
+  - name: group1
+    max_hosts: 1
+    setup_group:
+      - command: git.get_project
+        params:
+          directory: src
+    tasks:
+      - test-restart-on-fail
+      - validate_commit_message
+      - validate_commit_message2
 
 modules:
   - name: evergreen
@@ -303,4 +313,4 @@ patch_aliases:
 
 build_baron_settings:
   ticket_create_project: "EVG"
-  ticket_search_projects: [ "EVG" ]
+  ticket_search_projects: ["EVG"]
