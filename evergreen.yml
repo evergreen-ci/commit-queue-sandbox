@@ -6,8 +6,8 @@ buildvariants:
       run_on:
           - ubuntu2204-small
       tasks:
-          - name: first-task
-          - name: another-task
+          # - name: first-task
+          # - name: another-task
           - name: long-task
           - name: short-task
           - name: oops-another-task
