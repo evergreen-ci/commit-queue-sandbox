@@ -52,10 +52,6 @@ buildvariants:
       - name: test-receiving-parent-param
       - name: test-restart-on-fail
         batchtime: 1
-    display_tasks:
-      - name: display_task
-        execution_tasks:
-          - validate_commit_message
   - display_name: Test Tags
     name: release
     run_on:
@@ -82,10 +78,8 @@ buildvariants:
       - name: displayTask1
         execution_tasks:
           - test-restart-on-fail
-          - validate_commit_message
           - validate_commit_message2
     tasks:
-      - name: validate_commit_message
       - name: validate_commit_message2
       - name: test-restart-on-fail
 
@@ -118,7 +112,6 @@ task_groups:
           directory: src
     tasks:
       - test-restart-on-fail
-      - validate_commit_message
       - validate_commit_message2
 
 tasks:
