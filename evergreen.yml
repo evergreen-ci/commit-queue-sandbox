@@ -16,7 +16,7 @@ pre: &pre
 containers:
   - name: evg-container
     working_dir: /
-    image: "hadjri/evg-container-self-tests"
+    image: "579766882180.dkr.ecr.us-east-2.amazonaws.com/evergreen/evg-e2e-test-ubuntu:94746024c00a64a5f5818aed197ab485fbc65e92"
     resources:
       cpu: 4096
       memory_mb: 8192
