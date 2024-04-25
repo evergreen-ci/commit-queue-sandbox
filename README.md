@@ -19,13 +19,3 @@ To get code coverage information, use the --cov flag
 $ pip install -r requirements.txt
 $ pytest --cov=src --cov-report=html
 ```
-
-This will generate an html coverage report in `htmlcov/` directory.
-yes
-no
-yup
-nope
-another
-piper
-pepper
-another one
