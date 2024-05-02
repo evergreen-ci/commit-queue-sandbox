@@ -19,7 +19,6 @@ buildvariants:
           - name: task-d
           - name: task-e
 
-
 functions:
     clone-project:
         command: git.get_project
