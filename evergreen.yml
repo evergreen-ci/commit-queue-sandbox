@@ -11,11 +11,14 @@ buildvariants:
           - name: long-task
           - name: short-task
           - name: oops-another-task
-          - name: task-group
           - name: noise-task-1
           - name: noise-task-2
           - name: noise-task-3
           - name: generator
+          - name: task-group
+          - name: task-d
+          - name: task-e
+
 
 functions:
     clone-project:
