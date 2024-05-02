@@ -11,6 +11,7 @@ buildvariants:
           - name: long-task
           - name: short-task
           - name: oops-another-task
+          - name: task-group
           - name: noise-task-1
           - name: noise-task-2
           - name: noise-task-3
@@ -22,8 +23,47 @@ functions:
         params:
             directory: src
 
+task_groups:
+  - name: task-group
+    max_hosts: 2
+    tasks:
+      - task-a
+      - task-b
+      - task-c
 
 tasks:
+    - name: task-a
+      patchable: false
+      commands:
+          - command: shell.exec
+            params:
+                script: "echo hello world"
+    - name: task-b
+      patch_only: true
+      commands:
+          - command: shell.exec
+            params:
+                script: "echo hello world"
+    - name: task-c
+      commands:
+          - command: shell.exec
+            params:
+                script: "echo hello world"
+      depends_on:
+          - task-d
+          - task-e
+    - name: task-d
+      patchable: false
+      commands:
+          - command: shell.exec
+            params:
+                script: "echo hello world"
+    - name: task-e
+      patchable: false
+      commands:
+          - command: shell.exec
+            params:
+                script: "echo hello world"
     - name: first-task
       commands:
           - command: shell.exec
