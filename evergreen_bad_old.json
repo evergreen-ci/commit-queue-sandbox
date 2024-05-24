@@ -1,0 +1,28 @@
+{
+  "buildvariants": [
+    {
+      "name": "git-env-test",
+      "tasks": [
+        {
+          "name": "testtask1",
+          "activate": true
+        }
+      ],
+      "activate": true
+    }
+  ],
+  "tasks": [
+    {
+      "name": "testtask1",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "working_dir": "src",
+            "script": "echo noop"
+          }
+        }
+      ]
+    }
+  ]
+}
