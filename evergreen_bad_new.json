@@ -1,0 +1,17 @@
+{
+  "buildvariants": [
+    {
+      "name": "ubuntu1604",
+      "tasks": [
+        {
+          "name": "B-dependent_generated_task"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "B-dependent_generated_task"
+    }
+  ]
+}
