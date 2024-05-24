@@ -1,28 +1,18 @@
 {
   "buildvariants": [
     {
-      "name": "git-env-test",
+      "name": "ubuntu1604",
       "tasks": [
         {
-          "name": "testtask1",
-          "activate": true
+          "name": "B-dependent_generated_task",
+          "depends_on": ["C-dependent_task"]
         }
-      ],
-      "activate": true
+      ]
     }
   ],
   "tasks": [
     {
-      "name": "testtask1",
-      "commands": [
-        {
-          "command": "shell.exec",
-          "params": {
-            "working_dir": "src",
-            "script": "echo noop"
-          }
-        }
-      ]
+      "name": "B-dependent_generated_task"
     }
   ]
 }
