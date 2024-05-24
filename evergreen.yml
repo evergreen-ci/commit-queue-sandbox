@@ -47,8 +47,8 @@ buildvariants:
     expansions:
       module_prefix: hello
     tasks:
-      - name: C-dependent_task
-      - name: A-bad_generator
+      - name: C_dependent_task
+      - name: A_bad_generator
       - name: unit_tests
         activate: false
       - name: validate_commit_message
@@ -134,17 +134,17 @@ task_groups:
       - validate_commit_message2
 
 tasks:
-  - name: C-dependent_task
+  - name: C_dependent_task
     depends_on:
-      - name: A-bad_generator
+      - name: A_bad_generator
     commands:
       - command: shell.exec
         params:
           shell: bash
           working_dir: evergreen
           script: |
-            echo "C-dependent_task"
-  - name: A-bad_generator
+            echo "C_dependent_task"
+  - name: A_bad_generator
     commands:
       - command: generate.tasks
         params:

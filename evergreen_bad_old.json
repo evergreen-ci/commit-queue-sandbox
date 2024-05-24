@@ -4,15 +4,15 @@
       "name": "ubuntu1604",
       "tasks": [
         {
-          "name": "B-dependent_generated_task",
-          "depends_on": ["C-dependent_task"]
+          "name": "B_dependent_generated_task",
+          "depends_on": ["C_dependent_task"]
         }
       ]
     }
   ],
   "tasks": [
     {
-      "name": "B-dependent_generated_task"
+      "name": "B_dependent_generated_task"
     }
   ]
 }
