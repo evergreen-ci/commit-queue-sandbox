@@ -136,7 +136,7 @@ task_groups:
 tasks:
   - name: C_dependent_task
     depends_on:
-      - name: A_bad_generator
+      - name: B_dependent_generated_task
     commands:
       - command: shell.exec
         params:
@@ -145,11 +145,13 @@ tasks:
           script: |
             echo "C_dependent_task"
   - name: A_bad_generator
+    depends_on:
+      - name: C_dependent_task
     commands:
       - command: generate.tasks
         params:
           files:
-            - src/evergreen_bad_old.json
+            - src/evergreen_bad_new.json
   - name: gen_task_template
     depends_on:
       - name: my_first_generator
