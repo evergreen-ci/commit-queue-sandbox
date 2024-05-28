@@ -1,4 +1,3 @@
-add line 2
 NOT
 add line 1
 YES
