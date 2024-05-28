@@ -3,8 +3,8 @@ ignore:
   - "*.md" # don't schedule tests if a commit only changes markdown files!
 stepback: true
 
-includes:
-  - include1.yml
+# includes:
+#   - include1.yml
 
 pre_error_fails_task: true
 pre: &pre
@@ -135,8 +135,8 @@ task_groups:
 
 tasks:
   - name: C_dependent_task
-    depends_on:
-      - name: B_dependent_generated_task
+    # depends_on:
+    #   - name: B_dependent_generated_task
     commands:
       - command: shell.exec
         params:
