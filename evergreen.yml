@@ -13,6 +13,23 @@ pre: &pre
       directory: src
   - func: create virtualenv
 
+patch_aliases:
+  - alias: "chaya-tag-from-yaml"
+    variant_tags: ["commit-queue-variant"]
+    task: ".*"
+
+# containers:
+#   - name: evg-container
+#     working_dir: /
+#     image: "hadjri/evg-container-self-tests"
+#     resources:
+#       cpu: 4096
+#       memory_mb: 8192
+#     system:
+#       cpu_architecture: x86_64
+#       operating_system: linux
+
+
 buildvariants:
   - name: ubuntu2004-container
     display_name: Ubuntu 20.04 (Container)
