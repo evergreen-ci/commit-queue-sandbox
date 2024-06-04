@@ -1,0 +1,18 @@
+{
+  "buildvariants": [
+    {
+      "name": "ubuntu2004",
+      "tasks": [
+        {
+          "name": "B_dependent_generated_task",
+          "depends_on": ["C_dependent_task"]
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "B_dependent_generated_task"
+    }
+  ]
+}

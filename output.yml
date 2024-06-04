@@ -1,0 +1,41 @@
+pre:
+  - command: git.get_project
+    params:
+      directory: src
+  - command: shell.exec
+    params:
+      script: |
+        set -o verbose
+        echo "chayaMtesting in pre"
+        cat src/output.json
+tasks:
+  - name: print_apple
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            set -o verbose
+            echo "chayaMtesting in task"
+            cat src/output.json
+      - command: shell.exec
+        params:
+          script: echo "apple"
+  - name: print_banana
+    commands:
+      - command: shell.exec
+        params:
+          script: echo "gross banana"
+buildvariants:
+  - name: ubuntu2204
+    display_name: Ubuntu 22.04
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: "print_apple"
+        create_check_run:
+          path_to_outputs: "src/output.json"
+      - name: "print_banana"
+        create_check_run:
+          path_to_outputs: "output.json"
+    expansions:
+      checkRun_key: apple
