@@ -6,7 +6,7 @@ buildvariants:
     run_on:
       - ubuntu2004
     tasks:
-      - name: check-go-vulnerabilities
+      - name: test-agent
 
   - name: lint
     display_name: Lint
