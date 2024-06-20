@@ -1,4 +1,5 @@
 stepback: true
+exec_timeout_secs: 3600
 
 buildvariants:
     - display_name: NOTICE distro
@@ -28,6 +29,7 @@ buildvariants:
           - name: github.generate_token2
           - name: github.generate_token3
           - name: no-token
+          - name: redacting-expansions
 
 functions:
     clone-project:
@@ -61,9 +63,9 @@ tasks:
           - command: shell.exec
             params:
                 script: "echo hello world"
-      depends_on:
-          - task-d
-          - task-e
+      # depends_on: # depends on test
+      #     - task-d
+      #     - task-e
     - name: task-d
       patchable: false
       commands:
@@ -181,3 +183,36 @@ tasks:
             params:
                 script: |
                     git clone https://github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+    - name: redacting-expansions
+      commands:
+          - command: expansions.update
+            params:
+                updates:
+                    - key: testing_expansion2
+                      value: "expansion#2 says hi"
+                    - key: testing_expansion4
+                      value: "expansion#4 says hi"
+          - command: expansions.update
+            params:
+                updates:
+                    - key: testing_expansion1
+                      value: "expansion#1 says hi"
+                    - key: testing_expansion2
+                      concat: " let me add on to that!"
+                    - key: testing_expansion3
+                      value: "expansion#3 says hi"
+                      redact: true
+                    - key: testing_expansion4
+                      concat: " let me add on to that!"
+                      redact: true
+          - command: shell.exec
+            params:
+                script: |
+                    echo "1"
+                    echo ${testing_expansion1}
+                    echo "2"
+                    echo ${testing_expansion2}
+                    echo "3"
+                    echo ${testing_expansion3}
+                    echo "4"
+                    echo ${testing_expansion4}
