@@ -185,6 +185,7 @@ tasks:
                     git clone https://github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
     - name: redacting-expansions
       commands:
+          - func: clone-project
           - command: expansions.update
             params:
                 updates:
@@ -205,14 +206,29 @@ tasks:
                     - key: testing_expansion4
                       concat: " let me add on to that!"
                       redact: true
+          - command: expansions.update
+            params:
+                file: expansions.yaml
+          - command: expansions.update
+            params:
+                file: expansions.yaml
+                redact_file_expansions: true
           - command: shell.exec
             params:
                 script: |
-                    echo "1"
+                    echo "Expansion #1"
                     echo ${testing_expansion1}
-                    echo "2"
+                    echo "Expansion #2"
                     echo ${testing_expansion2}
-                    echo "3"
+                    echo "Expansion #3"
                     echo ${testing_expansion3}
-                    echo "4"
+                    echo "Expansion #4"
                     echo ${testing_expansion4}
+                    echo "File expansion #1"
+                    echo ${expansion_key_1}
+                    echo "File expansion #2"
+                    echo ${expansion_key_2}
+                    echo "File expansion #3"
+                    echo ${expansion_key_3}
+                    echo "File expansion #4"
+                    echo ${expansion_key_4}
