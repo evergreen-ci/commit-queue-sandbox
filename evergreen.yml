@@ -208,10 +208,10 @@ tasks:
                       redact: true
           - command: expansions.update
             params:
-                file: expansions.yaml
+                file: src/expansions.yaml
           - command: expansions.update
             params:
-                file: expansions.yaml
+                file: src/expansions.redact.yaml
                 redact_file_expansions: true
           - command: shell.exec
             params:
