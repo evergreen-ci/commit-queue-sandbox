@@ -325,11 +325,6 @@ modules:
     prefix: ${workdir}/src
     branch: main
 
-patch_aliases:
-  - alias: "test2"
-    variant: "^ubuntu2004$"
-    task: "^test.*$"
-
 build_baron_settings:
   ticket_create_project: "EVG"
   ticket_search_projects: ["EVG"]
