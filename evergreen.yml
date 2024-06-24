@@ -31,94 +31,94 @@ patch_aliases:
 
 
 buildvariants:
-#  - name: ubuntu2004-container
-#    display_name: Ubuntu 20.04 (Container)
-#    run_on:
-#      - evg-container
-#    expansions:
-#      goos: linux
-#      goarch: amd64
-#      IS_DOCKER: true
-#      GOROOT: /usr/local/go
-#      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2004-5.0.14.tgz
-#      decompress: tar zxvf
-#    tasks:
-#      - name: unit_tests
-#        activate: false
-#      - name: validate_commit_message
-#      - name: patch_only_task
-#      - name: batchtime_task
-#      - name: test_passing_param_to_child
-#      - name: test-receiving-parent-param
-#      - name: test-restart-on-fail
-#      - name: test_release
-#      - name: test_release2
-#
-#  - display_name: Ubuntu 20.04
-#    name: ubuntu2004
-#    tags: [commit-queue-variant, whaat]
-#    modules:
-#      - evergreen
-#    run_on:
-#      - ubuntu1604-large
-#    expansions:
-#      module_prefix: hello
-#    tasks:
-#      - name: C_dependent_task
-#      - name: A_bad_generator
-#      - name: unit_tests
-#        activate: false
-#        disable: true
-#      - name: validate_commit_message
-#        create_check_run:
-#          path_to_outputs: ""
-#      - name: patch_only_task
-#      - name: batchtime_task
-#      - name: test_passing_param_to_child
-#      - name: test-receiving-parent-param
-#      - name: test-restart-on-fail
-#        batchtime: 1
-#      - name: checkrun_test
-#        create_check_run:
-#          path_to_outputs: "output.json"
-#    display_tasks:
-#      - name: display_task
-#        execution_tasks:
-#          - validate_commit_message
-#  - display_name: Test Tags
-#    name: release
-#    run_on:
-#      - ubuntu2004-small
-#    tasks:
-#      - name: group1
+  - name: ubuntu2004-container
+    display_name: Ubuntu 20.04 (Container)
+    run_on:
+      - evg-container
+    expansions:
+      goos: linux
+      goarch: amd64
+      IS_DOCKER: true
+      GOROOT: /usr/local/go
+      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2004-5.0.14.tgz
+      decompress: tar zxvf
+    tasks:
+      - name: unit_tests
+        activate: false
+      - name: validate_commit_message
+      - name: patch_only_task
+      - name: batchtime_task
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
+      - name: test-restart-on-fail
+      - name: test_release
+      - name: test_release2
+
+  - display_name: Ubuntu 20.04
+    name: ubuntu2004
+    tags: [commit-queue-variant, whaat]
+    modules:
+      - evergreen
+    run_on:
+      - ubuntu1604-large
+    expansions:
+      module_prefix: hello
+    tasks:
+      - name: C_dependent_task
+      - name: A_bad_generator
+      - name: unit_tests
+        activate: false
+        disable: true
+      - name: validate_commit_message
+        create_check_run:
+          path_to_outputs: ""
+      - name: patch_only_task
+      - name: batchtime_task
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
+      - name: test-restart-on-fail
+        batchtime: 1
+      - name: checkrun_test
+        create_check_run:
+          path_to_outputs: "output.json"
+    display_tasks:
+      - name: display_task
+        execution_tasks:
+          - validate_commit_message
+  - display_name: Test Tags
+    name: release
+    run_on:
+      - ubuntu2004-small
+    tasks:
+      - name: group1
 
   - name: git-env-test
-    display_name: "Git Env Test"
+    display_name: "Giv Env Test"
     modules:
       - evergreen
     run_on:
       - ubuntu2004-small
     tasks:
       - name: test-restart-on-fail
-#      - name: my_first_generator
-#        create_check_run:
-#          path_to_outputs: "path"
+      - name: my_first_generator
+        create_check_run:
+          path_to_outputs: "path"
 
-#  - name: cron-test
-#    cron: "*/5 * * * *"
-#    display_name: "Cron Test"
-#    run_on:
-#      - ubuntu2004-small
-#    display_tasks:
-#      - name: displayTask1
-#        execution_tasks:
-#          - test-restart-on-fail
-#          - validate_commit_message
-#          - validate_commit_message2
-#    tasks:
-#      - name: validate_commit_message
-#      - name: validate_commit_message2
-#      - name: test-restart-on-fail
+  - name: cron-test
+    cron: "*/5 * * * *"
+    display_name: "Cron Test"
+    run_on:
+      - ubuntu2004-small
+    display_tasks:
+      - name: displayTask1
+        execution_tasks:
+          - test-restart-on-fail
+          - validate_commit_message
+          - validate_commit_message2
+    tasks:
+      - name: validate_commit_message
+      - name: validate_commit_message2
+      - name: test-restart-on-fail
 
 functions:
   create virtualenv:
@@ -139,47 +139,47 @@ post:
     params:
       file: src/junit-*.xml
 
-#task_groups:
-#  - name: group1
-#    max_hosts: 1
-#    setup_group:
-#      - command: git.get_project
-#        params:
-#          directory: src
-#    tasks:
-#      - test-restart-on-fail
-#      - validate_commit_message
-#      - validate_commit_message2
+task_groups:
+  - name: group1
+    max_hosts: 1
+    setup_group:
+      - command: git.get_project
+        params:
+          directory: src
+    tasks:
+      - test-restart-on-fail
+      - validate_commit_message
+      - validate_commit_message2
 
 tasks:
-#  - name: C_dependent_task
-#    # depends_on:
-#    #   - name: B_dependent_generated_task
-#    commands:
-#      - command: shell.exec
-#        params:
-#          shell: bash
-#          working_dir: evergreen
-#          script: |
-#            echo "C_dependent_task"
-#  - name: A_bad_generator
-#    depends_on:
-#      - name: C_dependent_task
-#    commands:
-#      - command: generate.tasks
-#        params:
-#          files:
-#            - src/evergreen_bad_new.json
-#  - name: gen_task_template
-#    depends_on:
-#      - name: my_first_generator
-#        variant: release
-#    commands:
-#      - command: shell.exec
-#        params:
-#          working_dir: src
-#          script: |
-#            echo "noop2"
+  - name: C_dependent_task
+    # depends_on:
+    #   - name: B_dependent_generated_task
+    commands:
+      - command: shell.exec
+        params:
+          shell: bash
+          working_dir: evergreen
+          script: |
+            echo "C_dependent_task"
+  - name: A_bad_generator
+    depends_on:
+      - name: C_dependent_task
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/evergreen_bad_new.json
+  - name: gen_task_template
+    depends_on:
+      - name: my_first_generator
+        variant: release
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "noop2"
   - name: test-restart-on-fail
     commands:
       - command: shell.exec
@@ -188,132 +188,132 @@ tasks:
           script: |
             echo "admin bynn: ${bynnbynn}"
             exit 1
-#  - name: test_passing_param_to_child
-#    tags: ["my_tag"]
-#    commands:
-#      - command: downstream_expansions.set
-#        params:
-#          file: src/downstream_expansions.yml
-#  - name: test-receiving-parent-param
-#    disable: true
-#    commands:
-#      - command: shell.exec
-#        params:
-#          working_dir: src
-#          script: |
-#            echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
-#            echo "hello world"
-#
-#  - name: unit_tests
-#    commands:
-#      - command: host.create
-#        params:
-#          num_hosts: 1
-#          provider: docker
-#          background: false
-#          command: "echo hello evan test"
-#          distro: ubuntu1604-container
-#          image: amazonlinux
-#          stdout_file_name: ${workdir}/garasign_container.out.log
-#          stderr_file_name: ${workdir}/garasign_container.err.log
-#  - name: batchtime_task
-#    commands:
-#      - command: shell.exec
-#        params:
-#          working_dir: src
-#          script: |
-#            echo "noop2"
-#  - name: validate_commit_message
-#    commands:
-#      - command: shell.exec
-#        params:
-#          script: |
-#            set -o verbose
-#            set -o errexit
-#            sleep 240
-#            if [ "${is_commit_queue}" = "true" ]; then
-#              cat > commit_message.txt <<END_OF_COMMIT_MSG
-#              ${commit_message}
-#            END_OF_COMMIT_MSG
-#
-#              commit_message_content=$(cat commit_message.txt)
-#
-#              echo "$commit_message_content"
-#            fi
-#  - name: validate_commit_message2
-#    commands:
-#      - command: shell.exec
-#        params:
-#          script: |
-#            set -o verbose
-#            set -o errexit
-#            sleep 240
-#            if [ "${is_commit_queue}" = "true" ]; then
-#              cat > commit_message.txt <<END_OF_COMMIT_MSG
-#              ${commit_message}
-#            END_OF_COMMIT_MSG
-#
-#              commit_message_content=$(cat commit_message.txt)
-#
-#              echo "$commit_message_content"
-#            fi
-#  - name: test-restart
-#    priority: 3
-#    commands:
-#      - command: shell.exec
-#        params:
-#          script: |
-#            echo "sleeping"
-#            ls src
-#            sleep 10
-#            . src/task.sh
-#            echo "triggering restart"
-#            post_evergreen_status failed test "test desc" false true
-#      - command: shell.exec
-#        params:
-#          script: |
-#            echo "sleeping 2"
-#            sleep 10
-#      - command: shell.exec
-#        params:
-#          script: |
-#            echo "sleeping 3"
-#            sleep 10
-#
-#  - name: my_first_generator
-#    commands:
-#      - command: generate.tasks
-#        params:
-#          files:
-#            - src/evergreen.json
-#  - name: test_release
-#    depends_on:
-#      - name: unit_tests
-#        variant: "*"
-#  - name: test_release2
-#    depends_on:
-#      - name: test_release
-#    commands:
-#      - command: shell.exec
-#        params:
-#          working_dir: src
-#          script: |
-#            echo "i am a script"
-#  - name: patch_only_task
-#    patch_only: true
-#    commands:
-#      - command: shell.exec
-#        params:
-#          working_dir: src
-#          script: |
-#            echo "i am patch"
-#  - name: checkrun_test
-#    commands:
-#      - command: shell.exec
-#        params:
-#          working_dir: src
-#          script: |
-#            echo "i am become checkrun"
+  - name: test_passing_param_to_child
+    tags: ["my_tag"]
+    commands:
+      - command: downstream_expansions.set
+        params:
+          file: src/downstream_expansions.yml
+  - name: test-receiving-parent-param
+    disable: true
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
+            echo "hello world"
+
+  - name: unit_tests
+    commands:
+      - command: host.create
+        params:
+          num_hosts: 1
+          provider: docker
+          background: false
+          command: "echo hello evan test"
+          distro: ubuntu1604-container
+          image: amazonlinux
+          stdout_file_name: ${workdir}/garasign_container.out.log
+          stderr_file_name: ${workdir}/garasign_container.err.log
+  - name: batchtime_task
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "noop2"
+  - name: validate_commit_message
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            set -o verbose
+            set -o errexit
+            sleep 240
+            if [ "${is_commit_queue}" = "true" ]; then
+              cat > commit_message.txt <<END_OF_COMMIT_MSG
+              ${commit_message}
+            END_OF_COMMIT_MSG
+
+              commit_message_content=$(cat commit_message.txt)
+
+              echo "$commit_message_content"
+            fi
+  - name: validate_commit_message2
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            set -o verbose
+            set -o errexit
+            sleep 240
+            if [ "${is_commit_queue}" = "true" ]; then
+              cat > commit_message.txt <<END_OF_COMMIT_MSG
+              ${commit_message}
+            END_OF_COMMIT_MSG
+
+              commit_message_content=$(cat commit_message.txt)
+
+              echo "$commit_message_content"
+            fi
+  - name: test-restart
+    priority: 3
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "sleeping"
+            ls src
+            sleep 10
+            . src/task.sh
+            echo "triggering restart"
+            post_evergreen_status failed test "test desc" false true
+      - command: shell.exec
+        params:
+          script: |
+            echo "sleeping 2"
+            sleep 10
+      - command: shell.exec
+        params:
+          script: |
+            echo "sleeping 3"
+            sleep 10
+
+  - name: my_first_generator
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/evergreen.json
+  - name: test_release
+    depends_on:
+      - name: unit_tests
+        variant: "*"
+  - name: test_release2
+    depends_on:
+      - name: test_release
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "i am a script"
+  - name: patch_only_task
+    patch_only: true
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "i am patch"
+  - name: checkrun_test
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "i am become checkrun"
 
 modules:
   - name: evergreen
@@ -324,6 +324,11 @@ modules:
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
     branch: main
+
+patch_aliases:
+  - alias: "test2"
+    variant: "^ubuntu2004$"
+    task: "^test.*$"
 
 build_baron_settings:
   ticket_create_project: "EVG"
