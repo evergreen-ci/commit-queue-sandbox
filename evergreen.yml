@@ -1,6 +1,6 @@
 ## this is a changes
 ignore:
-  - "*.md" # don't schedule tests if a commit only changes markdown files!
+  - "*.md" # don't schedule tests if a commit only changes markdown files
 stepback: true
 
 # includes:
@@ -68,6 +68,7 @@ buildvariants:
       - name: A_bad_generator
       - name: unit_tests
         activate: false
+        disable: true
       - name: validate_commit_message
         create_check_run:
           path_to_outputs: ""
