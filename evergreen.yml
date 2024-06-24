@@ -141,7 +141,7 @@ tasks:
             params:
                 files:
                     - src/generator.json
-    - name: github.generate_token1
+    - name: Generate token test that should pass
       commands:
           - command: github.generate_token
             params:
@@ -153,7 +153,7 @@ tasks:
                 script: |
                     echo ${testing_expansion1}
                     git clone https://oauth2:${testing_expansion1}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
-    - name: github.generate_token2
+    - name: Generate token test that strips it of permissions and should fail
       commands:
           - command: github.generate_token
             params:
@@ -167,7 +167,7 @@ tasks:
                 script: |
                     echo ${testing_expansion2}
                     git clone https://oauth2:${testing_expansion2}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
-    - name: github.generate_token3
+    - name: Generate token with no owner / repo in params
       commands:
           - command: github.generate_token
             params:
@@ -177,7 +177,7 @@ tasks:
                 script: |
                     echo ${testing_expansion2}
                     git clone https://oauth2:${testing_expansion2}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
-    - name: no-token
+    - name: Generate token with no token
       commands:
           - command: shell.exec
             params:
