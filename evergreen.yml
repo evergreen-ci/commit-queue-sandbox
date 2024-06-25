@@ -9,16 +9,16 @@ pre: &pre
       directory: src
   - func: create virtualenv
 
-containers:
-  - name: evg-container
-    working_dir: /
-    image: "hadjri/evg-container-self-tests"
-    resources:
-      cpu: 4096
-      memory_mb: 8192
-    system:
-      cpu_architecture: x86_64
-      operating_system: linux
+# containers:
+#   - name: evg-container
+#     working_dir: /
+#     image: "hadjri/evg-container-self-tests"
+#     resources:
+#       cpu: 4096
+#       memory_mb: 8192
+#     system:
+#       cpu_architecture: x86_64
+#       operating_system: linux
 
 buildvariants:
   - name: ubuntu2004-container
