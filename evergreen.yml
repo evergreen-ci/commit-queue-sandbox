@@ -197,7 +197,7 @@ tasks:
             params:
                 updates:
                     - key: testing_expansion1
-                      value: "expansion#1 says hi"
+                      value: "expansion#1 says hi v1"
                     - key: testing_expansion2
                       concat: " let me add on to that!"
                     - key: testing_expansion3
@@ -206,6 +206,11 @@ tasks:
                     - key: testing_expansion4
                       concat: " let me add on to that!"
                       redact: true
+                    - key: testing_expansion1
+                      value: "expansion#1 says hi v2"
+                      redact: true
+                    - key: testing_expansion1
+                      value: "expansion#1 says hi v3"
           - command: expansions.update
             params:
                 file: src/expansions.yaml
@@ -216,8 +221,12 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    echo "Expansion #1"
-                    echo ${testing_expansion1}
+                    echo "Expansion #1 v1 should not redact"
+                    echo "expansion#1 says hi v1"
+                    echo "Expansion #1 v2 should redact"
+                    echo "expansion#1 says hi v2"
+                    echo "Expansion #1 v3 should not redact"
+                    echo "expansion#1 says hi v3"
                     echo "Expansion #2"
                     echo ${testing_expansion2}
                     echo "Expansion #3"
