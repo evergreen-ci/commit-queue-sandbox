@@ -291,6 +291,16 @@ tasks:
                     echo ${github_token_teardown_task}
                     echo "timeout:"
                     echo ${github_token_timeout}
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Clone project with setup group"
+                    git clone https://oauth2:${github_token_setup_group}@github.com/evergreen-ci/github-merge-queue-sandbox.git setup_group
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Clone project with setup task"
+                    git clone https://oauth2:${github_token_setup_task}@github.com/evergreen-ci/github-merge-queue-sandbox.git setup_task
     - name: redacting-expansions
       commands:
           - func: clone-project
