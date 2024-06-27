@@ -30,6 +30,7 @@ buildvariants:
           - name: github.generate_token3
           - name: no-token
           - name: redacting-expansions
+          - name: github_generate_token_task_group
 
 functions:
     clone-project:
@@ -38,12 +39,104 @@ functions:
             directory: src
 
 task_groups:
-  - name: task-group
-    max_hosts: 2
-    tasks:
-      - task-a
-      - task-b
-      - task-c
+    - name: task-group
+      max_hosts: 2
+      tasks:
+          - task-a
+          - task-b
+          - task-c
+    - name: github_generate_token_task_group
+      max_hosts: 2
+      setup_group_can_fail_task: true
+      setup_group:
+          - command: github.generate_token
+            params:
+                expansion_name: github_token_setup_group
+          - command: shell.exec
+            params:
+                script: |
+                    echo "setup_group:"
+                    echo ${github_token_setup_group}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
+                    echo "setup_task:"
+                    echo ${github_token_setup_task}
+                    echo "teardown_task:"
+                    echo ${github_token_teardown_task}
+                    echo "timeout:"
+                    echo ${github_token_timeout}
+      teardown_group:
+          - command: github.generate_token
+            params:
+                expansion_name: github_token_teardown_group
+          - command: shell.exec
+            params:
+                script: |
+                    echo "setup_group:"
+                    echo ${github_token_setup_group}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
+                    echo "setup_task:"
+                    echo ${github_token_setup_task}
+                    echo "teardown_task:"
+                    echo ${github_token_teardown_task}
+                    echo "timeout:"
+                    echo ${github_token_timeout}
+      setup_task_can_fail_task: true
+      setup_task:
+          - command: github.generate_token
+            params:
+                expansion_name: github_token_setup_task
+          - command: shell.exec
+            params:
+                script: |
+                    echo "setup_group:"
+                    echo ${github_token_setup_group}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
+                    echo "setup_task:"
+                    echo ${github_token_setup_task}
+                    echo "teardown_task:"
+                    echo ${github_token_teardown_task}
+                    echo "timeout:"
+                    echo ${github_token_timeout}
+      teardown_task_can_fail_task: true
+      teardown_task:
+          - command: github.generate_token
+            params:
+                expansion_name: github_token_teardown_task
+          - command: shell.exec
+            params:
+                script: |
+                    echo "setup_group:"
+                    echo ${github_token_setup_group}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
+                    echo "setup_task:"
+                    echo ${github_token_setup_task}
+                    echo "teardown_task:"
+                    echo ${github_token_teardown_task}
+                    echo "timeout:"
+                    echo ${github_token_timeout}
+      timeout:
+          - command: github.generate_token
+            params:
+                expansion_name: github_token_timeout
+          - command: shell.exec
+            params:
+                script: |
+                    echo "setup_group:"
+                    echo ${github_token_setup_group}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
+                    echo "setup_task:"
+                    echo ${github_token_setup_task}
+                    echo "teardown_task:"
+                    echo ${github_token_teardown_task}
+                    echo "timeout:"
+                    echo ${github_token_timeout}
+      tasks:
+        - github_token_task_group_task
 
 tasks:
     - name: task-a
@@ -183,6 +276,21 @@ tasks:
             params:
                 script: |
                     git clone https://github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+    - name: github_token_task_group_task
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "setup_group:"
+                    echo ${github_token_setup_group}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
+                    echo "setup_task:"
+                    echo ${github_token_setup_task}
+                    echo "teardown_task:"
+                    echo ${github_token_teardown_task}
+                    echo "timeout:"
+                    echo ${github_token_timeout}
     - name: redacting-expansions
       commands:
           - func: clone-project
