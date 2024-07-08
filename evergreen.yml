@@ -8,13 +8,20 @@ buildvariants:
           - zzztest-tag1-small
       tasks:
           - name: no-token
+    - display_name: Other variant
+      name: ubuntu-other
+      run_on:
+          - ubuntu2204-small
+      tasks:
+          - name: another-task
+          - name: long-task
     - display_name: Tests
       name: ubuntu
       run_on:
           - ubuntu2204-small
       tasks:
           - name: first-task
-          - name: another-unique-task
+          - name: another-task
           - name: long-task
           - name: short-task
           - name: oops-another-task
@@ -178,13 +185,16 @@ tasks:
                 script: |
                     echo "Task"
                     # exit 1 #1
-    - name: another-unique-task
+    - name: another-task
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
                     # exit 1 #2
+            depends_on:
+                - name: "first-task"
+                  variant: ubuntu-other
     - name: long-task
       commands:
           - command: shell.exec
