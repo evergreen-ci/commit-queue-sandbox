@@ -188,7 +188,7 @@ tasks:
     - name: another-task
       depends_on:
           - name: first-task
-            variant: ubuntu-other
+            variant: ubuntu
       commands:
           - command: shell.exec
             params:
