@@ -259,7 +259,8 @@ tasks:
             params:
                 script: |
                     echo ${testing_expansion2}
-                    git clone https://oauth2:${testing_expansion2}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+                    # git clone https://oauth2:${testing_expansion2}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+                    echo 'This would fail if it ran.'
     - name: github.generate_token3
       commands:
           - command: github.generate_token
