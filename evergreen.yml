@@ -8,6 +8,7 @@ buildvariants:
           - zzztest-tag1-small
       tasks:
           - name: no-token
+          - name: another-task
     - display_name: Tests
       name: ubuntu
       run_on:
