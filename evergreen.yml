@@ -275,7 +275,8 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    git clone https://github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+                    # git clone https://github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+                    echo 'This would fail if it ran.'
     - name: github_token_task_group_task
       commands:
           - command: shell.exec
