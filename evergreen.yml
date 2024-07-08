@@ -186,15 +186,15 @@ tasks:
                     echo "Task"
                     # exit 1 #1
     - name: another-task
+      depends_on:
+          - name: "first-task"
+            variant: ubuntu-other
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
                     # exit 1 #2
-            depends_on:
-                - name: "first-task"
-                  variant: ubuntu-other
     - name: long-task
       commands:
           - command: shell.exec
