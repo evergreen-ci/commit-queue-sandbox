@@ -9,7 +9,7 @@ buildvariants:
       tasks:
           - name: no-token
     - display_name: Other variant
-      name: ubuntu-other
+      name: ubuntu-2
       run_on:
           - ubuntu2204-small
       tasks:
@@ -189,7 +189,7 @@ tasks:
     - name: another-task
       depends_on:
           - name: first-task
-            variant: ubuntu-other
+            variant: ubuntu-2
       commands:
           - command: shell.exec
             params:
