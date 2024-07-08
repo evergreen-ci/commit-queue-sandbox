@@ -13,6 +13,7 @@ buildvariants:
       run_on:
           - ubuntu2204-small
       tasks:
+          - name: first-task
           - name: another-task
           - name: long-task
     - display_name: Tests
@@ -188,7 +189,7 @@ tasks:
     - name: another-task
       depends_on:
           - name: first-task
-            variant: ubuntu
+            variant: ubuntu-other
       commands:
           - command: shell.exec
             params:
