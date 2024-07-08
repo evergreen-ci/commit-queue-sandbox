@@ -187,7 +187,7 @@ tasks:
                     # exit 1 #1
     - name: another-task
       depends_on:
-          - name: "first-task"
+          - name: first-task
             variant: ubuntu-other
       commands:
           - command: shell.exec
