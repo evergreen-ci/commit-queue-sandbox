@@ -2,20 +2,6 @@ stepback: true
 exec_timeout_secs: 3600
 
 buildvariants:
-    - display_name: NOTICE distro
-      name: zzztest-tag1-small
-      run_on:
-          - zzztest-tag1-small
-      tasks:
-          - name: no-token
-    - display_name: Other variant
-      name: ubuntu-other
-      run_on:
-          - ubuntu2204-small
-      tasks:
-          - name: first-task
-          - name: another-task
-          - name: long-task
     - display_name: Tests
       name: ubuntu
       run_on:
@@ -180,47 +166,47 @@ tasks:
             params:
                 script: "echo hello world"
     - name: first-task
+      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #1
+                    # exit 1 #1
     - name: another-task
-      depends_on:
-          - name: first-task
-            variant: ubuntu-other
+      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #2
+                    # exit 1 #2
     - name: long-task
-      depends_on:
-          - name: first-task
-            variant: ubuntu-other
+      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #8
+                    # exit 1 #8
     - name: short-task
+      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #5
+                    # exit 1 #5
     - name: oops-another-task
+      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
                 script: |
                     echo "Task"
-                    exit 1 #7
+                    # exit 1 #7
     - name: noise-task-1
+      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -228,6 +214,7 @@ tasks:
                     echo "Task"
                     exit 0
     - name: noise-task-2
+      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -235,6 +222,7 @@ tasks:
                     echo "Task"
                     exit 0
     - name: noise-task-3
+      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -242,6 +230,7 @@ tasks:
                     echo "Task"
                     exit 0
     - name: generator
+      tags: ["mainline"]
       commands:
           - func: clone-project
           - command: generate.tasks
