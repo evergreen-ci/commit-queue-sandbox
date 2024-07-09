@@ -198,7 +198,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    # exit 1 #5
+                    exit 1 #5
     - name: oops-another-task
       tags: ["mainline"]
       commands:
