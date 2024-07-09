@@ -190,7 +190,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    # exit 1 #8
+                    exit 1 #8
     - name: short-task
       tags: ["mainline"]
       commands:
