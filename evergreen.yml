@@ -176,7 +176,7 @@ tasks:
     - name: another-task
       tags: ["mainline"]
       depends_on:
-          - first-task
+          - noise-task-1
       commands:
           - command: shell.exec
             params:
