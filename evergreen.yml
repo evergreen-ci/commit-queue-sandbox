@@ -16,15 +16,15 @@ buildvariants:
           - name: noise-task-2
           - name: noise-task-3
           - name: generator
-          - name: task-group
-          - name: task-d
-          - name: task-e
-          - name: github.generate_token1
-          - name: github.generate_token2
-          - name: github.generate_token3
-          - name: no-token
-          - name: redacting-expansions
-          - name: github_generate_token_task_group
+          # - name: task-group
+          # - name: task-d
+          # - name: task-e
+          # - name: github.generate_token1
+          # - name: github.generate_token2
+          # - name: github.generate_token3
+          # - name: no-token
+          # - name: redacting-expansions
+          # - name: github_generate_token_task_group
 
 functions:
     clone-project:
@@ -175,6 +175,8 @@ tasks:
                     # exit 1 #1
     - name: another-task
       tags: ["mainline"]
+      depends_on:
+          - first-task
       commands:
           - command: shell.exec
             params:
