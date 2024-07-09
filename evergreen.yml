@@ -206,7 +206,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    # exit 1 #7
+                    exit 1 #7
     - name: noise-task-1
       tags: ["mainline"]
       commands:
