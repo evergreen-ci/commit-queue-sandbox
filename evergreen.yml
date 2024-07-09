@@ -172,7 +172,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    exit 1 #1
+                    # exit 1 #1
     - name: another-task
       tags: ["mainline"]
       commands:
@@ -180,7 +180,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    exit 1 #2
+                    # exit 1 #2
     - name: long-task
       tags: ["mainline"]
       commands:
@@ -188,7 +188,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    exit 1 #8
+                    # exit 1 #8
     - name: short-task
       tags: ["mainline"]
       commands:
@@ -196,7 +196,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    exit 1 #5
+                    # exit 1 #5
     - name: oops-another-task
       tags: ["mainline"]
       commands:
@@ -204,7 +204,7 @@ tasks:
             params:
                 script: |
                     echo "Task"
-                    exit 1 #7
+                    # exit 1 #7
     - name: noise-task-1
       tags: ["mainline"]
       commands:

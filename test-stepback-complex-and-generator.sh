@@ -14,7 +14,7 @@ perl -i -pe 's/# (exit 1 #8)/$1/g' evergreen.yml # fail 8
 git commit -am "8"
 git commit --allow-empty -m "9"
 perl -i -pe 's/echo 2/exit 2/g' generator.json # generator fail 2
-git commit --allow-empty -m "10"
+git commit -am "10"
 
 git commit --allow-empty -m "Latest commit"
 
