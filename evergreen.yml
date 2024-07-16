@@ -47,7 +47,7 @@ buildvariants:
           - name: execution-task-3
       display_tasks:
           - name: display-task
-            tasks:
+            execution_tasks:
                 - execution-task-1
                 - execution-task-2
                 - execution-task-3
