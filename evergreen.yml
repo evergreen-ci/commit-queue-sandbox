@@ -203,7 +203,7 @@ tasks:
             params:
                 script: |
                     exit 0
-    - name: execution-task-2
+    - name: execution-task-3
       commands:
           - command: shell.exec
             params:
