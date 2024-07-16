@@ -196,7 +196,13 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    exit 0
+                    if [ "${execution}" -eq 0 ]; then
+                        echo "Task fail"
+                        exit 1
+                    else
+                        echo "Task pass"
+                        exit 0
+                    fi
     - name: execution-task-2
       commands:
           - command: shell.exec
