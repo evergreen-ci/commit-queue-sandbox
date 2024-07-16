@@ -60,12 +60,14 @@ functions:
 
 task_groups:
     - name: task-group
+      activate: false
       max_hosts: 2
       tasks:
           - task-a
           - task-b
           - task-c
     - name: github_generate_token_task_group
+      activate: false
       max_hosts: 2
       setup_group_can_fail_task: true
       setup_group:
