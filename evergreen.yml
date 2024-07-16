@@ -9,22 +9,48 @@ buildvariants:
       tasks:
           - name: first-task
           - name: another-task
+            activate: false
           - name: long-task
+            activate: false
           - name: short-task
+            activate: false
           - name: oops-another-task
+            activate: false
           - name: noise-task-1
+            activate: false
           - name: noise-task-2
+            activate: false
           - name: noise-task-3
+            activate: false
           - name: generator
-          # - name: task-group
-          # - name: task-d
-          # - name: task-e
-          # - name: github.generate_token1
-          # - name: github.generate_token2
-          # - name: github.generate_token3
-          # - name: no-token
-          # - name: redacting-expansions
-          # - name: github_generate_token_task_group
+            activate: false
+          - name: task-group
+            activate: false
+          - name: task-d
+            activate: false
+          - name: task-e
+            activate: false
+          - name: github.generate_token1
+            activate: false
+          - name: github.generate_token2
+            activate: false
+          - name: github.generate_token3
+            activate: false
+          - name: no-token
+            activate: false
+          - name: redacting-expansions
+            activate: false
+          - name: github_generate_token_task_group
+            activate: false
+          - name: execution-task-1
+          - name: execution-task-2
+          - name: execution-task-3
+      display_tasks:
+          - name: display-task
+            tasks:
+                - execution-task-1
+                - execution-task-2
+                - execution-task-3
 
 functions:
     clone-project:
@@ -165,8 +191,25 @@ tasks:
           - command: shell.exec
             params:
                 script: "echo hello world"
+    - name: execution-task-1
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    exit 0
+    - name: execution-task-2
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    exit 0
+    - name: execution-task-2
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    exit 0
     - name: first-task
-      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -174,7 +217,6 @@ tasks:
                     echo "Task"
                     # exit 1 #1
     - name: another-task
-      tags: ["mainline"]
       depends_on:
           - noise-task-1
       commands:
@@ -184,7 +226,6 @@ tasks:
                     echo "Task"
                     # exit 1 #2
     - name: long-task
-      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -192,7 +233,6 @@ tasks:
                     echo "Task"
                     # exit 1 #8
     - name: short-task
-      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -200,7 +240,6 @@ tasks:
                     echo "Task"
                     # exit 1 #5
     - name: oops-another-task
-      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -208,7 +247,6 @@ tasks:
                     echo "Task"
                     # exit 1 #7
     - name: noise-task-1
-      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -216,7 +254,6 @@ tasks:
                     echo "Task"
                     exit 0
     - name: noise-task-2
-      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -224,7 +261,6 @@ tasks:
                     echo "Task"
                     exit 0
     - name: noise-task-3
-      tags: ["mainline"]
       commands:
           - command: shell.exec
             params:
@@ -232,7 +268,6 @@ tasks:
                     echo "Task"
                     exit 0
     - name: generator
-      tags: ["mainline"]
       commands:
           - func: clone-project
           - command: generate.tasks
