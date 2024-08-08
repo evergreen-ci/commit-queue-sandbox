@@ -57,7 +57,6 @@ buildvariants:
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     tags: [commit-queue-variant, whaat]
-    cron: "0 21 * * *" # 9 PM UTC
     modules:
       - evergreen
     run_on:
@@ -82,8 +81,6 @@ buildvariants:
       - name: checkrun_test
         create_check_run:
           path_to_outputs: "output.json"
-      - name: kim-test-cron
-        cron: "0 20 * * *" # 8 PM UTC
     display_tasks:
       - name: display_task
         execution_tasks:
@@ -317,11 +314,6 @@ tasks:
           working_dir: src
           script: |
             echo "i am become checkrun"
-  - name: kim-test-cron
-    commands:
-      - command: shell.exec
-        params:
-          script: echo hello world
 
 modules:
   - name: evergreen
