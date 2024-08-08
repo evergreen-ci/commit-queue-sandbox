@@ -58,6 +58,7 @@ buildvariants:
     name: ubuntu2004
     tags: [commit-queue-variant, whaat]
     activate: true
+    batchtime: 100000
     modules:
       - evergreen
     run_on:
@@ -320,7 +321,6 @@ tasks:
       - command: shell.exec
         params:
           script: echo hello world
-
 
 modules:
   - name: evergreen
