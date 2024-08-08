@@ -57,6 +57,7 @@ buildvariants:
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     tags: [commit-queue-variant, whaat]
+    activate: true
     modules:
       - evergreen
     run_on:
@@ -314,6 +315,11 @@ tasks:
           working_dir: src
           script: |
             echo "i am become checkrun"
+  - name: kim-test-batchtime
+    commands:
+      - command: shell.exec
+        params:
+          script: echo hello world
 
 modules:
   - name: evergreen
