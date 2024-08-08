@@ -92,6 +92,8 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
+      - name: kim-test-cron
+        cron: "18 21 * * *" # 21:18 UTC
 
   - name: git-env-test
     display_name: "Giv Env Test"
@@ -315,8 +317,7 @@ tasks:
           working_dir: src
           script: |
             echo "i am become checkrun"
-  - name: kim-test-batchtime
-    cron: "20 21 0 0 0" # 21:15 UTC
+  - name: kim-test-cron
     commands:
       - command: shell.exec
         params:
