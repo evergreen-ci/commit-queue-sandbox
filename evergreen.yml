@@ -57,7 +57,7 @@ buildvariants:
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     tags: [commit-queue-variant, whaat]
-    batchtime: 100000
+    cron: "18 21 * * *" # 21:18 UTC
     modules:
       - evergreen
     run_on:
@@ -93,7 +93,7 @@ buildvariants:
     tasks:
       - name: group1
       - name: kim-test-cron
-        cron: "18 21 * * *" # 21:18 UTC
+        batchtime: 1
 
   - name: git-env-test
     display_name: "Giv Env Test"
