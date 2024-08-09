@@ -57,7 +57,6 @@ buildvariants:
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     tags: [commit-queue-variant, whaat]
-    activate: false
     modules:
       - evergreen
     run_on:
@@ -92,8 +91,6 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
-      - name: kim-test
-        cron: "59 17 * * *" # 17:59 UTC
 
   - name: git-env-test
     display_name: "Giv Env Test"
@@ -317,11 +314,6 @@ tasks:
           working_dir: src
           script: |
             echo "i am become checkrun"
-  - name: kim-test
-    commands:
-      - command: shell.exec
-        params:
-          script: echo hello world
 
 modules:
   - name: evergreen
