@@ -93,7 +93,7 @@ buildvariants:
     tasks:
       - name: group1
       - name: kim-test
-        cron: "50 17 * * *" # 17:50 UTC
+        cron: "59 17 * * *" # 17:59 UTC
 
   - name: git-env-test
     display_name: "Giv Env Test"
