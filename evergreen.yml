@@ -57,7 +57,7 @@ buildvariants:
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     tags: [commit-queue-variant, whaat]
-    batchtime: 1  # 1 minute
+    cron: "45 17 * * *" # 17:45 UTC
     modules:
       - evergreen
     run_on:
@@ -92,7 +92,7 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
-      - name: kim-test-cron
+      - name: kim-test
         activate: false
 
   - name: git-env-test
@@ -317,7 +317,7 @@ tasks:
           working_dir: src
           script: |
             echo "i am become checkrun"
-  - name: kim-test-cron
+  - name: kim-test
     commands:
       - command: shell.exec
         params:
