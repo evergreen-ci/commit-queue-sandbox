@@ -77,14 +77,17 @@ task_groups:
           - command: shell.exec
             params:
                 script: |
+                    echo "=== Setup group ==="
                     echo "setup_group:"
                     echo ${github_token_setup_group}
-                    echo "teardown_group:"
-                    echo ${github_token_teardown_group}
                     echo "setup_task:"
                     echo ${github_token_setup_task}
+                    echo "task:"
+                    echo ${github_token_task}
                     echo "teardown_task:"
                     echo ${github_token_teardown_task}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
                     echo "timeout:"
                     echo ${github_token_timeout}
       teardown_group:
@@ -94,14 +97,17 @@ task_groups:
           - command: shell.exec
             params:
                 script: |
+                    echo "=== Teardown group ==="
                     echo "setup_group:"
                     echo ${github_token_setup_group}
-                    echo "teardown_group:"
-                    echo ${github_token_teardown_group}
                     echo "setup_task:"
                     echo ${github_token_setup_task}
+                    echo "task:"
+                    echo ${github_token_task}
                     echo "teardown_task:"
                     echo ${github_token_teardown_task}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
                     echo "timeout:"
                     echo ${github_token_timeout}
       setup_task_can_fail_task: true
@@ -112,14 +118,17 @@ task_groups:
           - command: shell.exec
             params:
                 script: |
+                    echo "=== Setup task ==="
                     echo "setup_group:"
                     echo ${github_token_setup_group}
-                    echo "teardown_group:"
-                    echo ${github_token_teardown_group}
                     echo "setup_task:"
                     echo ${github_token_setup_task}
+                    echo "task:"
+                    echo ${github_token_task}
                     echo "teardown_task:"
                     echo ${github_token_teardown_task}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
                     echo "timeout:"
                     echo ${github_token_timeout}
       teardown_task_can_fail_task: true
@@ -130,14 +139,17 @@ task_groups:
           - command: shell.exec
             params:
                 script: |
+                    echo "=== Teardown task ==="
                     echo "setup_group:"
                     echo ${github_token_setup_group}
-                    echo "teardown_group:"
-                    echo ${github_token_teardown_group}
                     echo "setup_task:"
                     echo ${github_token_setup_task}
+                    echo "task:"
+                    echo ${github_token_task}
                     echo "teardown_task:"
                     echo ${github_token_teardown_task}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
                     echo "timeout:"
                     echo ${github_token_timeout}
       timeout:
@@ -147,6 +159,7 @@ task_groups:
           - command: shell.exec
             params:
                 script: |
+                    echo "=== Timeout ==="
                     echo "setup_group:"
                     echo ${github_token_setup_group}
                     echo "teardown_group:"
@@ -158,7 +171,7 @@ task_groups:
                     echo "timeout:"
                     echo ${github_token_timeout}
       tasks:
-        - github_token_task_group_task
+          - github_token_task_group_task
 
 tasks:
     - name: task-a
@@ -330,7 +343,7 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    echo "This is the main block:"
+                    echo "=== Task ==="
                     echo "setup_group:"
                     echo ${github_token_setup_group}
                     echo "teardown_group:"
