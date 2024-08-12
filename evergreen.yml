@@ -342,6 +342,9 @@ tasks:
                     echo 'This would fail if it ran.'
     - name: github_token_task_group_task
       commands:
+          - command: github.generate_token
+            params:
+                expansion_name: github_token_task
           - command: shell.exec
             params:
                 script: |
