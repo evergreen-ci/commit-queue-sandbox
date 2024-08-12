@@ -42,6 +42,7 @@ buildvariants:
             activate: false
           - name: github_generate_token_task_group
             activate: false
+          - name: minimal-task-group
           - name: execution-task-1
           - name: execution-task-2
           - name: execution-task-3
@@ -66,9 +67,30 @@ task_groups:
           - task-a
           - task-b
           - task-c
+    - name: minimal-task-group
+      activate: false
+      max_hosts: 1
+      setup_group:
+          - command: shell.exec
+            params:
+                script: "echo setup_group"
+      setup_task:
+          - command: shell.exec
+            params:
+                script: "echo setup_task"
+      teardown_task:
+          - command: shell.exec
+            params:
+                script: "echo setup_task"
+      teardown_group:
+          - command: shell.exec
+            params:
+                script: "echo setup_task"
+      tasks:
+          - simple_task_group_task
     - name: github_generate_token_task_group
       activate: false
-      max_hosts: 2
+      max_hosts: 1
       setup_group_can_fail_task: true
       setup_group:
           - command: github.generate_token
@@ -90,6 +112,7 @@ task_groups:
                     echo ${github_token_teardown_group}
                     echo "timeout:"
                     echo ${github_token_timeout}
+      teardown_group_can_fail_task: true
       teardown_group:
           - command: github.generate_token
             params:
@@ -176,6 +199,11 @@ task_groups:
           - github_token_task_group_task
 
 tasks:
+    - name: simple_task_group_task
+      commands:
+          - command: shell.exec
+            params:
+                script: "echo hello world"
     - name: task-a
       commands:
           - command: shell.exec
