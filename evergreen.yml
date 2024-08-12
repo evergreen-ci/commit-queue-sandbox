@@ -90,6 +90,10 @@ task_groups:
           - command: shell.exec
             params:
                 script: "echo teardown group"
+      timeout:
+          - command: shell.exec
+            params:
+                script: "echo timeout"
       tasks:
           - simple_task_group_task
     - name: github_generate_token_task_group
