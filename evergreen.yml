@@ -162,12 +162,14 @@ task_groups:
                     echo "=== Timeout ==="
                     echo "setup_group:"
                     echo ${github_token_setup_group}
-                    echo "teardown_group:"
-                    echo ${github_token_teardown_group}
                     echo "setup_task:"
                     echo ${github_token_setup_task}
+                    echo "task:"
+                    echo ${github_token_task}
                     echo "teardown_task:"
                     echo ${github_token_teardown_task}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
                     echo "timeout:"
                     echo ${github_token_timeout}
       tasks:
@@ -343,15 +345,17 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    echo "=== Task ==="
+                    echo "=== Main task ==="
                     echo "setup_group:"
                     echo ${github_token_setup_group}
-                    echo "teardown_group:"
-                    echo ${github_token_teardown_group}
                     echo "setup_task:"
                     echo ${github_token_setup_task}
+                    echo "task:"
+                    echo ${github_token_task}
                     echo "teardown_task:"
                     echo ${github_token_teardown_task}
+                    echo "teardown_group:"
+                    echo ${github_token_teardown_group}
                     echo "timeout:"
                     echo ${github_token_timeout}
           - command: shell.exec
