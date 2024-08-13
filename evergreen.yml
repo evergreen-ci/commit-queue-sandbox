@@ -43,9 +43,19 @@ buildvariants:
           - name: github_generate_token_task_group
             activate: false
           - name: minimal-task-group
+            activate: false
           - name: execution-task-1
+            activate: false
           - name: execution-task-2
+            activate: false
           - name: execution-task-3
+            activate: false
+          - name: github_token_pre_post
+            activate: false
+          - name: github-dependency-task
+            activate: false
+          - name: github-dependent-task
+            activate: false
       display_tasks:
           - name: display-task
             execution_tasks:
@@ -207,6 +217,27 @@ task_groups:
           - github_token_task_group_task
 
 tasks:
+    - name: github-dependency-task
+      commands:
+          - command: github.generate_token
+            params:
+                owner: evergreen-ci
+                repo: github-merge-queue-sandbox
+                expansion_name: github-dependency-task-expansion
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Trying to print dependency task expansion:"
+                    echo ${github-dependency-task-expansion}
+    - name: github-dependent-task
+      depends_on:
+          - github-dependency-task
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Trying to print dependency task expansion:"
+                    echo ${github-dependency-task-expansion}
     - name: simple_task_group_task
       commands:
           - command: shell.exec
@@ -369,6 +400,23 @@ tasks:
                 script: |
                     echo ${testing_expansion2}
                     git clone https://oauth2:${testing_expansion2}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+    - name: github_token_pre_post
+      commands:
+          - command: github.generate_token
+            params:
+                owner: evergreen-ci
+                repo: github-merge-queue-sandbox
+                expansion_name: github_token_main
+          - command: shell.exec
+            params:
+                script: |
+                    echo "=== Main ==="
+                    echo "Pre token:"
+                    echo ${github_token_pre}
+                    echo "Main token:"
+                    echo ${github_token_main}
+                    echo "Post token:"
+                    echo ${github_token_post}
     - name: no-token
       commands:
           - command: shell.exec
