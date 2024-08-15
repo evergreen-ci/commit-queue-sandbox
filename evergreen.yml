@@ -56,6 +56,13 @@ buildvariants:
             activate: false
           - name: github-dependent-task
             activate: false
+          - name: github-restrict-permissions
+            activate: false
+          - name: github-honeycomb
+          - name: github-invalid-repo
+            activate: false
+          - name: github-invalid-owner
+            activate: false
       display_tasks:
           - name: display-task
             execution_tasks:
@@ -217,6 +224,54 @@ task_groups:
           - github_token_task_group_task
 
 tasks:
+    - name: github-restrict-permissions
+      commands:
+          - command: github.generate_token
+            params:
+                expansion_name: github_generate_token
+                permissions: # This should restrict the clone
+                    checks: read
+          - command: shell.exec
+            params:
+                script: |
+                    echo ${github_generate_token}
+                    git clone https://oauth2:${github_generate_token}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+    - name: github-honeycomb
+      commands:
+          - command: github.generate_token
+            params:
+                expansion_name: github_generate_token
+                owner: evergreen-ci
+                repo: github-merge-queue-sandbox
+          - command: shell.exec
+            params:
+                script: |
+                    echo ${github_generate_token}
+                    git clone https://oauth2:${github_generate_token}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+    - name: github-invalid-repo
+      commands:
+          - command: github.generate_token
+            params:
+                expansion_name: token
+                owner: evergreen-ci
+                repo: invalid
+          - command: shell.exec
+            params:
+                script: |
+                    echo ${token}
+                    git clone https://oauth2:${token}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
+    - name: github-invalid-owner
+      commands:
+          - command: github.generate_token
+            params:
+                expansion_name: token
+                owner: invalid
+                repo: evergreen
+          - command: shell.exec
+            params:
+                script: |
+                    echo ${token}
+                    git clone https://oauth2:${token}@github.com/evergreen-ci/github-merge-queue-sandbox.git evg1
     - name: github-dependency-task
       commands:
           - command: github.generate_token
