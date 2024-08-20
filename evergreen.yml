@@ -124,7 +124,7 @@ functions:
       params:
         working_dir: src
         script: |
-          echo "noop"
+          echo "2noop"
           git describe
 
 parameters:
