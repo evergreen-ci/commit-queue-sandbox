@@ -29,7 +29,6 @@ patch_aliases:
 #       cpu_architecture: x86_64
 #       operating_system: linux
 
-
 buildvariants:
   - name: ubuntu2004-container
     display_name: Ubuntu 20.04 (Container)
@@ -126,7 +125,7 @@ functions:
       params:
         working_dir: src
         script: |
-          echo "noop"
+          echo "2noop"
           git describe
 
 parameters:
