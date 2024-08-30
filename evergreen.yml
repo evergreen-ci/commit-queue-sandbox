@@ -63,6 +63,8 @@ buildvariants:
             activate: false
           - name: github-invalid-owner
             activate: false
+          - name: s3put-test
+            activate: false
       display_tasks:
           - name: display-task
             execution_tasks:
@@ -224,6 +226,22 @@ task_groups:
           - github_token_task_group_task
 
 tasks:
+    - name: s3put-test
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY}
+                aws_session_token: ${AWS_SESSION_TOKEN}
+                local_file: src/evergreen.yml
+                remote_file: mciuploads/zackary.santana/evergreen.yml
+                bucket: mciuploads
+                region: us-east-1
+                permissions: public-read
+                content_type: ${content_type|application/x-gzip}
+                display_name: Binaries
+                skip_existing: true
     - name: github-restrict-permissions
       commands:
           - command: github.generate_token
