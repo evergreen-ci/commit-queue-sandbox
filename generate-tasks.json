@@ -13,6 +13,7 @@
         },
         {
           "name": "dependency",
+          "depends_on": ["nested-dependency"],
           "activate": false
         }
       ]
