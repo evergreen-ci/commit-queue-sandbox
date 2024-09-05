@@ -1,0 +1,32 @@
+{
+  "buildvariants": [
+    {
+      "name": "ubuntu2004",
+      "tasks": [
+        {
+          "name": "task_one",
+          "depends_on": ["dependency"]
+        },
+        {
+          "name": "task_two",
+          "activate": false
+        },
+        {
+          "name": "dependency",
+          "activate": false
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "task_one"
+    },
+    {
+      "name": "task_two"
+    },
+    {
+      "name": "dependency"
+    }
+  ]
+}
