@@ -65,6 +65,14 @@ buildvariants:
             activate: false
           - name: s3put-test
             activate: false
+          - name: assume_role_legacy
+            activate: false
+          - name: assume_role_feature_flag
+            activate: false
+          - name: assume_role_legacy_externalid
+            activate: false
+          - name: assume_role_feature_flag_externalid
+            activate: false
       display_tasks:
           - name: display-task
             execution_tasks:
@@ -226,6 +234,28 @@ task_groups:
           - github_token_task_group_task
 
 tasks:
+    - name: assume_role_legacy
+      commands:
+          - command: ec2.assume_role
+            params:
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+    - name: assume_role_feature_flag
+      commands:
+          - command: ec2.assume_role
+            params:
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                temporary_feature_flag: true
+    - name: assume_role_legacy_externalid
+      commands:
+          - command: ec2.assume_role
+            params:
+                role_arn: ${AWS_ASSUME_ROLE_ARN_2}
+    - name: assume_role_feature_flag_externalid
+      commands:
+          - command: ec2.assume_role
+            params:
+                role_arn: ${AWS_ASSUME_ROLE_ARN_2}
+                temporary_feature_flag: true
     - name: s3put-test
       commands:
           - func: clone-project
