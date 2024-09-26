@@ -53,6 +53,8 @@ buildvariants:
       - name: test-restart-on-fail
       - name: test_release
       - name: test_release2
+      - taskA
+      - taskB
 
   - display_name: Ubuntu 20.04
     name: ubuntu2004
