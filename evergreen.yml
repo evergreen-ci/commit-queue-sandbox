@@ -53,8 +53,6 @@ buildvariants:
       - name: test-restart-on-fail
       - name: test_release
       - name: test_release2
-      - taskA
-      - taskB
 
   - display_name: Ubuntu 20.04
     name: ubuntu2004
@@ -83,6 +81,8 @@ buildvariants:
       - name: checkrun_test
         create_check_run:
           path_to_outputs: "output.json"
+      - taskA
+      - taskB
     display_tasks:
       - name: display_task
         execution_tasks:
