@@ -81,8 +81,6 @@ buildvariants:
       - name: checkrun_test
         create_check_run:
           path_to_outputs: "output.json"
-      - taskA
-      - taskB
     display_tasks:
       - name: display_task
         execution_tasks:
@@ -172,20 +170,6 @@ tasks:
         params:
           files:
             - src/evergreen_bad_new.json
-    # Test how periodic build that only includes taskA interacts with patch_optional dep
-  - name: taskA
-    depends_on:
-      - name: taskB
-        patch_optional: true
-    commands:
-      - command: shell.exec
-        params:
-          script: echo ${task_name}
-  - name: taskB
-    commands:
-      - command: shell.exec
-        params:
-          script: echo ${task_name}
   - name: gen_task_template
     depends_on:
       - name: my_first_generator
