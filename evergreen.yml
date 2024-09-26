@@ -170,6 +170,20 @@ tasks:
         params:
           files:
             - src/evergreen_bad_new.json
+    # Test how periodic build that only includes taskA interacts with patch_optional dep
+  - name: taskA
+    depends_on:
+      - name: taskB
+        patch_optional: true
+    commands:
+      - command: shell.exec
+        params:
+          script: echo ${task_name}
+  - name: taskB
+    commands:
+      - command: shell.exec
+        params:
+          script: echo ${task_name}
   - name: gen_task_template
     depends_on:
       - name: my_first_generator
