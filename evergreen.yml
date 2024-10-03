@@ -265,7 +265,7 @@ tasks:
                 aws_secret: ${AWS_SECRET_ACCESS_KEY}
                 aws_session_token: ${AWS_SESSION_TOKEN}
                 local_file: src/evergreen.yml
-                remote_file: mciuploads/zackary.santana/evergreen.yml
+                remote_file: mciuploads/zackary.santana/${version_id}/${task_id}/evergreen.yml
                 bucket: mciuploads
                 region: us-east-1
                 permissions: public-read
