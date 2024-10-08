@@ -1,0 +1,181 @@
+tasks:
+  - name: config-a-01
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config A 01"
+  - name: config-a-02
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config A 02"
+  - name: config-a-03
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          directory: src
+          script: |
+            echo "Config A 03"
+  - name: config-b-01
+    tags:
+      - matrix-config
+      - config-b
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config B 01"
+  - name: config-b-02
+    tags:
+      - matrix-config
+      - config-b
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config B 02"
+  - name: config-c-01
+    tags:
+      - matrix-config
+      - config-c
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config C 01"tasks:
+  - name: config-a-01
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config A 01"
+  - name: config-a-02
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config A 02"
+  - name: config-a-03
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          directory: src
+          script: |
+            echo "Config A 03"
+  - name: config-b-01
+    tags:
+      - matrix-config
+      - config-b
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config B 01"
+  - name: config-b-02
+    tags:
+      - matrix-config
+      - config-b
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config B 02"
+  - name: config-c-01
+    tags:
+      - matrix-config
+      - config-c
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config C 01"+tasks:
+  - name: config-a-01
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config A 01"
+  - name: config-a-02
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config A 02"
+  - name: config-a-03
+    tags:
+      - matrix-config
+      - config-a
+    commands:
+      - command: shell.exec
+        params:
+          directory: src
+          script: |
+            echo "Config A 03"
+  - name: config-b-01
+    tags:
+      - matrix-config
+      - config-b
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config B 01"
+  - name: config-b-02
+    tags:
+      - matrix-config
+      - config-b
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config B 02"
+  - name: config-c-01
+    tags:
+      - matrix-config
+      - config-c
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Config C 01"
+
+
+buildvariants:
+  - name: matrix-config
+    display_name: "Config Matrix"
+    tasks: [".matrix-config"]
+    run_on:
+        - ubuntu2204-small
+    display_tasks:
+      - name: "Config A"
+        execution_tasks: [".config-a"]
+      - name: "Config B"
+        execution_tasks: [".config-b"]
+      - name: "Config C"
+        execution_tasks: [".config-c"]
