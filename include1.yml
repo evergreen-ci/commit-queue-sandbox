@@ -6,4 +6,4 @@ buildvariants:
     run_on:
       - ubuntu2004
     tasks:
-      - name: generate-lint
+      - name: doesnt-exist
