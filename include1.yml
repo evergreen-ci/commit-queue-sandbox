@@ -29,4 +29,4 @@ buildvariants:
       - ubuntu2004
     tasks:
       # - name: unit_tests
-      - name: break
+      - name: doesntexist
