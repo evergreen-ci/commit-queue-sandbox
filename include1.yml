@@ -11,6 +11,11 @@ tasks:
           image: amazonlinux
           stdout_file_name: ${workdir}/garasign_container.out.log
           stderr_file_name: ${workdir}/garasign_container.err.log
+  - name: break
+    commands:
+      - command: host.create
+        params:
+          num_hosts: 1
 
 buildvariants:
   - name: included-variant
@@ -21,3 +26,4 @@ buildvariants:
       - ubuntu2004
     tasks:
       - name: unit_tests
+      - name: break
