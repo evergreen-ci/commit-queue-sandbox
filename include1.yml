@@ -13,9 +13,12 @@ tasks:
           stderr_file_name: ${workdir}/garasign_container.err.log
   - name: break
     commands:
-      - command: host.create
+      - command: shell.exec
         params:
-          num_hosts: 1
+          script: |
+            echo "sleeping 3"
+            sleep 10
+
 
 buildvariants:
   - name: included-variant
