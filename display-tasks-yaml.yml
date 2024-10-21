@@ -1,3 +1,4 @@
+# To use, run `evergreen-staging patch --path display-tasks-yaml.yml`
 tasks:
   - name: config-a-01
     tags:

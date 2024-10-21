@@ -1,0 +1,27 @@
+# To use, run `evergreen-staging patch --path module-yaml.yml`
+tasks:
+  - name: task1
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Task1"
+
+buildvariants:
+  - name: variant1
+    display_name: "Variant 1"
+    tasks:
+      - task1
+    run_on:
+        - ubuntu2204-small
+
+modules:
+- name: github-merge-queue-sandbox
+  owner: evergreen-ci
+  repo: github-merge-queue-sandbox
+  branch: test
+
+# Includes
+include: 
+  - filename: commit-queue-include-yaml.yaml
+    module: github-merge-queue-sandbox
