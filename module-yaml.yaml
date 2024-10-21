@@ -21,7 +21,6 @@ modules:
   repo: github-merge-queue-sandbox
   branch: main
 
-# Includes
 include: 
   - filename: commit-queue-include-yaml.yaml
     module: github-merge-queue-sandbox
