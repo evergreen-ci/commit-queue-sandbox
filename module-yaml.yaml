@@ -19,7 +19,7 @@ modules:
 - name: github-merge-queue-sandbox
   owner: evergreen-ci
   repo: github-merge-queue-sandbox
-  branch: test
+  branch: main
 
 # Includes
 include: 
