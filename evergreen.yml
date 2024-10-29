@@ -1,5 +1,5 @@
 buildvariants:
-  - display_name: Amazon Linux 2
+  - display_name: Amazon Linux 2!!!!
     name: amazon2
     run_on:
       - ubuntu2204-small
