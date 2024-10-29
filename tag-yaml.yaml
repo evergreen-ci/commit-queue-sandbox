@@ -1,0 +1,37 @@
+tasks:
+  - name: test_task_1
+    tags:
+      - tag_1
+    commands:
+      - command: shell.exec
+        params:
+          script: "echo 'noop'"
+
+  - name: test_task_2
+    tags:
+      - tag_1
+      # - sub_tag_1
+    commands:
+      - command: shell.exec
+        params:
+          script: "echo 'noop'"
+
+  - name: test_task_3
+    tags:
+      - tag_2
+    commands:
+      - command: shell.exec
+        params:
+          script: "echo 'noop'"
+
+buildvariants:
+  - name: test-variant
+    display_name: "Test Variant"
+    run_on:
+      - amazon2-arm64-atlas-small
+    tasks:
+      - name: .tag_1 !.sub_tag_1
+      - name: .tag_1 .sub_tag_1
+        distros:
+          - amazon2-arm64-atlas-large
+      - name: .tag_2
