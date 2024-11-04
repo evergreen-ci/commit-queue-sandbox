@@ -25,3 +25,9 @@ buildvariants:
       - s3put-visability-private.permissions-public-read
     run_on:
         - ubuntu2204-small
+
+functions:
+    clone-project:
+        command: git.get_project
+        params:
+            directory: src
