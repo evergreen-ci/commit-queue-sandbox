@@ -3,7 +3,8 @@
 # AWS_KEY, AWS_SECRET, and AWS_SESSION_TOKEN need to be replenished every run since they are temporary credentials.
 # Permissions are canned ACL's: https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl
 tasks:
-    - name: s3put-visability-private.permissions-public-read
+    - name: s3put-visibility-private.permissions-public-read
+      tags: ['s3put', 'visibility-private', 'permissions-public-read']
       commands:
           - func: clone-project
           - command: s3.put
@@ -12,22 +13,123 @@ tasks:
                 aws_secret: ${AWS_SECRET_ACCESS_KEY}
                 aws_session_token: ${AWS_SESSION_TOKEN}
                 local_file: src/upload-artifacts/public.txt
-                remote_file: mci/${task_id}/${execution}/file.txt
+                remote_file: mci/${task_id}/${execution}/visibility-private.permissions-public-read.txt
                 bucket: mciuploads
                 permissions: public-read
+                visibility: private
                 content_type: text/plain
-                display_name: File
+    - name: s3put-visibility-public.permissions-public-read
+      tags: ['s3put', 'visibility-public', 'permissions-public-read']
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY}
+                aws_session_token: ${AWS_SESSION_TOKEN}
+                local_file: src/upload-artifacts/public.txt
+                remote_file: mci/${task_id}/${execution}/visibility-public.permissions-public-read.txt
+                bucket: mciuploads
+                permissions: public-read
+                visibility: public
+                content_type: text/plain
+    - name: s3put-visibility-none.permissions-public-read
+      tags: ['s3put', 'visibility-none', 'permissions-public-read']
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY}
+                aws_session_token: ${AWS_SESSION_TOKEN}
+                local_file: src/upload-artifacts/public.txt
+                remote_file: mci/${task_id}/${execution}/visibility-none.permissions-public-read.txt
+                bucket: mciuploads
+                permissions: public-read
+                visibility: none
+                content_type: text/plain
+    - name: s3put-visibility-private.permissions-private
+      tags: ['s3put', 'visibility-private', 'permissions-private']
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY}
+                aws_session_token: ${AWS_SESSION_TOKEN}
+                local_file: src/upload-artifacts/public.txt
+                remote_file: mci/${task_id}/${execution}/visibility-private.permissions-private.txt
+                bucket: mciuploads
+                permissions: private
+                visibility: private
+                content_type: text/plain
+    - name: s3put-visibility-public.permissions-private
+      tags: ['s3put', 'visibility-public', 'permissions-private']
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY}
+                aws_session_token: ${AWS_SESSION_TOKEN}
+                local_file: src/upload-artifacts/public.txt
+                remote_file: mci/${task_id}/${execution}/visibility-public.permissions-private.txt
+                bucket: mciuploads
+                permissions: private
+                visibility: public
+                content_type: text/plain
+    - name: s3put-visibility-none.permissions-private
+      tags: ['s3put', 'visibility-none', 'permissions-private']
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY}
+                aws_session_token: ${AWS_SESSION_TOKEN}
+                local_file: src/upload-artifacts/public.txt
+                remote_file: mci/${task_id}/${execution}/visibility-none.permissions-private.txt
+                bucket: mciuploads
+                permissions: private
+                visibility: none
+                content_type: text/plain
+    - name: s3put-visibility-signed.permissions-private
+      tags: ['s3put', 'visibility-signed', 'permissions-private']
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_USER_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
+                local_file: src/upload-artifacts/private.txt
+                remote_file: mci/${task_id}/${execution}/visibility-signed.permissions-private.txt
+                bucket: mciuploads
+                permissions: private
+                visibility: signed
+                content_type: text/plain
+
 
 buildvariants:
-  - name: s3put
-    display_name: "S3Put"
+  - name: s3put-public-read
+    display_name: "s3.put permissions public-read"
     tasks:
-      - s3put-visability-private.permissions-public-read
+      - s3put-visibility-private.permissions-public-read
+      - s3put-visibility-public.permissions-public-read
+      - s3put-visibility-none.permissions-public-read
+    run_on:
+        - ubuntu2204-small
+  - name: s3put-private
+    display_name: "s3.put permissions private"
+    tasks:
+      - s3put-visibility-private.permissions-private
+      - s3put-visibility-public.permissions-private
+      - s3put-visibility-none.permissions-private
+      - s3put-visibility-signed.permissions-private
     run_on:
         - ubuntu2204-small
 
 functions:
     clone-project:
-        command: git.get_project
+      - command: git.get_project
         params:
             directory: src
