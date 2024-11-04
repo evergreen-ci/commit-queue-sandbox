@@ -57,7 +57,7 @@ tasks:
                 aws_key: ${AWS_ACCESS_KEY_ID}
                 aws_secret: ${AWS_SECRET_ACCESS_KEY}
                 aws_session_token: ${AWS_SESSION_TOKEN}
-                local_file: src/upload-artifacts/public.txt
+                local_file: src/upload-artifacts/private.txt
                 remote_file: mci/${task_id}/${execution}/visibility-private.permissions-private.txt
                 bucket: mciuploads
                 permissions: private
@@ -72,7 +72,7 @@ tasks:
                 aws_key: ${AWS_ACCESS_KEY_ID}
                 aws_secret: ${AWS_SECRET_ACCESS_KEY}
                 aws_session_token: ${AWS_SESSION_TOKEN}
-                local_file: src/upload-artifacts/public.txt
+                local_file: src/upload-artifacts/private.txt
                 remote_file: mci/${task_id}/${execution}/visibility-public.permissions-private.txt
                 bucket: mciuploads
                 permissions: private
@@ -87,7 +87,7 @@ tasks:
                 aws_key: ${AWS_ACCESS_KEY_ID}
                 aws_secret: ${AWS_SECRET_ACCESS_KEY}
                 aws_session_token: ${AWS_SESSION_TOKEN}
-                local_file: src/upload-artifacts/public.txt
+                local_file: src/upload-artifacts/private.txt
                 remote_file: mci/${task_id}/${execution}/visibility-none.permissions-private.txt
                 bucket: mciuploads
                 permissions: private
