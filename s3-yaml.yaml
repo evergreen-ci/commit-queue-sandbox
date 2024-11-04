@@ -1,0 +1,27 @@
+# To use, run `evergreen-staging patch --path s3-yaml.yml`
+
+# AWS_KEY, AWS_SECRET, and AWS_SESSION_TOKEN need to be replenished every run since they are temporary credentials.
+# Permissions are canned ACL's: https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl
+tasks:
+    - name: s3put-visability-private.permissions-public-read
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY}
+                aws_session_token: ${AWS_SESSION_TOKEN}
+                local_file: src/public.txt
+                remote_file: mci/${task_id}/${execution}/file.txt
+                bucket: mciuploads
+                permissions: public-read
+                content_type: text/plain
+                display_name: File
+
+buildvariants:
+  - name: s3put
+    display_name: "S3Put"
+    tasks:
+      - s3put-visability-private.permissions-public-read
+    run_on:
+        - ubuntu2204-small
