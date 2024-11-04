@@ -11,7 +11,7 @@ tasks:
                 aws_key: ${AWS_ACCESS_KEY_ID}
                 aws_secret: ${AWS_SECRET_ACCESS_KEY}
                 aws_session_token: ${AWS_SESSION_TOKEN}
-                local_file: src/public.txt
+                local_file: src/upload-artifacts/public.txt
                 remote_file: mci/${task_id}/${execution}/file.txt
                 bucket: mciuploads
                 permissions: public-read
