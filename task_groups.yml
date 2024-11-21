@@ -1,0 +1,41 @@
+stepback: true
+exec_timeout_secs: 3600
+
+buildvariants:
+    - display_name: Tests
+      name: ubuntu
+      run_on:
+          - ubuntu2204-small
+      tasks:
+          - name: task-group
+
+task_groups:
+    - name: task-group
+      activate: false
+      max_hosts: -1
+      tasks:
+          - task-a
+          - task-b
+          - task-c
+
+tasks:
+    - name: task-a
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                  echo "task a"
+    - name: task-b
+      patch_only: true
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                  echo "task b"
+                  exit 1
+    - name: task-c
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                  echo "task c"
