@@ -13,18 +13,18 @@ task_groups:
     - name: task-group
       max_hosts: -1
       tasks:
-          - task-a
-          - task-b
-          - task-c
+          - task-g-a
+          - task-g-b
+          - task-g-c
 
 tasks:
-    - name: task-a
+    - name: task-g-a
       commands:
           - command: shell.exec
             params:
                 script: |
                   echo "task a"
-    - name: task-b
+    - name: task-g-b
       patch_only: true
       commands:
           - command: shell.exec
@@ -32,7 +32,7 @@ tasks:
                 script: |
                   echo "task b"
                   exit 1
-    - name: task-c
+    - name: task-g-c
       commands:
           - command: shell.exec
             params:
