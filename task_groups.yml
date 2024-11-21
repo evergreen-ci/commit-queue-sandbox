@@ -11,7 +11,7 @@ buildvariants:
 
 task_groups:
     - name: task-group-1
-      max_hosts: -1
+      max_hosts: 1
       tasks:
           - task-g-a
           - task-g-b
