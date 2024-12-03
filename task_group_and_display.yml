@@ -1,6 +1,3 @@
-stepback: true
-exec_timeout_secs: 3600
-
 buildvariants:
     - display_name: Task group and display task
       name: ubuntu
@@ -16,9 +13,14 @@ buildvariants:
 
 task_groups:
     - name: task_group_task
-      max_hosts: 1
+      max_hosts: -1
       tasks:
-          - .exec_tasks
+          # - .exec_tasks
+          - execution_task_1
+          - execution_task_2
+          - execution_task_3
+          - execution_task_4
+          - execution_task_5
 
 tasks:
     - name: execution_task_1
