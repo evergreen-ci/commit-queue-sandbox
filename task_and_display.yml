@@ -22,13 +22,14 @@ task_groups:
 
 tasks:
     - name: execution_task_1
+      tags: ['exec_tasks']
       commands:
           - command: shell.exec
             params:
                 script: |
                   echo "task 1"
     - name: execution_task_2
-      patch_only: true
+      tags: ['exec_tasks']
       commands:
           - command: shell.exec
             params:
@@ -36,6 +37,7 @@ tasks:
                   echo "task 2"
                   exit 1
     - name: execution_task_3
+      patch_only: true
       commands:
           - command: shell.exec
             params:
