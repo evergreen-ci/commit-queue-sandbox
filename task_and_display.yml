@@ -1,0 +1,43 @@
+stepback: true
+exec_timeout_secs: 3600
+
+buildvariants:
+    - display_name: Task group and display task
+      name: ubuntu
+      run_on:
+          - ubuntu2204-small
+      tasks:
+        - name: task_group_task
+      display_tasks:
+        - name: Task group task
+          execution_tasks:
+            - .exec_tasks
+
+
+task_groups:
+    - name: task_group_task
+      max_hosts: 1
+      tasks:
+          - .exec_tasks
+
+tasks:
+    - name: execution_task_1
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                  echo "task 1"
+    - name: execution_task_2
+      patch_only: true
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                  echo "task 2"
+                  exit 1
+    - name: execution_task_3
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                  echo "task 3"
