@@ -37,9 +37,24 @@ tasks:
                   echo "task 2"
                   exit 1
     - name: execution_task_3
-      patch_only: true
+      tags: ['exec_tasks']
       commands:
           - command: shell.exec
             params:
                 script: |
                   echo "task 3"
+    - name: execution_task_4
+      tags: ['exec_tasks']
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                  echo "task 4"
+                  exit 1
+    - name: execution_task_5
+      tags: ['exec_tasks']
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                  echo "task 5"
