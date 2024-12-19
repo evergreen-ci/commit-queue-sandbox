@@ -146,6 +146,12 @@ buildvariants:
       - s3put-visibility-signed.permissions-private
     run_on:
         - ubuntu2204-small
+  - name: s3-misc
+    display_name: "s3 miscellaneous"
+    tasks:
+      - s3-symlink-file
+    run_on:
+        - ubuntu2204-small
 
 functions:
     clone-project:
