@@ -200,7 +200,8 @@ buildvariants:
   - name: s3-misc
     display_name: "s3 miscellaneous"
     tasks:
-      - s3-symlink-file
+      - s3-symlink-file-correctly
+      - s3-symlink-file-incorrectly
     run_on:
         - ubuntu2204-small
 
