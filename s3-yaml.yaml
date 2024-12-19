@@ -107,7 +107,26 @@ tasks:
                 permissions: private
                 visibility: signed
                 content_type: text/plain
-
+    - name: s3-symlink-file
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_USER_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
+                local_file: src/has_symlink.tar.gz
+                remote_file: mci/${task_id}/${execution}/has_symlink.tar.gz
+                bucket: mciuploads
+                permissions: private
+                visibility: signed
+                content_type: application/tar+gzip
+          - command: s3.get
+            params:
+                aws_key: ${AWS_ACCESS_KEY_USER_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
+                remote_file: mci/${task_id}/${execution}/has_symlink.tar.gz
+                bucket: mciuploads
+                extract_to: src/extract-here-dir
 
 buildvariants:
   - name: s3put-public-read
