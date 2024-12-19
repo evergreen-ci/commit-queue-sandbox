@@ -107,15 +107,22 @@ tasks:
                 permissions: private
                 visibility: signed
                 content_type: text/plain
-    - name: s3-symlink-file
+    - name: s3-symlink-file-correctly
       commands:
           - func: clone-project
+          - command: shell.exec
+            params:
+                shell: bash
+                script: |
+                    echo "Hello, world!" > src/file.txt
+                    ln -s src/symlink_file.txt src/file.txt
+                    tar -czf src/symlink.tar.gz src/symlink_file.txt src/file.txt
           - command: s3.put
             params:
                 aws_key: ${AWS_ACCESS_KEY_USER_ID}
                 aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
-                local_file: src/has_symlink.tar.gz
-                remote_file: mci/${task_id}/${execution}/has_symlink.tar.gz
+                local_file: src/symlink.tar.gz
+                remote_file: mci/${task_id}/${execution}/symlink.tar.gz
                 bucket: mciuploads
                 permissions: private
                 visibility: signed
@@ -124,9 +131,53 @@ tasks:
             params:
                 aws_key: ${AWS_ACCESS_KEY_USER_ID}
                 aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
-                remote_file: mci/${task_id}/${execution}/has_symlink.tar.gz
+                remote_file: mci/${task_id}/${execution}/symlink.tar.gz
                 bucket: mciuploads
-                extract_to: src/extract-here-dir
+                extract_to: src/symlink-contents
+          - command: shell.exec
+            params:
+                shell: bash
+                script: |
+                    echo "symlink_file.txt: "
+                    cat src/symlink-contents/symlink_file.txt
+                    echo "file.txt: "
+                    cat src/symlink-contents/file.txt
+    - name: s3-symlink-file-incorrectly
+      commands:
+          - func: clone-project
+          - command: shell.exec
+            params:
+                shell: bash
+                script: |
+                    echo "Hello, world!" > src/file.txt
+                    ln -s src/symlink_file.txt src/file.txt
+                    # Does not include the file.txt which is symlinked.
+                    tar -czf src/symlink.tar.gz src/symlink_file.txt
+          - command: s3.put
+            params:
+                aws_key: ${AWS_ACCESS_KEY_USER_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
+                local_file: src/symlink.tar.gz
+                remote_file: mci/${task_id}/${execution}/symlink.tar.gz
+                bucket: mciuploads
+                permissions: private
+                visibility: signed
+                content_type: application/tar+gzip
+          - command: s3.get
+            params:
+                aws_key: ${AWS_ACCESS_KEY_USER_ID}
+                aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
+                remote_file: mci/${task_id}/${execution}/symlink.tar.gz
+                bucket: mciuploads
+                extract_to: src/symlink-contents
+          - command: shell.exec
+            params:
+                shell: bash
+                script: |
+                    echo "symlink_file.txt: "
+                    cat src/symlink-contents/symlink_file.txt
+                    echo "file.txt: "
+                    cat src/symlink-contents/file.txt
 
 buildvariants:
   - name: s3put-public-read
