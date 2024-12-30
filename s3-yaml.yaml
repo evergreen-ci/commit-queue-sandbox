@@ -114,7 +114,7 @@ tasks:
             params:
                 shell: bash
                 script: |
-                    echo "Hello, world!" > src/file.txt
+                    echo "Hello, world" > src/file.txt
                     ln -s src/file.txt src/symlink_file.txt
                     tar -czf src/symlink.tar.gz src/symlink_file.txt src/file.txt
           - command: s3.put
