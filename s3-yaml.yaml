@@ -143,9 +143,9 @@ tasks:
                     echo "ls src/symlink-contents"
                     ls src/symlink-contents
                     echo "symlink_file.txt: "
-                    cat src/symlink-contents/symlink_file.txt
+                    cat src/symlink-contents/src/symlink_file.txt
                     echo "file.txt: "
-                    cat src/symlink-contents/file.txt
+                    cat src/symlink-contents/src/file.txt
     - name: s3-symlink-file-incorrectly
       commands:
           - func: clone-project
@@ -183,9 +183,9 @@ tasks:
                     echo "ls src/symlink-contents"
                     ls src/symlink-contents
                     echo "symlink_file.txt: "
-                    cat src/symlink-contents/symlink_file.txt
+                    cat src/symlink-contents/src/symlink_file.txt
                     echo "file.txt: "
-                    cat src/symlink-contents/file.txt
+                    cat src/symlink-contents/src/file.txt
 
 buildvariants:
   - name: s3put-public-read
