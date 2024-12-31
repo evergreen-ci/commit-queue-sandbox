@@ -11,6 +11,7 @@ tasks:
                 aws_key: ${AWS_ACCESS_KEY_USER_ID}
                 aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
                 local_files_include_filter_prefix: "fakedir/dont"
+                local_files_include_filter: "**/*.txt"
                 remote_file: mci/${task_id}/${execution}/non-existent/
                 bucket: mciuploads
                 permissions: public-read
