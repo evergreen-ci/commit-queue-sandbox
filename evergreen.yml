@@ -2,6 +2,12 @@ stepback: true
 exec_timeout_secs: 3600
 
 buildvariants:
+    - display_name: Misc
+      name: misc
+      run_on:
+          - ubuntu2204-small
+      tasks:
+          - name: parameters-env
     - display_name: Tests
       name: ubuntu
       run_on:
@@ -616,3 +622,16 @@ tasks:
                     echo ${expansion_key_3}
                     echo "File expansion #4"
                     echo ${expansion_key_4}
+    - name: parameters-env
+      commands:
+        - func: clone-project
+        - command: subprocess.exec
+          params:
+            binary: bash
+            working_dir: src
+            args: ["echo-env.sh"]
+            env:
+              ENV_1: "env1"
+            include_expansions_in_env:
+              - ENV_2
+     
