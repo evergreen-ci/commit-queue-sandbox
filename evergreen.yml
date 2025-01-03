@@ -643,6 +643,8 @@ tasks:
               ENV_1: "env1_task_env_value"
             include_expansions_in_env:
               - ENV_2
+              - ENV_3
+              - ENV_4
         - command: subprocess.exec
           params:
             binary: bash
@@ -652,4 +654,6 @@ tasks:
               ENV_1: "env1_task_env_value"
             include_expansions_in_env:
               - ENV_2
+              - ENV_3
+              - ENV_4
      
