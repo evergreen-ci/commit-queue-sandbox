@@ -8,6 +8,8 @@ buildvariants:
           - ubuntu2204-small
       tasks:
           - name: parameters-env
+      expansions:
+          ENV_2: "env_2_value"
     - display_name: Tests
       name: ubuntu
       run_on:
@@ -629,9 +631,18 @@ tasks:
           params:
             binary: bash
             working_dir: src
+            args: ["-c", "echo \"Inline 1: $ENV_1 2: $ENV_2\""]
+            env:
+              ENV_1: "env1_value"
+            include_expansions_in_env:
+              - ENV_2
+        - command: subprocess.exec
+          params:
+            binary: bash
+            working_dir: src
             args: ["echo-env.sh"]
             env:
-              ENV_1: "env1"
+              ENV_1: "env1_value"
             include_expansions_in_env:
               - ENV_2
      
