@@ -16,6 +16,7 @@ buildvariants:
           - name: parameters-env
       expansions:
           ENV_2: "env_2_bv_env_value"
+          ENV_3: "env_3_bv_env_value"
     - display_name: Tests
       name: ubuntu
       run_on:
