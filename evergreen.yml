@@ -1,6 +1,12 @@
 stepback: true
 exec_timeout_secs: 3600
 
+parameters:
+    - key: ENV_3
+      value: "env_3_parameter_value"
+    - key: ENV_4
+      value: "env_4_parameter_value"
+
 buildvariants:
     - display_name: Misc
       name: misc
@@ -9,7 +15,7 @@ buildvariants:
       tasks:
           - name: parameters-env
       expansions:
-          ENV_2: "env_2_value"
+          ENV_2: "env_2_bv_env_value"
     - display_name: Tests
       name: ubuntu
       run_on:
@@ -631,9 +637,9 @@ tasks:
           params:
             binary: bash
             working_dir: src
-            args: ["-c", "echo \"Inline 1: $ENV_1 2: $ENV_2\""]
+            args: ["-c", "echo \"Inline 1: $ENV_1 2: $ENV_2 3: $ENV_3 4: $ENV_4\""]
             env:
-              ENV_1: "env1_value"
+              ENV_1: "env1_task_env_value"
             include_expansions_in_env:
               - ENV_2
         - command: subprocess.exec
@@ -642,7 +648,7 @@ tasks:
             working_dir: src
             args: ["echo-env.sh"]
             env:
-              ENV_1: "env1_value"
+              ENV_1: "env1_task_env_value"
             include_expansions_in_env:
               - ENV_2
      
