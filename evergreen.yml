@@ -29,7 +29,6 @@ patch_aliases:
 #       cpu_architecture: x86_64
 #       operating_system: linux
 
-
 buildvariants:
   - name: ubuntu2004-container
     display_name: Ubuntu 20.04 (Container)
@@ -64,8 +63,7 @@ buildvariants:
     expansions:
       module_prefix: hello
     tasks:
-      - name: C_dependent_task
-      - name: A_bad_generator
+      - name: my_first_generator
       - name: unit_tests
         activate: false
         disable: true
@@ -154,25 +152,7 @@ task_groups:
       - validate_commit_message2
 
 tasks:
-  - name: C_dependent_task
-    # depends_on:
-    #   - name: B_dependent_generated_task
-    commands:
-      - command: shell.exec
-        params:
-          shell: bash
-          working_dir: evergreen
-          script: |
-            echo "C_dependent_task"
-  - name: A_bad_generator
-    depends_on:
-      - name: C_dependent_task
-    commands:
-      - command: generate.tasks
-        params:
-          files:
-            - src/evergreen_bad_new.json
-    # Test how periodic build that only includes taskA interacts with patch_optional dep
+  # Test how periodic build that only includes taskA interacts with patch_optional dep
   - name: taskA
     depends_on:
       - name: taskB
