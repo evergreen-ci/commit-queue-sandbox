@@ -1,0 +1,33 @@
+tasks:
+  - name: task1
+    depends_on:
+      - name: '*'
+        variant: '*'
+        status: '*'
+        patch_optional: true
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Task1"
+  - name: task2
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Task2"
+  - name: task3
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "Task3"
+
+buildvariants:
+  - name: variant1
+    display_name: "Variant 1"
+    tasks:
+      - task1
+      - task2
+    run_on:
+        - ubuntu2204-small
