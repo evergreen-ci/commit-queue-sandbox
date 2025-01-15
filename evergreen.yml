@@ -276,12 +276,12 @@ tasks:
             echo "sleeping 3"
             sleep 10
 
-  - name: my_first_generator
+  - name: task_generator
     commands:
       - command: generate.tasks
         params:
           files:
-            - src/evergreen.json
+            - src/generate.json
   - name: test_release
     depends_on:
       - name: unit_tests
