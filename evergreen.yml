@@ -219,6 +219,7 @@ tasks:
           working_dir: src
           script: |
             echo "noop2"
+            git log --oneline -n 10
   - name: validate_commit_message
     commands:
       - command: shell.exec
@@ -303,6 +304,8 @@ tasks:
           working_dir: src
           script: |
             echo "i am patch"
+            git reset --hard ${revision}
+            git log --oneline -n 10
   - name: checkrun_test
     commands:
       - command: shell.exec
