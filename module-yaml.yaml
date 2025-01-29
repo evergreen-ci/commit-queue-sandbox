@@ -6,12 +6,30 @@ tasks:
         params:
           script: |
             echo "Task1"
+  - name: clone-project
+    commands:
+      - command: git.get_project
+        params: 
+          directory: src 
+          revisions: 
+            github-merge-queue-sandbox: ${github-merge-queue-sandbox_rev}
+      - command: shell.exec
+        params:
+          script: |
+            cd src
+            ls .
+            cd github-merge-queue-sandbox
+            ls .
+            cat README.md
 
 buildvariants:
   - name: variant1
+    modules:
+      - github-merge-queue-sandbox
     display_name: "Variant 1"
     tasks:
       - task1
+      - clone-project
     run_on:
         - ubuntu2204-small
 
@@ -20,6 +38,7 @@ modules:
   owner: evergreen-ci
   repo: github-merge-queue-sandbox
   branch: main
+  auto_update: true
 
 include: 
   - filename: commit-queue-include-yaml.yaml
