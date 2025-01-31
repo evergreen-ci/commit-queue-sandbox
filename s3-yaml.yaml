@@ -3,6 +3,17 @@
 # AWS_KEY, AWS_SECRET, and AWS_SESSION_TOKEN need to be replenished every run since they are temporary credentials.
 # Permissions are canned ACL's: https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl
 tasks:
+    - name: s3put-role-arn
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+              temporary_role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+              local_file: src/evergreen.yml
+              remote_file: commit-queue-sandbox/evergreen.yml
+              bucket: ${AWS_BUCKET}
+              permissions: private
+              content_type: text/plain
     - name: s3put-local-files-include-filter
       tags: ['s3put', 'visibility-private', 'permissions-public-read']
       commands:
@@ -225,6 +236,7 @@ buildvariants:
       - s3put-local-files-include-filter
       - s3-symlink-file-correctly
       - s3-symlink-file-incorrectly
+      - s3put-role-arn
     run_on:
         - ubuntu2204-small
 
