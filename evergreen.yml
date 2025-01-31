@@ -80,13 +80,9 @@ buildvariants:
             activate: false
           - name: s3put-test
             activate: false
-          - name: assume_role_legacy
+          - name: assume_role_externalid
             activate: false
-          - name: assume_role_feature_flag
-            activate: false
-          - name: assume_role_legacy_externalid
-            activate: false
-          - name: assume_role_feature_flag_externalid
+          - name: assume_role_no_externalid
             activate: false
       display_tasks:
           - name: display-task
