@@ -249,28 +249,16 @@ task_groups:
           - github_token_task_group_task
 
 tasks:
-    - name: assume_role_legacy
+    - name: assume_role_no_externalid
       commands:
           - command: ec2.assume_role
             params:
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
-    - name: assume_role_feature_flag
-      commands:
-          - command: ec2.assume_role
-            params:
-                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
-                temporary_feature_flag: true
-    - name: assume_role_legacy_externalid
+    - name: assume_role_externalid
       commands:
           - command: ec2.assume_role
             params:
                 role_arn: ${AWS_ASSUME_ROLE_ARN_2}
-    - name: assume_role_feature_flag_externalid
-      commands:
-          - command: ec2.assume_role
-            params:
-                role_arn: ${AWS_ASSUME_ROLE_ARN_2}
-                temporary_feature_flag: true
     - name: s3put-test
       commands:
           - func: clone-project
