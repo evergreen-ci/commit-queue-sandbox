@@ -20,9 +20,7 @@ tasks:
             cd src
             cd github-merge-queue-sandbox
             cat README.md
-            cd ..
-            ls .
-            cd shrub
+            cd ../shrub
             cat README.md
 
 buildvariants:
@@ -35,7 +33,7 @@ buildvariants:
       - task1
       - clone-project
     run_on:
-        - ubuntu2204-small
+      - ubuntu2204-small
 
 modules:
 - name: github-merge-queue-sandbox
