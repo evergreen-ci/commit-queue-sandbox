@@ -13,19 +13,23 @@ tasks:
           directory: src 
           revisions: 
             github-merge-queue-sandbox: ${github-merge-queue-sandbox_rev}
+            zackary: ${zackary_rev}
       - command: shell.exec
         params:
           script: |
             cd src
-            ls .
             cd github-merge-queue-sandbox
+            cat README.md
+            cd ..
             ls .
+            cd zackary
             cat README.md
 
 buildvariants:
   - name: variant1
     modules:
       - github-merge-queue-sandbox
+      - zackary
     display_name: "Variant 1"
     tasks:
       - task1
@@ -39,6 +43,10 @@ modules:
   repo: github-merge-queue-sandbox
   branch: main
   auto_update: true
+- name: shrub
+  owner: evergreen-ci
+  repo: shrub.py
+  branch: zackary
 
 include: 
   - filename: commit-queue-include-yaml.yaml
