@@ -13,7 +13,7 @@ tasks:
           directory: src 
           revisions: 
             github-merge-queue-sandbox: ${github-merge-queue-sandbox_rev}
-            zackary: ${zackary_rev}
+            shrub: ${shrub_rev}
       - command: shell.exec
         params:
           script: |
@@ -22,14 +22,14 @@ tasks:
             cat README.md
             cd ..
             ls .
-            cd zackary
+            cd shrub
             cat README.md
 
 buildvariants:
   - name: variant1
     modules:
       - github-merge-queue-sandbox
-      - zackary
+      - shrub
     display_name: "Variant 1"
     tasks:
       - task1
