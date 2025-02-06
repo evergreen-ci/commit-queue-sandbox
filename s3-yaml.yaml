@@ -10,7 +10,7 @@ tasks:
             params:
               temporary_role_arn: ${AWS_ASSUME_ROLE_ARN_1}
               local_file: src/evergreen.yml
-              remote_file: commit-queue-sandbox/evergreen.yml
+              remote_file: evergreen.yml
               bucket: ${AWS_BUCKET}
               permissions: private
               content_type: text/plain
