@@ -14,6 +14,17 @@ tasks:
               bucket: ${AWS_BUCKET}
               permissions: private
               content_type: text/plain
+    - name: s3put-use-s3-route
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+              temporary_use_s3_route: true
+              local_file: src/evergreen.yml
+              remote_file: evergreen.yml
+              bucket: mciuploads
+              permissions: private
+              content_type: text/plain
     - name: s3put-local-files-include-filter
       tags: ['s3put', 'visibility-private', 'permissions-public-read']
       commands:
