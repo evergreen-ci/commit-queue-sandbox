@@ -248,6 +248,7 @@ buildvariants:
       - s3-symlink-file-correctly
       - s3-symlink-file-incorrectly
       - s3put-role-arn
+      - s3put-use-s3-route
     run_on:
         - ubuntu2204-small
 
