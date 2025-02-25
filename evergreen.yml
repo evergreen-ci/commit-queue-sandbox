@@ -327,4 +327,4 @@ build_baron_settings:
 
 github_pr_aliases:
   - variant: release
-    task: group1
+    task: validate_commit_message
