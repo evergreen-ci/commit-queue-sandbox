@@ -3,6 +3,32 @@
 # AWS_KEY, AWS_SECRET, and AWS_SESSION_TOKEN need to be replenished every run since they are temporary credentials.
 # Permissions are canned ACL's: https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl
 tasks:
+    - name: s3put-mciuploads
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+              local_file: src/evergreen.yml
+              remote_file: ${project_id}/test-new.yml
+              bucket: mciuploads
+              permissions: private
+              content_type: text/plain
+              temporary_use_internal_bucket: true
+              aws_key: ${AWS_ACCESS_KEY_USER_ID}
+              aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
+    - name: s3put-mciuploads-invalid
+      commands:
+          - func: clone-project
+          - command: s3.put
+            params:
+              local_file: src/evergreen.yml
+              remote_file: invalid_path/test-new.yml
+              bucket: mciuploads
+              permissions: private
+              content_type: text/plain
+              temporary_use_internal_bucket: true
+              aws_key: ${AWS_ACCESS_KEY_USER_ID}
+              aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
     - name: s3put-role-arn
       commands:
           - func: clone-project
@@ -12,17 +38,6 @@ tasks:
               local_file: src/evergreen.yml
               remote_file: evergreen.yml
               bucket: ${AWS_BUCKET}
-              permissions: private
-              content_type: text/plain
-    - name: s3put-use-s3-route
-      commands:
-          - func: clone-project
-          - command: s3.put
-            params:
-              temporary_use_s3_route: true
-              local_file: src/evergreen.yml
-              remote_file: evergreen.yml
-              bucket: mciuploads
               permissions: private
               content_type: text/plain
     - name: s3put-local-files-include-filter
@@ -248,7 +263,8 @@ buildvariants:
       - s3-symlink-file-correctly
       - s3-symlink-file-incorrectly
       - s3put-role-arn
-      - s3put-use-s3-route
+      - s3put-mciuploads
+      - s3put-mciuploads-invalid
     run_on:
         - ubuntu2204-small
 
