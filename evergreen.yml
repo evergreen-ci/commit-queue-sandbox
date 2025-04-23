@@ -58,7 +58,7 @@ buildvariants:
     run_on:
       - ubuntu1604-large
     tasks:
-      - name: taskB
+      - name: taskB-mina
         run_on:
           - bynntest
       - name: patch_only_task
@@ -92,7 +92,7 @@ buildvariants:
         create_check_run:
           path_to_outputs: "output.json"
       - taskA
-      - taskB
+      - taskB-mina
     display_tasks:
       - name: display_task
         execution_tasks:
@@ -167,13 +167,13 @@ tasks:
   # Test how periodic build that only includes taskA interacts with patch_optional dep
   - name: taskA
     depends_on:
-      - name: taskB
+      - name: taskB-mina
         patch_optional: true
     commands:
       - command: shell.exec
         params:
           script: echo ${task_name}
-  - name: taskB
+  - name: taskB-mina
     commands:
       - command: shell.exec
         params:
