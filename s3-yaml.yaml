@@ -13,7 +13,6 @@ tasks:
               bucket: mciuploads
               permissions: private
               content_type: text/plain
-              temporary_use_internal_bucket: true
               aws_key: ${AWS_ACCESS_KEY_USER_ID}
               aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
     - name: s3put-mciuploads-invalid
@@ -26,7 +25,6 @@ tasks:
               bucket: mciuploads
               permissions: private
               content_type: text/plain
-              temporary_use_internal_bucket: true
               aws_key: ${AWS_ACCESS_KEY_USER_ID}
               aws_secret: ${AWS_SECRET_ACCESS_KEY_USER}
     - name: s3put-role-arn
@@ -34,7 +32,7 @@ tasks:
           - func: clone-project
           - command: s3.put
             params:
-              temporary_role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+              role_arn: ${AWS_ASSUME_ROLE_ARN_1}
               local_file: src/evergreen.yml
               remote_file: evergreen.yml
               bucket: ${AWS_BUCKET}
