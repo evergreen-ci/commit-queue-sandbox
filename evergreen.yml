@@ -1,7 +1,6 @@
 ## this is a change
 ignore:
   - "*.md" # dont schedule tests if a commit only changes markdown files!
-stepback: true
 
 # includes:
 #   - include1.yml
