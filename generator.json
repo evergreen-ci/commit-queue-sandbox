@@ -19,8 +19,7 @@
           "activate": true
         },
         {
-          "name": "pregenerator-task",
-          "activate": true
+          "name": "pregenerator-task"
         }
       ]
     }
