@@ -464,7 +464,7 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    echo "Task"
+                    echo "This is activated by the 'generator' task."
                     exit 0
     - name: generator
       commands:

@@ -3,9 +3,7 @@
     {
       "name": "generated-ubuntu",
       "display_name": "Generated Tests",
-      "run_on": [
-        "ubuntu2204-small"
-      ],
+      "run_on": ["ubuntu2204-small"],
       "tasks": [
         {
           "name": "generated-task-1"
@@ -18,6 +16,10 @@
         },
         {
           "name": "generated-task-4",
+          "activate": true
+        },
+        {
+          "name": "pregenerator-task",
           "activate": true
         }
       ]
