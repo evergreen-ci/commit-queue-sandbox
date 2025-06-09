@@ -458,6 +458,14 @@ tasks:
                 script: |
                     echo "Task"
                     exit 0
+    - name: pregenerator-task
+      activate: false
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Task"
+                    exit 0
     - name: generator
       commands:
           - func: clone-project
