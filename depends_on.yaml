@@ -26,6 +26,7 @@ tasks:
 buildvariants:
   - name: variant1
     display_name: "Variant 1"
+    batchtime: 100000
     tasks:
       - name: task1
       - name: task2
