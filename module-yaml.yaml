@@ -29,6 +29,7 @@ buildvariants:
       - github-merge-queue-sandbox
       - shrub
     display_name: "Variant 1"
+    batchtime: 100000
     tasks:
       - name: task1
         batchtime: 100000
