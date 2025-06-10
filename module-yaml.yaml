@@ -29,7 +29,6 @@ buildvariants:
       - github-merge-queue-sandbox
       - shrub
     display_name: "Variant 1"
-    batchtime: 50
     tasks:
       - name: task1
       - name: clone-project
