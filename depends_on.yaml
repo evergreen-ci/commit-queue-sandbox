@@ -11,6 +11,7 @@ tasks:
           script: |
             echo "Task1"
   - name: task2
+    batchtime: 100000
     commands:
       - command: shell.exec
         params:
