@@ -30,8 +30,9 @@ buildvariants:
       - shrub
     display_name: "Variant 1"
     tasks:
-      - task1
-      - clone-project
+      - name: task1
+        batchtime: 100000
+      - name: clone-project
     run_on:
       - ubuntu2204-small
 
