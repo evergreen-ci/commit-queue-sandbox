@@ -5,7 +5,7 @@ tasks:
       - command: shell.exec
         params:
           script: |
-            echo "Task1 in module-yaml.yaml new"
+            echo "Task1 in module-yaml.yaml new 2"
   - name: clone-project
     commands:
       - command: git.get_project
