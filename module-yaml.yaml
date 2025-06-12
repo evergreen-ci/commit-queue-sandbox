@@ -32,6 +32,16 @@ buildvariants:
     tasks:
       - name: task1
       - name: clone-project
+        batchtime: 5
+    run_on:
+      - ubuntu2204-small
+  - name: variant_new
+    display_name: "New_Variant"
+    batchtime: 7
+    tasks:
+      - name: task1
+        batchtime: 6
+      - name: clone-project
     run_on:
       - ubuntu2204-small
 
