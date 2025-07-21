@@ -16,7 +16,7 @@ pre: &pre
 patch_aliases:
   - alias: "chaya-tag-from-yaml"
     variant_tags: ["commit-queue-variant"]
-    task: ".*"
+    task: *aliases
 
 # containers:
 #   - name: evg-container
@@ -77,8 +77,6 @@ buildvariants:
     tasks:
       - name: task_generator
       - name: unit_tests
-        activate: false
-        disable: true
       - name: validate_commit_message
         create_check_run:
           path_to_outputs: ""
@@ -143,7 +141,7 @@ functions:
 
 parameters:
   - key: my_param
-    value: hello world1!
+    value: ${this_private}
     description: something to test parameters woot
 
 post:
@@ -194,7 +192,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "admin bynn: ${bynnbynn}"
+            echo "admin bynn: ${my_param}"
             exit 1
   - name: test_passing_param_to_child
     tags: ["my_tag"]
@@ -210,7 +208,7 @@ tasks:
           working_dir: src
           script: |
             echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
-            echo "hello world"
+            echo "${my_param}"
 
   - name: unit_tests
     commands:
@@ -219,7 +217,7 @@ tasks:
           num_hosts: 1
           provider: docker
           background: false
-          command: "echo hello evan test"
+          command: "echo ${my_param}"
           distro: ubuntu1604-container
           image: amazonlinux
           stdout_file_name: ${workdir}/garasign_container.out.log
