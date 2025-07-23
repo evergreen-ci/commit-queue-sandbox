@@ -254,6 +254,7 @@ tasks:
             params:
                 script: |
                     echo "Running go test"
+                    mkdir output
                     go test -v ./... > output/notestsrc.suite
           - command: gotest.parse_files
             params:
