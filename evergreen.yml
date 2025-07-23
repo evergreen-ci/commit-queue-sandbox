@@ -259,13 +259,12 @@ tasks:
                     - GOROOT
                 script: |
                     echo "Running go test"
+                    cd src
                     mkdir output
-                    ls /opt/golang
-                    ls /opt/golang/go1.24/bin
                     /opt/golang/go1.24/bin/go test -v ./... > output/notestsrc.suite
           - command: gotest.parse_files
             params:
-                files: ["output/*.suite"]
+                files: ["src/output/*.suite"]
     - name: assume_role_no_externalid
       commands:
           - command: ec2.assume_role
