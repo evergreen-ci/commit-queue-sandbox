@@ -84,6 +84,8 @@ buildvariants:
             activate: false
           - name: assume_role_no_externalid
             activate: false
+          - name: gotestparsefiles
+            activate: false
       display_tasks:
           - name: display-task
             execution_tasks:
@@ -245,6 +247,17 @@ task_groups:
           - github_token_task_group_task
 
 tasks:
+    - name: gotestparsefiles
+      commands:
+          - func: clone-project
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Running go test"
+                    go test -v ./... > output/notestsrc.suite
+          - command: gotest.parse_files
+            params:
+                files: ["output/*.suite"]
     - name: assume_role_no_externalid
       commands:
           - command: ec2.assume_role
