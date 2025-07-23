@@ -17,6 +17,9 @@ buildvariants:
       expansions:
           ENV_2: "env_2_bv_env_value"
           ENV_3: "env_3_bv_env_value"
+          goos: linux
+          goarch: amd64
+          GOROOT: /opt/golang/go1.24
     - display_name: Tests
       name: ubuntu
       run_on:
@@ -252,10 +255,14 @@ tasks:
           - func: clone-project
           - command: shell.exec
             params:
+                include_expansions_in_env:
+                    - GOROOT
                 script: |
                     echo "Running go test"
                     mkdir output
-                    go test -v ./... > output/notestsrc.suite
+                    ls /opt/golang
+                    ls /opt/golang/go1.24
+                    /opt/golang/go1.24 test -v ./... > output/notestsrc.suite
           - command: gotest.parse_files
             params:
                 files: ["output/*.suite"]
