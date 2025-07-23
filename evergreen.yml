@@ -261,7 +261,7 @@ tasks:
                     echo "Running go test"
                     cd src
                     mkdir output
-                    /opt/golang/go1.24/bin/go test -v ./... > output/notestsrc.suite
+                    /opt/golang/go1.24/bin/go test -v ./... | tee output/src.suite
           - command: gotest.parse_files
             params:
                 files: ["src/output/*.suite"]
