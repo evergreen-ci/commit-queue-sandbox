@@ -65,7 +65,7 @@ buildvariants:
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
-      # - name: test-restart-on-fail
+      - name: test-restart-on-fail
       - name: test_release
       - name: test_release2
       # - name: task_generator
