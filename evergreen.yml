@@ -56,14 +56,20 @@ buildvariants:
   - name: bynns single task thing
     display_name: single task test
     run_on:
-      - ubuntu1604-large
+      - bynntest
     tasks:
       - name: taskB
-        run_on:
-          - bynntest
       - name: patch_only_task
-        run_on:
-          - bynntest
+      - name: group1
+      - name: unit_tests
+      - name: batchtime_task
+      - name: test_passing_param_to_child
+      - name: test-receiving-parent-param
+      - name: test-restart-on-fail
+      - name: test_release
+      - name: test_release2
+      # - name: task_generator
+
 
   - display_name: Ubuntu 20.04
     name: ubuntu2004
@@ -159,7 +165,6 @@ task_groups:
         params:
           directory: src
     tasks:
-      - test-restart-on-fail
       - validate_commit_message
       - validate_commit_message2
 
@@ -238,7 +243,7 @@ tasks:
           script: |
             set -o verbose
             set -o errexit
-            sleep 240
+            sleep 1
             if [ "${is_commit_queue}" = "true" ]; then
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
@@ -255,7 +260,7 @@ tasks:
           script: |
             set -o verbose
             set -o errexit
-            sleep 240
+            sleep 1
             if [ "${is_commit_queue}" = "true" ]; then
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
