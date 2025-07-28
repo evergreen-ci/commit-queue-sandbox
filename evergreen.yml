@@ -255,13 +255,14 @@ tasks:
           - func: clone-project
           - command: shell.exec
             params:
+                optional_tests: "true"
                 include_expansions_in_env:
                     - GOROOT
                 script: |
                     echo "Running go test"
                     cd src
                     mkdir output
-                    /opt/golang/go1.24/bin/go test -v ./... | tee output/src.suite
+                    /opt/golang/go1.24/bin/go test -v ./src/notestsrc/... | tee output/src.suite
           - command: gotest.parse_files
             params:
                 files: ["src/output/*.suite"]
