@@ -1,5 +1,3 @@
 # commit-queue-playground
 
-Repository to experiment with the commit queue.
-
-T.
+Repository to experiment with the GH commit queue.
