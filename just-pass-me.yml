@@ -1,0 +1,15 @@
+buildvariants:
+    - display_name: Passing
+      name: pass
+      run_on:
+          - ubuntu2204-small
+      tasks:
+          - name: passtest
+
+tasks:
+    - name: passtest
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "We passing this one"
