@@ -87,7 +87,9 @@ buildvariants:
             activate: false
           - name: assume_role_no_externalid
             activate: false
-          - name: gotestparsefiles
+          - name: gotestparsefiles_must
+            activate: false
+          - name: gotestparsefiles_nope
             activate: false
       display_tasks:
           - name: display-task
@@ -250,12 +252,27 @@ task_groups:
           - github_token_task_group_task
 
 tasks:
-    - name: gotestparsefiles
+    - name: gotestparsefiles_must
+      must_have_test_results: true
       commands:
           - func: clone-project
           - command: shell.exec
             params:
-                optional_tests: "true"
+                include_expansions_in_env:
+                    - GOROOT
+                script: |
+                    echo "Running go test"
+                    cd src
+                    mkdir output
+                    /opt/golang/go1.24/bin/go test -v ./src/notestsrc/... | tee output/src.suite
+          - command: gotest.parse_files
+            params:
+                files: ["src/output/*.suite"]
+    - name: gotestparsefiles_nope
+      commands:
+          - func: clone-project
+          - command: shell.exec
+            params:
                 include_expansions_in_env:
                     - GOROOT
                 script: |
