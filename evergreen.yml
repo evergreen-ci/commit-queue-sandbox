@@ -64,9 +64,13 @@ buildvariants:
       - name: patch_only_task
         run_on:
           - bynntest
+    paths:
+      - tests/commit-queue-playground/*
 
   - display_name: Ubuntu 20.04
     name: ubuntu2004
+    paths:
+      - !README.md
     tags: [commit-queue-variant, whaat]
     modules:
       - evergreen
