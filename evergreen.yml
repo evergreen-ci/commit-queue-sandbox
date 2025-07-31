@@ -65,12 +65,12 @@ buildvariants:
         run_on:
           - bynntest
     paths:
-      - tests/commit-queue-playground/*
+      - "tests/commit-queue-playground/*"
 
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     paths:
-      - !README.md
+      - "!README.md"
     tags: [commit-queue-variant, whaat]
     modules:
       - evergreen
