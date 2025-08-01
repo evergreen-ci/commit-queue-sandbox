@@ -2,6 +2,7 @@
 
 Repository here to experiment with the commit queue or whatever else.
 
+## Because I'm making a change to only the README, ubuntu2204 should not trigger.. I think
 ## Testing
 
 # Run tests with pytest.
