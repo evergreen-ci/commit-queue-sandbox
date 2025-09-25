@@ -1,344 +1,249 @@
-stepback: tru
-
-# includes:
-#   - include1.yml
-
-pre_error_fails_task: true
-pre: &pre
+pre:
   - command: git.get_project
     params:
       directory: src
-  - func: create virtualenv
 
-patch_aliases:
-  - alias: "chaya-tag-from-yaml"
-    variant_tags: ["commit-queue-variant"]
-    task: ".*"
-
-# containers:
-#   - name: evg-container
-#     working_dir: /
-#     image: "hadjri/evg-container-self-tests"
-#     resources:
-#       cpu: 4096
-#       memory_mb: 8192
-#     system:
-#       cpu_architecture: x86_64
-#       operating_system: linux
-
+# NOTE: for a buildvariant to run on PR,
+# it must have `Test` in the name.
 buildvariants:
-  - name: ubuntu2004-container
-    display_name: Ubuntu 20.04 (Container)
-    run_on:
-      - evg-container
-    expansions:
-      goos: linux
-      goarch: amd64
-      IS_DOCKER: true
-      GOROOT: /usr/local/go
-      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2004-5.0.14.tgz
-      decompress: tar zxvf
-    tasks:
-      - name: unit_tests
-        activate: false
-      - name: validate_commit_message
-      - name: patch_only_task
-      - name: batchtime_task
-      - name: test_passing_param_to_child
-      - name: test-receiving-parent-param
-      - name: test-restart-on-fail
-      - name: test_release
-      - name: test_release2
-
-  - name: bynns single task thing
-    display_name: single task test
-    run_on:
-      - ubuntu1604-large
-    tasks:
-      - name: taskB
-        run_on:
-          - bynntest
-      - name: patch_only_task
-        run_on:
-          - bynntest
+  # Run project unit and integration tests
+  - name: Test
+    display_name: Test
+    patch_only: true # only run the task group for patch builds (PR commits)
     paths:
-      - "tests/commit-queue-playground/*"
-
-  - display_name: Ubuntu 20.04
-    name: ubuntu2004
+      - "packages/**"
+      - "package*.json"
+      - ".evg.yml"
+    run_on:
+      - ubuntu2204-small # other runner types can be found here - https://wiki.corp.mongodb.com/display/DBDEVPROD/Guidelines+around+Evergreen+distros
+    tasks:
+      - name: TestTaskGroup
+  # Test Kubernetes CI config
+  - name: TestKubeCi
+    display_name: TestKubeCi
+    patch_only: true # only run the task group for patch builds (PR commits)
     paths:
-      - "!README.md"
-      - "!evergreen.yml"
-    tags: [commit-queue-variant, whaat]
-    modules:
-      - evergreen
+      - ".infra/**"
     run_on:
-      - ubuntu1604-large
+      - ubuntu2204-small # other runner types can be found here - https://wiki.corp.mongodb.com/display/DBDEVPROD/Guidelines+around+Evergreen+distros
+    tasks:
+      - name: TestKubeCiTaskGroup
     expansions:
-      module_prefix: hello
-    tasks:
-      - name: task_generator
-      - name: unit_tests
-        activate: false
-        disable: true
-      - name: validate_commit_message
-        create_check_run:
-          path_to_outputs: ""
-      - name: patch_only_task
-      - name: batchtime_task
-      - name: test_passing_param_to_child
-      - name: test-receiving-parent-param
-      - name: test-restart-on-fail
-        batchtime: 1
-      - name: checkrun_test
-        create_check_run:
-          path_to_outputs: "output.json"
-      - taskA
-      - taskB
-    display_tasks:
-      - name: display_task
-        execution_tasks:
-          - validate_commit_message
-  - display_name: Test Tags
-    name: release
+      role_arn: arn:aws:iam::664315256653:role/ai-assistant-tf-project
+  - name: Deploy
+    display_name: Deploy
+    paths:
+      - "packages/**"
+      - "package*.json"
+      - "*.dockerfile"
+      - ".evg.yml"
+      - ".infra/**"
     run_on:
-      - ubuntu2004-small
+      - ubuntu2204-small # other runner types can be found here - https://wiki.corp.mongodb.com/display/DBDEVPROD/Guidelines+around+Evergreen+distros
     tasks:
-      - name: group1
+      - name: DeployTaskGroup
+    expansions:
+      role_arn: arn:aws:iam::664315256653:role/ai-assistant-tf-project
 
-  - name: git-env-test
-    display_name: "Giv Env Test"
-    modules:
-      - evergreen
-    run_on:
-      - ubuntu2004-small
-    tasks:
-      - name: test-restart-on-fail
-      - name: task_generator
-        create_check_run:
-          path_to_outputs: "path"
+tasks:
+  - name: test-all
+    exec_timeout_secs: 90000
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          shell: "bash"
+          add_expansions_to_env: true
+          script: |
+            set -eou pipefail
 
-  - name: cron-test
-    cron: "*/5 * * * *"
-    display_name: "Cron Test"
-    run_on:
-      - ubuntu2004-small
-    display_tasks:
-      - name: displayTask1
-        execution_tasks:
-          - test-restart-on-fail
-          - validate_commit_message
-          - validate_commit_message2
-    tasks:
-      - name: validate_commit_message
-      - name: validate_commit_message2
-      - name: test-restart-on-fail
+            # Source nvm and use Node 20
+            export NVM_DIR="/opt/nvm"
+            if [ -s "$NVM_DIR/nvm.sh" ]; then
+              \. "$NVM_DIR/nvm.sh"  # This loads nvm
+            else
+              echo "ERROR: nvm not found at $NVM_DIR/nvm.sh"
+              echo "Checking for nvm in other locations..."
+              find /opt -name "nvm.sh" 2>/dev/null || true
+              find /usr/local -name "nvm.sh" 2>/dev/null || true
+              echo "Checking if node is already available..."
+              which node || echo "Node not found in PATH"
+              node --version || echo "Cannot get node version"
+              exit 1
+            fi
 
-functions:
-  create virtualenv:
-    - command: shell.exec
-      params:
-        working_dir: src
-        script: |
-          echo "noop"
-          git describe
+            nvm install 20
+            nvm use 20
+            echo "Current Node version: $(node --version)"
+            echo "Current npm version: $(npm --version)"
 
-parameters:
-  - key: my_param
-    value: hello world1!
-    description: something to test parameters woot
+            npm ci
+            npm run build
+            npm run test
+          env:
+            NODE_OPTIONS: "--max-old-space-size=4096"
+            PORT: "3000"
+            OPENAI_EMBEDDING_MODEL: text-embedding-ada-002
+            OPENAI_EMBEDDING_MODEL_VERSION: "2023-05-15"
+            MONGODB_DATABASE_NAME: docs-chatbot-test
+            VECTOR_SEARCH_INDEX_NAME: vector_index
+            OPENAI_CHAT_COMPLETION_MODEL_VERSION: 2023-06-01-preview
+            OPENAI_PREPROCESSOR_CHAT_COMPLETION_DEPLOYMENT: gpt-4o-mini
+            OPENAI_ANALYZER_CHAT_COMPLETION_DEPLOYMENT: gpt-4.1-mini
+            OPENAI_API_VERSION: "2024-06-01"
+            OPENAI_RESOURCE_NAME: "docs-ai-chatbot-useast2resource-sandbox"
+            BRAINTRUST_TEXT_TO_DRIVER_PROJECT_NAME: "text-to-node-js-driver-benchmark"
+            BRAINTRUST_ENDPOINT: "<placeholder>"
+            OPENAI_ENDPOINT: https://docs-ai-chatbot-useast2resource-sandbox.openai.azure.com/
+            OPENAI_VERIFIED_ANSWER_EMBEDDING_DEPLOYMENT: docs-chatbot-embedding-ada-002
+            OPENAI_RETRIEVAL_EMBEDDING_DEPLOYMENT: text-embedding-3-small
+            OPENAI_CHAT_COMPLETION_DEPLOYMENT: gpt-4.1
+            JUDGE_EMBEDDING_MODEL: "text-embedding-3-small"
+            JUDGE_LLM: "gpt-4o-mini"
 
-post:
-  - command: attach.xunit_results
-    params:
-      file: src/junit-*.xml
+  - name: lint-kube-ci
+    exec_timeout_secs: 9000
+    depends_on:
+      - name: test-all
+        status: success
+    commands:
+      - command: ec2.assume_role
+        params:
+          role_arn: ${role_arn}
+      - command: shell.exec
+        params:
+          shell: "bash"
+          script: |
+            set -eou pipefail
+
+            sudo apt install amazon-ecr-credential-helper
+            docker-credential-ecr-login -v
+
+            mkdir -p /home/ubuntu/.docker/
+
+            cat << EOF > /home/ubuntu/.docker/config.json
+            {"credsStore": "ecr-login"}
+            EOF
+      - command: shell.exec
+        display_name: kube-ci - lint + helm-diff
+        params:
+          add_expansions_to_env: true # needed to get the AWS secrets from ec2.assume_role
+          shell: "bash"
+          working_dir: src
+          env:
+            workspace: /src
+          script: |
+            set -euxo pipefail
+
+            docker run --rm \
+            -e KUBE_CI_SKIP_COMMENTS=true \
+            -e CI=$CI \
+            -e EVERGREEN_BRANCH_NAME="${branch_name}" \
+            -e EVERGREEN_WORKSPACE="$workspace" \
+            -v ${workdir}$workspace:$workspace \
+            -w $workspace \
+            --entrypoint "" \
+            664315256653.dkr.ecr.us-east-1.amazonaws.com/sre/kube-ci-runner:15c24dd05a5ca11a6695e0fb09daec54c9e6b947 \
+            sh -c "git config --global --add safe.directory '*' && bash -x /yellow/cmd/kube-ci-runner/kube-ci-runner"
+
+  - name: build-push
+    exec_timeout_secs: 9000
+    depends_on:
+      - name: lint-kube-ci
+        status: success
+      - name: test-all
+        status: success
+    commands:
+      - command: ec2.assume_role
+        params:
+          role_arn: ${role_arn}
+      # setup docker to be able to pull from xgen-cloud/docker-base-images and push to the SRE ECR.
+      - command: shell.exec
+        params:
+          shell: "bash"
+          script: |
+            set -eou pipefail
+
+            sudo apt install amazon-ecr-credential-helper
+            docker-credential-ecr-login -v
+
+            mkdir -p /home/ubuntu/.docker/
+
+            cat << EOF > /home/ubuntu/.docker/config.json
+            {"credsStore": "ecr-login"}
+            EOF
+        # https://docs.devprod.prod.corp.mongodb.com/evergreen/Project-Configuration/Project-Commands#shellexec
+      - command: shell.exec
+        display_name: Build + Push
+        params:
+          add_expansions_to_env: true # needed to get the AWS secrets from ec2.assume_role
+          shell: "bash"
+          working_dir: src
+          script: |
+            set -euxo pipefail
+
+            ECR_BASE="664315256653.dkr.ecr.us-east-1.amazonaws.com/ai-assistant/chatbot-server-mongodb-public"
+            IMAGE_TAG="$ECR_BASE:${github_commit}"
+
+            docker build -f chat-server.dockerfile --build-arg "GIT_VERSION=${github_commit}" -t $IMAGE_TAG .
+
+            if [ "${is_patch}" != "true" ]; then
+              docker push $IMAGE_TAG
+              echo "✅ Pushed docker image $IMAGE_TAG"
+            else
+              echo "Skipping docker push for patch builds"
+            fi
+            echo ${github_commit} >> version
+
+      - command: s3.put
+        display_name: Trigger Dev Deploy
+        params:
+          role_arn: ${role_arn}
+          local_file: src/version
+          remote_file: chatbot-server-mongodb-public/dev
+          bucket: version-pointers-ai-assistant
+          region: us-east-1
+          permissions: bucket-owner-read
+          content_type: text
+          patchable: false # only trigger deploys when its not a patch
 
 task_groups:
-  - name: group1
-    max_hosts: 1
+  - name: TestTaskGroup
+    setup_group_can_fail_task: true
+    allowed_requesters:
+      - github_pr
+      - patch
+      - ad_hoc
     setup_group:
       - command: git.get_project
         params:
           directory: src
+    max_hosts: 1
     tasks:
-      - test-restart-on-fail
-      - validate_commit_message
-      - validate_commit_message2
-
-tasks:
-  # Test how periodic build that only includes taskA interacts with patch_optional dep
-  - name: taskA
-    depends_on:
-      - name: taskB
-        patch_optional: true
-    commands:
-      - command: shell.exec
+      - test-all
+  - name: TestKubeCiTaskGroup
+    setup_group_can_fail_task: true
+    allowed_requesters:
+      - github_pr
+      - patch
+      - ad_hoc
+    setup_group:
+      - command: git.get_project
         params:
-          script: echo ${task_name}
-  - name: taskB
-    commands:
-      - command: shell.exec
+          directory: src
+    max_hosts: 1
+    tasks:
+      - lint-kube-ci
+  - name: DeployTaskGroup
+    setup_group_can_fail_task: true
+    allowed_requesters:
+      - commit
+    setup_group:
+      - command: git.get_project
         params:
-          script: echo ${task_name}
-  - name: gen_task_template
-    depends_on:
-      - name: task_generator
-        variant: release
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "noop2"
-  - name: test-restart-on-fail
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "admin bynn: ${bynnbynn}"
-            exit 1
-  - name: test_passing_param_to_child
-    tags: ["my_tag"]
-    commands:
-      - command: downstream_expansions.set
-        params:
-          file: src/downstream_expansions.yml
-  - name: test-receiving-parent-param
-    disable: true
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "parent_param_1: ${evg_param_1}, parent_param_2: ${evg_param_2}"
-            echo "hello world"
-
-  - name: unit_tests
-    commands:
-      - command: host.create
-        params:
-          num_hosts: 1
-          provider: docker
-          background: false
-          command: "echo hello evan test"
-          distro: ubuntu1604-container
-          image: amazonlinux
-          stdout_file_name: ${workdir}/garasign_container.out.log
-          stderr_file_name: ${workdir}/garasign_container.err.log
-  - name: batchtime_task
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "noop2"
-  - name: validate_commit_message
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            set -o verbose
-            set -o errexit
-            sleep 240
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-  - name: validate_commit_message2
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            set -o verbose
-            set -o errexit
-            sleep 240
-            if [ "${is_commit_queue}" = "true" ]; then
-              cat > commit_message.txt <<END_OF_COMMIT_MSG
-              ${commit_message}
-            END_OF_COMMIT_MSG
-
-              commit_message_content=$(cat commit_message.txt)
-
-              echo "$commit_message_content"
-            fi
-  - name: test-restart
-    priority: 3
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            echo "sleeping"
-            ls src
-            sleep 10
-            . src/task.sh
-            echo "triggering restart"
-            post_evergreen_status failed test "test desc" false true
-      - command: shell.exec
-        params:
-          script: |
-            echo "sleeping 2"
-            sleep 10
-      - command: shell.exec
-        params:
-          script: |
-            echo "sleeping 3"
-            sleep 10
-
-  - name: task_generator
-    commands:
-      - command: generate.tasks
-        params:
-          files:
-            - src/generate.json
-  - name: test_release
-    depends_on:
-      - name: unit_tests
-        variant: "*"
-  - name: test_release2
-    depends_on:
-      - name: test_release
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "i am a script"
-  - name: patch_only_task
-    patch_only: true
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "i am patch"
-  - name: checkrun_test
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "i am become checkrun"
-
-modules:
-  - name: evergreen
-    repo: git@github.com:evergreen-ci/evergreen.git
-    prefix: ${workdir}/src
-    branch: main
-  - name: test-trigger
-    repo: git@github.com:evergreen-ci/evergreen.git
-    prefix: ${workdir}/src
-    branch: main
-
-build_baron_settings:
-  ticket_create_project: "EVG"
-  ticket_search_projects: ["EVG"]
- 
-github_checks_aliases:
-  - variant: ".*"
-    task: ".*"
+          directory: src
+    max_hosts: 1
+    tasks:
+      - lint-kube-ci
+      - test-all
+      - build-push
