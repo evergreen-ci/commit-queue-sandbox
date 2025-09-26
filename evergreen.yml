@@ -47,7 +47,7 @@ buildvariants:
 
 tasks:
   - name: test-all
-    exec_timeout_secs: 90000
+    exec_timeout_secs: 9000
     commands:
       - command: shell.exec
         params:
