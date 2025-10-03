@@ -9,6 +9,16 @@ pre: &pre
     params:
       directory: src
   - func: create virtualenv
+  - command: test_selection.get
+    params:
+      tests_file: src/test_input.json
+      output_file: src/test_output.json
+  - command: shell.exec
+    params:
+      working_dir: src
+      script: |
+        cat test_input.json
+        cat test_output.json
 
 patch_aliases:
   - alias: "chaya-tag-from-yaml"
@@ -73,7 +83,7 @@ buildvariants:
     modules:
       - evergreen
     run_on:
-      - ubuntu1604-large
+      - ubuntu2204-large
     expansions:
       module_prefix: hello
     tasks:
