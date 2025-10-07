@@ -9,16 +9,6 @@ pre: &pre
     params:
       directory: src
   - func: create virtualenv
-  - command: test_selection.get
-    params:
-      tests_file: src/test_input.json
-      output_file: src/test_output.json
-  - command: shell.exec
-    params:
-      working_dir: src
-      script: |
-        cat test_input.json
-        cat test_output.json
 
 patch_aliases:
   - alias: "chaya-tag-from-yaml"
@@ -83,7 +73,7 @@ buildvariants:
     modules:
       - evergreen
     run_on:
-      - ubuntu2204-large
+      - ubuntu1604-large
     expansions:
       module_prefix: hello
     tasks:
@@ -115,6 +105,12 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
+
+  - name: test-selection
+    display_name: "Test Selection"
+    run_on: ubuntu2204-small
+    tasks:
+      - test-selection-example
 
   - name: git-env-test
     display_name: "Giv Env Test"
@@ -162,6 +158,9 @@ post:
   - command: attach.xunit_results
     params:
       file: src/junit-*.xml
+  - command: attach.results
+    params:
+      file_location: src/test_selection_results.json
 
 task_groups:
   - name: group1
@@ -334,6 +333,22 @@ tasks:
           working_dir: src
           script: |
             echo "i am become checkrun"
+  - name: test-selection-example
+    patch_only: true
+    commands:
+      - command: test_selection.get
+        params:
+          tests_file: src/test_selection_input.json
+          output_file: src/test_selection_output.json
+      - command: shell.exec
+        params:
+          script: cat src/test_selection_output.json
+      - command: subprocess.exec
+        # kim: TODO: write shell script to create attach.results file from test_output.json
+        params:
+          binary: python3
+          working_dir: src
+          args: ["generate_test_results.py", "test_selection_output.json"]
 
 modules:
   - name: evergreen
