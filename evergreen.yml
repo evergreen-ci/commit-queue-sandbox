@@ -14,6 +14,9 @@ patch_aliases:
   - alias: "chaya-tag-from-yaml"
     variant_tags: ["commit-queue-variant"]
     task: ".*"
+github_pr_aliases:
+  - variant_tags: ["release"]
+    task_tags: ["validate"]
 
 # containers:
 #   - name: evg-container
