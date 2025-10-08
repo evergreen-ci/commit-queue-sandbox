@@ -106,6 +106,13 @@ buildvariants:
     tasks:
       - name: group1
 
+  - name: test-selection
+    display_name: "Test Selection"
+    run_on: ubuntu2204-small
+    patch_only: true
+    tasks:
+      - test-selection-example
+
   - name: git-env-test
     display_name: "Giv Env Test"
     modules:
@@ -152,6 +159,9 @@ post:
   - command: attach.xunit_results
     params:
       file: src/junit-*.xml
+  - command: attach.results
+    params:
+      file_location: src/test_selection_results.json
 
 task_groups:
   - name: group1
@@ -324,6 +334,22 @@ tasks:
           working_dir: src
           script: |
             echo "i am become checkrun"
+  - name: test-selection-example
+    commands:
+      # Run the test_selection.get command to get the recommended list of tests.
+      - command: test_selection.get
+        params:
+          tests_file: src/test_selection_input.json
+          output_file: src/test_selection_output.json
+      - command: shell.exec
+        params:
+          script: cat src/test_selection_output.json
+      # Generate dummy test results from the recommended list of tests.
+      - command: subprocess.exec
+        params:
+          binary: python3
+          working_dir: src
+          args: ["generate_test_results.py", "test_selection_output.json"]
 
 modules:
   - name: evergreen
