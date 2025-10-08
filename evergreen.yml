@@ -109,6 +109,7 @@ buildvariants:
   - name: test-selection
     display_name: "Test Selection"
     run_on: ubuntu2204-small
+    patch_only: true
     tasks:
       - test-selection-example
 
@@ -334,8 +335,8 @@ tasks:
           script: |
             echo "i am become checkrun"
   - name: test-selection-example
-    patch_only: true
     commands:
+      # Run the test_selection.get command to get the recommended list of tests.
       - command: test_selection.get
         params:
           tests_file: src/test_selection_input.json
@@ -343,8 +344,8 @@ tasks:
       - command: shell.exec
         params:
           script: cat src/test_selection_output.json
+      # Generate dummy test results from the recommended list of tests.
       - command: subprocess.exec
-        # kim: TODO: write shell script to create attach.results file from test_output.json
         params:
           binary: python3
           working_dir: src
