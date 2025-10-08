@@ -3,9 +3,14 @@ import sys
 import time
 
 def main():
+    '''
+    Basic script for test selection integration. All it does is generate dummy
+    test results for the tests recommended in the input JSON file.
+    '''
     if len(sys.argv) < 2:
         print("Usage: generate_test_results.py <test_file>")
         sys.exit(1)
+
     recommended_test_file = sys.argv[1]
     with open(recommended_test_file, "r") as file:
         recommended_tests = json.load(file)
@@ -14,6 +19,8 @@ def main():
 
     result_data = {"results": []}
     for name in names:
+        # Auto-generate passing test results for all recommended tests in
+        # the attach.results format.
         curr_time = int(time.time())
         result_data["results"].append({
             "status": "pass",
@@ -21,7 +28,6 @@ def main():
             "start": curr_time,
             "end": curr_time,
         })
-
 
     output_file = "test_selection_results.json"
     with open(output_file, "w") as file:
