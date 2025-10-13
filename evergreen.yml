@@ -109,7 +109,6 @@ buildvariants:
   - name: test-selection
     display_name: "Test Selection"
     run_on: ubuntu2204-small
-    patch_only: true
     tasks:
       - test-selection-example
 
