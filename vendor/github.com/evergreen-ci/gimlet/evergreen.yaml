@@ -1,0 +1,216 @@
+stepback: false
+command_type: test
+ignore:
+  - "*.md" # don't schedule tests if a commit only changes markdown files
+  - "*.rst"
+  - ".github/*"
+
+#######################################
+#         YAML Templates              #
+#######################################
+variables:
+  - &run-build
+    # runs a build operations. The task name in evergreen should
+    # correspond to a make target for the build operation.
+    name: test
+    must_have_test_results: true
+    commands:
+      - func: get-project-and-modules
+      - func: setup-mongodb
+      - func: run-make
+        vars: { target: "${task_name}" }
+  - &run-build-with-mongodb
+    # The same as run-build but ensure that there's a mongod running for testing.
+    name: test
+    must_have_test_results: true
+    commands:
+      - func: get-project-and-modules
+      - func: setup-mongodb
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+#######################################
+#              Functions              #
+#######################################
+functions:
+  get-project-and-modules:
+    - command: git.get_project
+      type: system
+      params:
+        directory: gimlet
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: gimlet
+        binary: make
+        args: ["mod-tidy"]
+        include_expansions_in_env: ["GOROOT"]
+  run-make:
+    command: subprocess.exec
+    params:
+      working_dir: gimlet
+      binary: make
+      args: ["${target}"]
+      include_expansions_in_env: ["GOROOT", "RACE_DETECTOR"]
+  setup-mongodb:
+    - command: subprocess.exec
+      type: setup
+      params:
+        env:
+          MONGODB_URL: ${mongodb_url}
+          MONGODB_DECOMPRESS: ${decompress}
+        working_dir: gimlet
+        command: make get-mongodb
+    - command: subprocess.exec
+      type: setup
+      params:
+        env:
+          MONGOSH_URL: ${mongosh_url}
+          MONGOSH_DECOMPRESS: ${mongosh_decompress|*decompress}
+        working_dir: gimlet
+        command: make get-mongosh
+    - command: subprocess.exec
+      type: setup
+      params:
+        background: true
+        working_dir: gimlet
+        command: make start-mongod
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: gimlet
+        command: make check-mongod
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: gimlet
+        command: make init-rs
+
+#######################################
+#                Tasks                #
+#######################################
+post:
+  - command: gotest.parse_files
+    type: setup
+    params:
+      files:
+        - "gimlet/build/output.*"
+  - command: s3.put
+    type: system
+    params:
+      aws_key: ${aws_key}
+      aws_secret: ${aws_secret}
+      local_files_include_filter:
+        [
+          "gimlet/build/output.*.coverage.html",
+        ]
+      remote_file: evergreen/${task_id}/
+      bucket: mciuploads
+      content_type: text/html
+      permissions: public-read
+      display_name: "(html) coverage:"
+  - command: s3.put
+    type: system
+    params:
+      aws_key: ${aws_key}
+      aws_secret: ${aws_secret}
+      local_files_include_filter:
+        ["gimlet/build/output.*.coverage"]
+      remote_file: evergreen/${task_id}/
+      bucket: mciuploads
+      content_type: text/plain
+      permissions: public-read
+      display_name: "(txt) coverage:"
+
+tasks:
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-acl
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-gimlet
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-ldap
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-okta
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-usercache
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-rolemanager
+
+  - name: verify-mod-tidy
+    tags: ["report"]
+    commands:
+      - command: git.get_project
+        type: system
+        params:
+          directory: gimlet
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+  - <<: *run-build-with-mongodb
+    tags: ["report"]
+    name: html-coverage
+
+  - <<: *run-build
+    tags: ["test"]
+    name: test-acl
+  - <<: *run-build
+    tags: ["test"]
+    name: test-gimlet
+  - <<: *run-build
+    tags: ["test"]
+    name: test-ldap
+  - <<: *run-build
+    tags: ["test"]
+    name: test-okta
+  - <<: *run-build
+    tags: ["test"]
+    name: test-usercache
+  - <<: *run-build-with-mongodb
+    tags: ["test"]
+    name: test-rolemanager
+
+#######################################
+#           Buildvariants             #
+#######################################
+buildvariants:
+  - name: coverage
+    display_name: Coverage
+    run_on:
+      - ubuntu2204-small
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2204-6.0.6.tgz
+      mongosh_url: https://downloads.mongodb.com/compass/mongosh-1.9.0-linux-x64.tgz
+    tasks:
+      - name: ".report"
+        stepback: false
+
+  - name: ubuntu
+    display_name: Ubuntu 22.04
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      RACE_DETECTOR: true
+      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2204-6.0.6.tgz
+      mongosh_url: https://downloads.mongodb.com/compass/mongosh-1.9.0-linux-x64.tgz
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - ".test"
+
+  - name: macos
+    display_name: macOS
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      mongodb_url: https://fastdl.mongodb.org/osx/mongodb-macos-arm64-6.0.6.tgz
+      mongosh_url: https://downloads.mongodb.com/compass/mongosh-1.9.0-darwin-arm64.zip
+      mongosh_decompress: unzip
+    run_on:
+      - macos-1100-arm64
+    tasks:
+      - name: ".test"

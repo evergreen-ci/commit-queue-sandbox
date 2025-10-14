@@ -1,0 +1,51 @@
+version: "2"
+linters:
+  default: none
+  enable:
+    - errcheck
+    - godot
+    - govet
+    - ineffassign
+    - misspell
+    - revive
+    - staticcheck
+    - unused
+  settings:
+    misspell:
+      locale: US
+      ignore-rules:
+        - cancelled
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - golint
+        path: _test\.go
+        text: context.Context should be the first parameter of a function
+      - linters:
+          - golint
+        path: _test\.go
+        text: exported func.*returns unexported type.*which can be annoying to use
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/ravilushqa/otelgqlgen
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

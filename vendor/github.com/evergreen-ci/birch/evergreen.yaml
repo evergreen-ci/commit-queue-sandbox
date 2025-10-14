@@ -1,0 +1,131 @@
+command_type: test
+stepback: false
+ignore:
+  - "*.md"
+  - "*.rst"
+  - ".github/*"
+
+#######################################
+#         YAML Templates              #
+#######################################
+variables:
+  - &run-build
+    # runs a build operation. The task name in evergreen should
+    # correspond to a make target for the build operation.
+    name: test
+    must_have_test_results: true
+    commands:
+      - func: get-project-and-modules
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+#######################################
+#              Functions              #
+#######################################
+functions:
+  get-project-and-modules:
+    - command: git.get_project
+      type: system
+      params:
+        directory: ${workdir}/birch
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: ${workdir}/birch
+        binary: make
+        args: ["mod-tidy"]
+        include_expansions_in_env: ["GOROOT"]
+  run-make:
+    command: subprocess.exec
+    type: test
+    params:
+      working_dir: ${workdir}/birch
+      binary: make
+      args: ["${target}"]
+      include_expansions_in_env: ["GOROOT", "RACE_DETECTOR"]
+  parse-results:
+    command: gotest.parse_files
+    type: setup
+    params:
+      files:
+        - "birch/build/output.*"
+
+#######################################
+#                Post                 #
+#######################################
+post:
+  - func: parse-results
+
+#######################################
+#                Tasks                #
+#######################################
+tasks:
+  - <<: *run-build
+    tags: ["test"]
+    name: test-birch
+  - <<: *run-build
+    tags: ["test"]
+    name: test-bsontype
+  - <<: *run-build
+    tags: ["test"]
+    name: test-jsonx-internal
+  - <<: *run-build
+    tags: ["test"]
+    name: test-types
+
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-birch
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-bsonerr
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-bsontype
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-decimal
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-elements
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-jsonx
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-jsonx-internal
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-types
+
+  - name: verify-mod-tidy
+    tags: ["report"]
+    commands:
+      - command: git.get_project
+        type: system
+        params:
+          directory: birch
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+#######################################
+#           Buildvariants             #
+#######################################
+buildvariants:
+  - name: lint
+    display_name: Lint
+    expansions:
+      GOROOT: /opt/golang/go1.24
+    run_on:
+      - ubuntu2204-small
+    tasks: 
+      - name: ".report"
+
+  - name: ubuntu
+    display_name: Ubuntu 22.04
+    expansions:
+      GOROOT: /opt/golang/go1.24
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: ".test"

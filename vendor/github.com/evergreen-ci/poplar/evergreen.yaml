@@ -1,0 +1,157 @@
+stepback: false
+ignore:
+    - "*.rst"
+
+#######################################
+#         YAML Templates              #
+#######################################
+variables:
+  - &run-build
+    # runs a build operation. The task name in evergreen should
+    # correspond to a make target for the build operation.
+    name: test
+    must_have_test_results: true
+    commands:
+      - func: get-project-and-modules
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+#######################################
+#              Functions              #
+#######################################
+functions:
+  get-project-and-modules:
+    - command: git.get_project
+      type: system
+      params:
+        directory: poplar
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: poplar
+        binary: make
+        args: ["mod-tidy"]
+        include_expansions_in_env: ["GOROOT"]
+  run-make:
+    command: subprocess.exec
+    type: test
+    params:
+      working_dir: poplar
+      binary: make
+      args: ["${target}"]
+      include_expansions_in_env: ["GOROOT", "RACE_DETECTOR"]
+      env:
+        AWS_ACCESS_KEY_ID: ${aws_key}
+        AWS_SECRET_ACCESS_KEY: ${aws_secret}
+  parse-results:
+    command: gotest.parse_files
+    type: setup
+    params:
+      files:
+        - "poplar/build/output.*"
+
+#######################################
+#                Tasks                #
+#######################################
+post:
+  - func: parse-results
+  - command: s3.put
+    type: system
+    params:
+      aws_key: ${aws_s3_key}
+      aws_secret: ${aws_s3_secret}
+      local_files_include_filter: ["poplar/build/output.coverage.html"]
+      remote_file: poplar/${task_id}/
+      bucket: mciuploads
+      content_type: text/html
+      permissions: public-read
+      display_name: "(html) coverage:"
+  - command: s3.put
+    type: system
+    params:
+      aws_key: ${aws_s3_key}
+      aws_secret: ${aws_s3_secret}
+      local_files_include_filter: ["poplar/build/output.coverage"]
+      remote_file: poplar/${task_id}/
+      bucket: mciuploads
+      content_type: text/plain
+      permissions: public-read
+      display_name: "(txt) coverage:"
+
+tasks:
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-poplar
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-rpc
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-rpc-internal
+
+  - name: verify-mod-tidy
+    tags: ["report"]
+    commands:
+      - command: git.get_project
+        type: system
+        params:
+          directory: poplar
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+  - <<: *run-build
+    name: html-coverage
+    tags: ["report"]
+
+  - <<: *run-build
+    tags: ["test"]
+    name: test-poplar
+  - <<: *run-build
+    tags: ["test"]
+    name: test-rpc
+  - <<: *run-build
+    tags: ["test"]
+    name: test-rpc-internal
+
+#######################################
+#           Buildvariants             #
+#######################################
+#
+buildvariants:
+
+  - name: lint
+    display_name: Lint
+    expansions:
+      GOROOT: /opt/golang/go1.24
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: ".report"
+
+  - name: ubuntu
+    display_name: Ubuntu 22.04
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      RACE_DETECTOR: true
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: ".test"
+
+  - name: macos
+    display_name: macOS 11.00
+    expansions:
+      GOROOT: /opt/golang/go1.24
+    run_on:
+      - macos-1100-arm64
+    tasks:
+      - name: ".test"
+
+  - name: windows
+    display_name: Windows
+    run_on:
+      - windows-vsCurrent-small
+    expansions:
+      GOROOT: C:/golang/go1.24
+    tasks:
+      - name: ".test"

@@ -1,0 +1,177 @@
+{{ $useFunctionSyntaxForExecutionContext := .Config.UseFunctionSyntaxForExecutionContext }}
+
+{{- range $object := .Objects }}{{- range $field := $object.Fields }}
+
+{{ if $useFunctionSyntaxForExecutionContext -}}
+func _{{$object.Name}}_{{$field.Name}}(ctx context.Context, ec *executionContext, field graphql.CollectedField{{ if not $object.Root }}, obj {{$object.Reference | ref}}{{end}}) (ret {{ if $object.Stream }}func(ctx context.Context){{ end }}graphql.Marshaler) {
+{{- else -}}
+func (ec *executionContext) _{{$object.Name}}_{{$field.Name}}(ctx context.Context, field graphql.CollectedField{{ if not $object.Root }}, obj {{$object.Reference | ref}}{{end}}) (ret {{ if $object.Stream }}func(ctx context.Context){{ end }}graphql.Marshaler) {
+{{- end }}
+	{{- $null := "graphql.Null" }}
+	{{- if $object.Stream }}
+		{{- $null = "nil" }}
+	{{- end }}
+
+	{{- if $field.TypeReference.IsRoot }}
+		{{ if $useFunctionSyntaxForExecutionContext -}}
+		fc, err := {{ $field.FieldContextFunc }}(ctx, ec, field)
+		{{- else -}}
+		fc, err := ec.{{ $field.FieldContextFunc }}(ctx, field)
+		{{- end }}
+		if err != nil {
+			return {{ $null }}
+		}
+		ctx = graphql.WithFieldContext(ctx, fc)
+		{{- if not $.Config.OmitPanicHandler }}
+		defer func () {
+			if r := recover(); r != nil {
+				ec.Error(ctx, ec.Recover(ctx, r))
+				ret = {{ $null }}
+			}
+		}()
+		{{- end }}
+
+		{{- if $field.TypeReference.IsPtr }}
+			res := &{{ $field.TypeReference.Elem.GO | ref }}{}
+		{{- else }}
+			res := {{ $field.TypeReference.GO | ref }}{}
+		{{- end }}
+		fc.Result = res
+		{{ if $useFunctionSyntaxForExecutionContext -}}
+		return {{ $field.TypeReference.MarshalFunc }}(ctx, ec, field.Selections, res)
+		{{- else -}}
+		return ec.{{ $field.TypeReference.MarshalFunc }}(ctx, field.Selections, res)
+		{{- end }}
+	{{- else}}
+		return graphql.ResolveField{{- if $object.Stream }}Stream{{- end }}(
+			ctx,
+			ec.OperationContext,
+			field,
+			{{ if $useFunctionSyntaxForExecutionContext -}}
+			func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) { return {{ $field.FieldContextFunc }}(ctx, ec, field) },
+			{{- else -}}
+			ec.{{ $field.FieldContextFunc }},
+			{{- end }}
+			func(ctx context.Context) (any, error) {
+				{{- template "fieldDefinition" $field }}
+			},
+			{{if or ($.AllDirectives.LocationDirectives "FIELD") $field.HasDirectives -}}
+			func(ctx context.Context, next graphql.Resolver) graphql.Resolver {
+				{{- if $field.HasDirectives -}}
+				directive0 := next
+				{{ template "implDirectives" (dict "Field" $field "UseFunctionSyntaxForExecutionContext" $useFunctionSyntaxForExecutionContext) }}
+				next = directive{{$field.ImplDirectives|len}}
+				{{end}}
+				{{- if  $.AllDirectives.LocationDirectives "FIELD" -}}
+						{{ if $useFunctionSyntaxForExecutionContext -}}
+						return _fieldMiddleware(ctx, ec, {{if $object.Root}}nil{{else}}obj{{end}}, next)
+						{{- else -}}
+						return ec._fieldMiddleware(ctx, {{if $object.Root}}nil{{else}}obj{{end}}, next)
+						{{- end }}
+				{{- else -}}
+				return next
+				{{end -}}
+			},
+			{{else -}}
+		    nil,
+			{{end -}}
+			{{ if $useFunctionSyntaxForExecutionContext -}}
+			func(ctx context.Context, selections ast.SelectionSet, v {{ $field.TypeReference.GO | ref }}) graphql.Marshaler { return {{ $field.TypeReference.MarshalFunc }}(ctx, ec, selections, v) },
+			{{- else -}}
+			ec.{{ $field.TypeReference.MarshalFunc }},
+			{{- end }}
+			{{ not $.Config.OmitPanicHandler }},
+			{{ $field.TypeReference.GQL.NonNull }},
+		)
+	{{- end }}
+}
+
+{{ if $useFunctionSyntaxForExecutionContext -}}
+func {{ $field.FieldContextFunc }}({{ if not $field.Args }}_{{ else }}ctx{{ end }} context.Context, ec *executionContext, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+{{- else -}}
+func (ec *executionContext) {{ $field.FieldContextFunc }}({{ if not $field.Args }}_{{ else }}ctx{{ end }} context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+{{- end }}
+	fc = &graphql.FieldContext{
+		Object: {{quote $field.Object.Name}},
+		Field: field,
+		IsMethod: {{or $field.IsMethod $field.IsResolver}},
+		IsResolver: {{ $field.IsResolver }},
+		Child: func (ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			{{- if not $field.TypeReference.Definition.Fields }}
+				return nil, errors.New("field of type {{ $field.TypeReference.Definition.Name }} does not have child fields")
+			{{- else if ne $field.TypeReference.Definition.Kind "OBJECT" }}
+				return nil, errors.New("FieldContext.Child cannot be called on type {{ $field.TypeReference.Definition.Kind }}")
+			{{- else }}
+				switch field.Name {
+					{{- range $f := $field.TypeReference.Definition.Fields }}
+						case "{{ $f.Name }}":
+							{{ if $useFunctionSyntaxForExecutionContext -}}
+							return {{ $field.ChildFieldContextFunc $f.Name }}(ctx, ec, field)
+							{{- else -}}
+							return ec.{{ $field.ChildFieldContextFunc $f.Name }}(ctx, field)
+							{{- end }}
+					{{- end }}
+				}
+				return nil, fmt.Errorf("no field named %q was found under type {{ $field.TypeReference.Definition.Name }}", field.Name)
+			{{- end }}
+		},
+	}
+	{{- if $field.Args }}
+		{{- if not $.Config.OmitPanicHandler }}
+		defer func () {
+			if r := recover(); r != nil {
+				err = ec.Recover(ctx, r)
+				ec.Error(ctx, err)
+			}
+		}()
+		{{- end }}
+		ctx = graphql.WithFieldContext(ctx, fc)
+		{{ if $useFunctionSyntaxForExecutionContext -}}
+		if fc.Args, err = {{ $field.ArgsFunc }}(ctx, ec, field.ArgumentMap(ec.Variables)); err != nil {
+		{{- else -}}
+		if fc.Args, err = ec.{{ $field.ArgsFunc }}(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		{{- end }}
+			ec.Error(ctx, err)
+			return fc, err
+		}
+	{{- end }}
+	return fc, nil
+}
+
+{{- end }}{{- end}}
+
+{{ define "fieldDefinition" }}
+	{{- if or .IsResolver .IsMethod -}}
+	{{- if gt (len .Args) 0 -}}
+	fc := graphql.GetFieldContext(ctx)
+	{{- end }}
+	{{ end }}
+	{{- if .IsResolver -}}
+		return ec.resolvers.{{ .ShortInvocation }}
+	{{- else if .IsMap -}}
+		switch v := {{.GoReceiverName}}[{{.Name|quote}}].(type) {
+		case {{if .Stream}}<-chan {{end}}{{.TypeReference.GO | ref}}:
+			return v, nil
+		case {{if .Stream}}<-chan {{end}}{{.TypeReference.Elem.GO | ref}}:
+			return &v, nil
+		case nil:
+			return ({{.TypeReference.GO | ref}})(nil), nil
+		default:
+			return nil, fmt.Errorf("unexpected type %T for field %s", v, {{ .Name | quote}})
+		}
+	{{- else if .IsMethod -}}
+		{{- if .VOkFunc -}}
+			v, ok := {{.GoReceiverName}}.{{.GoFieldName}}({{ .CallArgs }})
+			if !ok {
+				return nil, nil
+			}
+			return v, nil
+		{{- else if .NoErr -}}
+			return {{.GoReceiverName}}.{{.GoFieldName}}({{ .CallArgs }}), nil
+		{{- else -}}
+			return {{.GoReceiverName}}.{{.GoFieldName}}({{ .CallArgs }})
+		{{- end -}}
+	{{- else if .IsVariable -}}
+		return {{.GoReceiverName}}.{{.GoFieldName}}, nil
+	{{- end }}
+{{- end }}

@@ -1,0 +1,137 @@
+stepback: false
+
+#######################################
+#         YAML Templates              #
+#######################################
+variables:
+  - &run-build
+    # runs a build operation. The task name in evergreen should
+    # correspond to a make target for the build operation.
+    name: test
+    commands:
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+#######################################
+#              Functions              #
+#######################################
+functions:
+  get-project-and-modules:
+    - command: git.get_project
+      type: system
+      params:
+        directory: bond
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: bond
+        binary: make
+        args: ["mod-tidy"]
+        include_expansions_in_env: ["GOROOT"]
+  run-make:
+    command: subprocess.exec
+    type: test
+    params:
+      working_dir: bond
+      binary: make
+      args: ["${target}"]
+      include_expansions_in_env: ["GOROOT", "RACE_DETECTOR"]
+  parse-results:
+    command: gotest.parse_files
+    type: setup
+    params:
+      files:
+        - "bond/build/output.*"
+
+#######################################
+#                Tasks                #
+#######################################
+tasks:
+  - <<: *run-build
+    tags: ["test"]
+    name: test-bond
+
+  - <<: *run-build
+    tags: ["test"]
+    name: test-recall
+
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-bond
+
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-recall
+
+  - name: verify-mod-tidy
+    commands:
+      - command: git.get_project
+        type: system
+        params:
+          directory: bond
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+task_groups:
+  - name: lintGroup
+    tasks: [".report"]
+    max_hosts: 2
+    setup_group:
+      - func: get-project-and-modules
+    setup_task:
+      - func: run-make
+        vars: { target: "clean-results" }
+    teardown_task:
+      - func: parse-results
+  - name: testGroup
+    tasks: [".test"]
+    max_hosts: 2
+    setup_group:
+      - func: get-project-and-modules
+    setup_task:
+      - func: run-make
+        vars: { target: "clean-results" }
+    teardown_task:
+      - func: parse-results
+
+#######################################
+#           Buildvariants             #
+#######################################
+buildvariants:
+  - name: lint
+    display_name: Lint
+    expansions:
+      GOROOT: /opt/golang/go1.24
+    run_on:
+      - ubuntu2204-small
+    tasks: 
+      - name: lintGroup
+      - name: verify-mod-tidy
+
+  - name: ubuntu
+    display_name: Ubuntu 22.04
+    expansions:
+      RACE_DETECTOR: true
+      GOROOT: /opt/golang/go1.24
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: "testGroup"
+
+  - name: macos
+    display_name: macOS
+    expansions:
+      GOROOT: /opt/golang/go1.24
+    run_on:
+      - macos-1100-arm64
+    tasks:
+      - name: "testGroup"
+
+  - name: windows
+    display_name: Windows
+    run_on:
+      - windows-vsCurrent-small
+    expansions:
+      GOROOT: C:/golang/go1.24
+    tasks:
+      - name: "testGroup"

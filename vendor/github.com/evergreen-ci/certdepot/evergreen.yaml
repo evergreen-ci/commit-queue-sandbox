@@ -1,0 +1,186 @@
+stepback: false
+ignore:
+    - "*.rst"
+
+#######################################
+#         YAML Templates              #
+#######################################
+variables:
+  - &run-build
+    # runs a build operation. The task name in evergreen should
+    # correspond to a make target for the build operation.
+    name: test
+    must_have_test_results: true
+    commands:
+      - func: get-project-and-modules
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+  - &run-build-with-mongodb
+    # runs a make target like run-build, but only on systems that have a
+    # running mongod started for testing.
+    name: test
+    must_have_test_results: true
+    commands:
+      - func: get-project-and-modules
+      - func: set-up-mongodb
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+#######################################
+#              Functions              #
+#######################################
+functions:
+  get-project-and-modules:
+    - command: git.get_project
+      type: system
+      params:
+        directory: certdepot
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: certdepot
+        binary: make
+        args: ["mod-tidy"]
+        include_expansions_in_env: ["GOROOT"]
+  run-make:
+    command: subprocess.exec
+    type: test
+    params:
+      working_dir: certdepot
+      binary: make
+      args: ["${target}"]
+      include_expansions_in_env: ["GOROOT", "RACE_DETECTOR"]
+  set-up-mongodb:
+    - command: subprocess.exec
+      type: setup
+      params:
+        command: make get-mongodb
+        env:
+          MONGODB_URL: ${mongodb_url}
+          MONGODB_DECOMPRESS: ${mongodb_decompress|*decompress}
+        working_dir: certdepot
+    - command: subprocess.exec
+      type: setup
+      params:
+        command: make get-mongosh
+        env:
+          MONGOSH_URL: ${mongosh_url}
+          MONGOSH_DECOMPRESS: ${mongosh_decompress|*decompress}
+        working_dir: certdepot
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: certdepot
+        background: true
+        command: make start-mongod
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: certdepot
+        command: make check-mongod
+
+#######################################
+#                Tasks                #
+#######################################
+post:
+  - command: gotest.parse_files
+    type: setup
+    params:
+      files:
+        - "certdepot/build/output.*"
+  - command: s3.put
+    type: system
+    params:
+      aws_key: ${aws_key}
+      aws_secret: ${aws_secret}
+      local_files_include_filter: ["certdepot/build/output.*.coverage.html"]
+      remote_file: certdepot/${task_id}/
+      bucket: mciuploads
+      content_type: text/html
+      permissions: public-read
+      display_name: "(html) coverage:"
+  - command: s3.put
+    type: system
+    params:
+      aws_key: ${aws_key}
+      aws_secret: ${aws_secret}
+      local_files_include_filter: ["certdepot/build/output.*.coverage"]
+      remote_file: certdepot/${task_id}/
+      bucket: mciuploads
+      content_type: text/plain
+      permissions: public-read
+      display_name: "(txt) coverage:"
+
+tasks:
+  - <<: *run-build
+    tags: ["report"]
+    name: lint-certdepot
+
+  - name: verify-mod-tidy
+    tags: ["report"]
+    commands:
+      - command: git.get_project
+        type: system
+        params:
+          directory: certdepot
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+  - <<: *run-build-with-mongodb
+    tags: ["report"]
+    name: html-coverage
+
+  - <<: *run-build-with-mongodb
+    tags: ["test"]
+    name: test-certdepot
+
+#######################################
+#           Buildvariants             #
+#######################################
+buildvariants:
+  - name: lint
+    display_name: Lint
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2204-6.0.6.tgz
+      mongosh_url: https://downloads.mongodb.com/compass/mongosh-1.9.0-linux-x64.tgz
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: ".report"
+
+  - name: ubuntu
+    display_name: Ubuntu 22.04
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      mongodb_url: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2204-6.0.6.tgz
+      mongosh_url: https://downloads.mongodb.com/compass/mongosh-1.9.0-linux-x64.tgz
+      RACE_DETECTOR: true
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: ".test"
+
+  - name: macos
+    display_name: macOS
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      mongodb_url: https://fastdl.mongodb.org/osx/mongodb-macos-arm64-6.0.6.tgz
+      mongosh_url: https://downloads.mongodb.com/compass/mongosh-1.9.0-darwin-arm64.zip
+      mongosh_decompress: unzip
+    run_on:
+      - macos-1100-arm64
+    tasks:
+      - name: ".test"
+
+  - name: windows
+    display_name: Windows
+    run_on:
+      - windows-vsCurrent-small
+    expansions:
+      GOROOT: C:/golang/go1.24
+      mongodb_url: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-6.0.6.zip
+      mongosh_url: https://downloads.mongodb.com/compass/mongosh-1.9.0-win32-x64.zip
+    tasks:
+      - name: ".test"

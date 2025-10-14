@@ -1,0 +1,247 @@
+command_type: test
+stepback: false
+ignore:
+  - "*.md"
+  - "*.rst"
+  - ".github/*"
+
+#######################################
+#         YAML Templates              #
+#######################################
+variables:
+  - &run-build
+    # runs a build operation. The task name in evergreen should
+    # correspond to a make target for the build operation.
+    name: test
+    commands:
+      - func: get-project-and-modules
+      - func: run-make
+        vars: { target: "${task_name}" }
+  - &run-go-test-suite
+    # runs a make target and then uploads gotest output to
+    # evergreen. The test name should correspond to a make target for
+    # that suite
+    name: test
+    commands:
+      - func: get-project-and-modules
+      - func: run-make
+        vars: { target: "${task_name}" }
+    must_have_test_results: true
+    tags: ["test"]
+  - &run-go-test-suite-with-mongodb
+    # runs a make target above, but only on systems that have a
+    # running mongod started for testing.
+    name: test
+    commands:
+      - func: get-project-and-modules
+      - func: set-up-mongodb
+      - func: run-make
+        vars: { target: "${task_name}" }
+    must_have_test_results: true
+    tags: ["test"]
+
+#######################################
+#              Functions              #
+#######################################
+functions:
+  get-project-and-modules:
+    - command: git.get_project
+      type: system
+      params:
+        directory: amboy
+    - command: subprocess.exec
+      type: setup
+      params:
+        working_dir: amboy
+        binary: make
+        args: ["mod-tidy"]
+        include_expansions_in_env: ["GOROOT"]
+  run-make:
+    command: subprocess.exec
+    type: test
+    params:
+      working_dir: amboy
+      binary: make
+      args: ["${make_args}", "${target}"]
+      include_expansions_in_env: ["GOROOT", "RACE_DETECTOR"]
+      env:
+        AWS_KEY: ${aws_key}
+        AWS_SECRET: ${aws_secret}
+  set-up-mongodb:
+    - command: subprocess.exec
+      type: setup
+      params:
+        command: make get-mongodb
+        include_expansions_in_env: ["MONGODB_URL"]
+        env:
+          MONGODB_DECOMPRESS: ${decompress}
+        working_dir: amboy
+    - command: subprocess.exec
+      type: setup
+      params:
+        command: make get-mongosh
+        include_expansions_in_env: ["MONGOSH_URL"]
+        env:
+          MONGOSH_DECOMPRESS: ${MONGOSH_DECOMPRESS|*decompress}
+        working_dir: amboy
+    - command: subprocess.exec
+      type: setup
+      params:
+        command: make start-mongod
+        working_dir: amboy
+        background: true
+    - command: subprocess.exec
+      type: setup
+      params:
+        command: make check-mongod
+        working_dir: amboy
+    - command: subprocess.exec
+      type: setup
+      params:
+        command: make init-rs
+        working_dir: amboy
+  parse-results:
+    command: gotest.parse_files
+    type: setup
+    params:
+      files:
+        - "amboy/build/output.*"
+
+#######################################
+#                Post                 #
+#######################################
+post:
+  - func: parse-results
+  - command: s3.put
+    type: system
+    params:
+      aws_key: ${aws_key}
+      aws_secret: ${aws_secret}
+      local_files_include_filter: ["amboy/build/output.*.coverage.html"]
+      remote_file: evergreen/${task_id}/
+      bucket: mciuploads
+      content_type: text/html
+      permissions: public-read
+      display_name: "(html) coverage:"
+  - command: s3.put
+    type: system
+    params:
+      aws_key: ${aws_key}
+      aws_secret: ${aws_secret}
+      local_files_include_filter: ["amboy/build/output.*.coverage"]
+      remote_file: evergreen/${task_id}/
+      bucket: mciuploads
+      content_type: text/plain
+      permissions: public-read
+      display_name: "(txt) coverage:"
+
+#######################################
+#                Tasks                #
+#######################################
+tasks:
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-amboy
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-dependency
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-job
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-logger
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-management
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-queue
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-pool
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-rest
+  - <<: *run-go-test-suite
+    tags: ["report"]
+    name: lint-registry
+
+  - name: verify-mod-tidy
+    tags: ["report"]
+    commands:
+      - command: git.get_project
+        type: system
+        params:
+          directory: amboy
+      - func: run-make
+        vars: { target: "${task_name}" }
+
+  # define tasks for all test suites (modules)
+  - <<: *run-go-test-suite
+    name: test-amboy
+  - <<: *run-go-test-suite
+    name: test-dependency
+  - <<: *run-go-test-suite
+    name: test-job
+  - <<: *run-go-test-suite
+    name: test-logger
+  - <<: *run-go-test-suite-with-mongodb
+    name: test-management
+  - <<: *run-go-test-suite
+    name: test-pool
+  - <<: *run-go-test-suite-with-mongodb
+    name: test-queue
+  - <<: *run-go-test-suite
+    name: test-rest
+  - <<: *run-go-test-suite
+    name: test-registry
+
+#######################################
+#           Buildvariants             #
+#######################################
+buildvariants:
+  - name: lint
+    display_name: Lint
+    run_on:
+      - ubuntu2204-small
+    expansions:
+      GOROOT: /opt/golang/go1.24
+    tasks:
+      - name: ".report"
+        stepback: false
+
+  - name: ubuntu
+    display_name: Ubuntu 22.04
+    run_on:
+      - ubuntu2204-small
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      RACE_DETECTOR: true
+      MONGODB_URL: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2204-7.0.2.tgz
+      MONGOSH_URL: https://downloads.mongodb.com/compass/mongosh-2.0.2-linux-x64.tgz
+    tasks:
+      - ".test"
+
+  - name: macos
+    display_name: macOS 11.00
+    expansions:
+      GOROOT: /opt/golang/go1.24
+      MONGODB_URL: https://fastdl.mongodb.org/osx/mongodb-macos-arm64-7.0.2.tgz
+      MONGOSH_URL: https://downloads.mongodb.com/compass/mongosh-2.0.2-darwin-arm64.zip
+      MONGOSH_DECOMPRESS: unzip
+    run_on:
+      - macos-1100-arm64
+    tasks:
+      - ".test"
+
+  - name: windows
+    display_name: Windows
+    run_on:
+      - windows-vsCurrent-large
+    expansions:
+      GOROOT: C:/golang/go1.24
+      MONGODB_URL: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.2.zip
+      MONGOSH_URL: https://downloads.mongodb.com/compass/mongosh-2.0.2-win32-x64.zip
+    tasks:
+      - ".test"
