@@ -101,6 +101,7 @@ buildvariants:
           - validate_commit_message
   - display_name: Test Tags
     name: release
+    paths: ["test_selection_input.json"]
     run_on:
       - ubuntu2004-small
     tasks:
