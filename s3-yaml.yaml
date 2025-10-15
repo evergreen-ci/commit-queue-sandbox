@@ -346,6 +346,7 @@ buildvariants:
     display_name: "s3 checksum"
     tasks:
       - s3-checksum-valid
+      - s3-checksum-valid-no-verify
       - s3-checksum-invalid-missing-checksum
       - s3-checksum-invalid-different
     run_on:
