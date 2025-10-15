@@ -235,8 +235,93 @@ tasks:
                     cat src/symlink-contents/src/symlink_file.txt
                     echo "file.txt: "
                     cat src/symlink-contents/src/file.txt
+    - name: s3-checksum-valid
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "hello world" > checksum.txt
+          - command: s3.put
+            params:
+                local_file: checksum.txt
+                remote_file: checksum.txt
+                permissions: private
+                content_type: text/plain
+                checksum_sha256: true
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                bucket: ${AWS_BUCKET}
+          - command: s3.get
+            params:
+                local_file: new_checksum.txt
+                remote_file: checksum.txt
+                permissions: private
+                content_type: text/plain
+                checksum_sha256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                bucket: ${AWS_BUCKET}
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Downloaded file contents:"
+                    cat new_checksum.txt
+    - name: s3-checksum-invalid-missing-checksum
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "hello world" > checksum.txt
+          - command: s3.put
+            params:
+                local_file: checksum.txt
+                remote_file: checksum.txt
+                permissions: private
+                content_type: text/plain
+                # checksum_sha256: true
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                bucket: ${AWS_BUCKET}
+          - command: s3.get
+            params:
+                local_file: new_checksum.txt
+                remote_file: checksum.txt
+                permissions: private
+                content_type: text/plain
+                checksum_sha256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                bucket: ${AWS_BUCKET}
+    - name: s3-checksum-invalid-different
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "hello world IM DIFFERENT" > checksum.txt
+          - command: s3.put
+            params:
+                local_file: checksum.txt
+                remote_file: checksum.txt
+                permissions: private
+                content_type: text/plain
+                checksum_sha256: true
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                bucket: ${AWS_BUCKET}
+          - command: s3.get
+            params:
+                local_file: new_checksum.txt
+                remote_file: checksum.txt
+                permissions: private
+                content_type: text/plain
+                checksum_sha256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                bucket: ${AWS_BUCKET}
 
 buildvariants:
+  - name: s3-checksum
+    display_name: "s3 checksum"
+    tasks:
+      - s3-checksum-valid
+      - s3-checksum-invalid-missing-checksum
+      - s3-checksum-invalid-different
+    run_on:
+        - ubuntu2204-small
   - name: s3put-public-read
     display_name: "s3.put permissions public-read"
     tasks:
