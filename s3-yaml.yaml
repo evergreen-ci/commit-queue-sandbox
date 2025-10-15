@@ -256,7 +256,35 @@ tasks:
                 remote_file: checksum.txt
                 permissions: private
                 content_type: text/plain
-                checksum_sha256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+                checksum_sha256: 01Crvg69J4f2I0o2LSRVnvhR2R14UQB1ffGipqGlWZA=
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                bucket: ${AWS_BUCKET}
+          - command: shell.exec
+            params:
+                script: |
+                    echo "Downloaded file contents:"
+                    cat new_checksum.txt
+    - name: s3-checksum-valid-no-verify
+      commands:
+          - command: shell.exec
+            params:
+                script: |
+                    echo "hello world" > checksum.txt
+          - command: s3.put
+            params:
+                local_file: checksum.txt
+                remote_file: checksum.txt
+                permissions: private
+                content_type: text/plain
+                checksum_sha256: true
+                role_arn: ${AWS_ASSUME_ROLE_ARN_1}
+                bucket: ${AWS_BUCKET}
+          - command: s3.get
+            params:
+                local_file: new_checksum.txt
+                remote_file: checksum.txt
+                permissions: private
+                content_type: text/plain
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
                 bucket: ${AWS_BUCKET}
           - command: shell.exec
@@ -285,7 +313,7 @@ tasks:
                 remote_file: checksum.txt
                 permissions: private
                 content_type: text/plain
-                checksum_sha256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+                checksum_sha256: 01Crvg69J4f2I0o2LSRVnvhR2R14UQB1ffGipqGlWZA=
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
                 bucket: ${AWS_BUCKET}
     - name: s3-checksum-invalid-different
@@ -309,7 +337,7 @@ tasks:
                 remote_file: checksum.txt
                 permissions: private
                 content_type: text/plain
-                checksum_sha256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+                checksum_sha256: 01Crvg69J4f2I0o2LSRVnvhR2R14UQB1ffGipqGlWZA=
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
                 bucket: ${AWS_BUCKET}
 
