@@ -101,6 +101,7 @@ buildvariants:
           - validate_commit_message
   - display_name: Test Tags
     name: release
+    paths: ["foo/*.txt"]
     run_on:
       - ubuntu2004-small
     tasks:
