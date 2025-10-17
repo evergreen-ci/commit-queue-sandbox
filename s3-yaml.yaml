@@ -276,7 +276,7 @@ tasks:
                 remote_file: checksum.txt
                 permissions: private
                 content_type: text/plain
-                checksum_sha256: true
+                upload_checksum_sha256: true
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
                 bucket: ${AWS_BUCKET}
           - command: s3.get
@@ -304,7 +304,7 @@ tasks:
                 remote_file: checksum.txt
                 permissions: private
                 content_type: text/plain
-                # checksum_sha256: true
+                # upload_checksum_sha256: true
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
                 bucket: ${AWS_BUCKET}
           - command: s3.get
@@ -313,7 +313,7 @@ tasks:
                 remote_file: checksum.txt
                 permissions: private
                 content_type: text/plain
-                checksum_sha256: qUiQTy8PR5uPgZdpSzAYSw0u0cHNKh7A+4XSmaGSpEc=
+                require_checksum_sha256: qUiQTy8PR5uPgZdpSzAYSw0u0cHNKh7A+4XSmaGSpEc=
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
                 bucket: ${AWS_BUCKET}
     - name: s3-checksum-invalid-different
@@ -328,7 +328,7 @@ tasks:
                 remote_file: checksum.txt
                 permissions: private
                 content_type: text/plain
-                checksum_sha256: true
+                upload_checksum_sha256: true
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
                 bucket: ${AWS_BUCKET}
           - command: s3.get
@@ -337,7 +337,7 @@ tasks:
                 remote_file: checksum.txt
                 permissions: private
                 content_type: text/plain
-                checksum_sha256: qUiQTy8PR5uPgZdpSzAYSw0u0cHNKh7A+4XSmaGSpEc=
+                require_checksum_sha256: qUiQTy8PR5uPgZdpSzAYSw0u0cHNKh7A+4XSmaGSpEc=
                 role_arn: ${AWS_ASSUME_ROLE_ARN_1}
                 bucket: ${AWS_BUCKET}
 
