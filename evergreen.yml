@@ -74,6 +74,7 @@ buildvariants:
       - evergreen
     run_on:
       - ubuntu1604-large
+    cron: "0 0 1 1 *"
     expansions:
       module_prefix: hello
     tasks:
