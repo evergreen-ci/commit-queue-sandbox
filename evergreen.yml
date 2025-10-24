@@ -101,8 +101,8 @@ buildvariants:
           - validate_commit_message
   - display_name: Test Tags
     name: release
-    cron: "0 0 * * *" # Run once per day at midnight UTC
-    # paths: ["ex.yml"] # Only run if ex.yml changes
+    # cron: "0 0 * * *" # Run once per day at midnight UTC
+    paths: ["ex.yml"] # Only run if ex.yml changes
     run_on:
       - ubuntu2004-small
     tasks:
