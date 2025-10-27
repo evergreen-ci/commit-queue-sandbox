@@ -1,4 +1,6 @@
 stepback: true
+ignore:
+  - "*.md"
 
 # includes:
 #   - include1.yml
@@ -103,6 +105,8 @@ buildvariants:
     name: release
     run_on:
       - ubuntu2004-small
+    paths:
+      - "README.md"
     tasks:
       - name: group1
 
