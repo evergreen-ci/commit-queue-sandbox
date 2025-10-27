@@ -1,6 +1,7 @@
 stepback: true
 ignore:
   - "*.md"
+  - "evergreen.yml"
 
 # includes:
 #   - include1.yml
@@ -105,8 +106,8 @@ buildvariants:
     name: release
     run_on:
       - ubuntu2004-small
-    paths:
-      - "README.md"
+    # paths:
+    #   - "README.md"
     tasks:
       - name: group1
 
