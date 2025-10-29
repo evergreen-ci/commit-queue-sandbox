@@ -10,4 +10,3 @@ more
 a test
 something
 hello world
-hello world 2
