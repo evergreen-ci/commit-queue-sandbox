@@ -206,6 +206,8 @@ tasks:
           working_dir: src
           script: |
             echo "admin bynn: ${bynnbynn}"
+            echo "pr num: ${github_pr_number}"
+            echo "head branch: ${github_pr_head_branch}"
             exit 1
   - name: test_passing_param_to_child
     tags: ["my_tag"]
