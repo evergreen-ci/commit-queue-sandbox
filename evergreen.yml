@@ -9,6 +9,7 @@ pre: &pre
     params:
       directory: src
   - func: create virtualenv
+    retry_on_failure: true
 
 patch_aliases:
   - alias: "chaya-tag-from-yaml"
