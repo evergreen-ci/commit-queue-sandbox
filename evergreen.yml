@@ -80,7 +80,6 @@ buildvariants:
       - name: task_generator
       - name: unit_tests
         activate: false
-        disable: true
       - name: validate_commit_message
         create_check_run:
           path_to_outputs: ""
