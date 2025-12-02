@@ -352,7 +352,7 @@ tasks:
 
 modules:
   - name: evergreen
-    ref: 93b0990f3bebc1a3ac344e48d8308fc3627dae03
+    ref: f1c4f6408c0bdd3f66f5d6f995c0886858b9da7
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
     branch: main
