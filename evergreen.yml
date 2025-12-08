@@ -135,10 +135,15 @@ buildvariants:
           - test-restart-on-fail
           - validate_commit_message
           - validate_commit_message2
+      - name: displayTask2
+        execution_tasks:
+          - unit_tests
     tasks:
       - name: validate_commit_message
       - name: validate_commit_message2
       - name: test-restart-on-fail
+      - name: unit_tests
+        activate: false
 
 functions:
   create virtualenv:
