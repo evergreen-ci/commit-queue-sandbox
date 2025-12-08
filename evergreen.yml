@@ -99,6 +99,9 @@ buildvariants:
       - name: display_task
         execution_tasks:
           - validate_commit_message
+      - name: display_task2
+        execution_tasks:
+          - unit_tests
   - display_name: Test Tags
     name: release
     run_on:
@@ -135,15 +138,10 @@ buildvariants:
           - test-restart-on-fail
           - validate_commit_message
           - validate_commit_message2
-      - name: displayTask2
-        execution_tasks:
-          - unit_tests
     tasks:
       - name: validate_commit_message
       - name: validate_commit_message2
       - name: test-restart-on-fail
-      - name: unit_tests
-        activate: false
 
 functions:
   create virtualenv:
