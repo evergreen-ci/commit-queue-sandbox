@@ -112,6 +112,16 @@ buildvariants:
     tasks:
       - test-selection-example
 
+  - name: xunit-perf
+    display_name: "XUnit Performance Test"
+    run_on: ubuntu2204-small
+    expansions:
+      num_xunit_files: "100"
+      tests_per_file: "50"
+      failure_rate: "0.1"
+    tasks:
+      - xunit-perf-test
+
   - name: git-env-test
     display_name: "Giv Env Test"
     modules:
@@ -349,6 +359,21 @@ tasks:
           binary: python3
           working_dir: src
           args: ["generate_test_results.py", "test_selection_output.json"]
+
+  # Performance test for attach.xunit_results
+  # Generates many xunit XML files to test the performance of result attachment.
+  # Usage: Adjust num_files, tests_per_file, and failure_rate as needed.
+  - name: xunit-perf-test
+    commands:
+      - command: subprocess.exec
+        params:
+          binary: python3
+          working_dir: src
+          args:
+            - "generate_xunit_files.py"
+            - "${num_xunit_files|100}"      # Number of XML files
+            - "${tests_per_file|50}"         # Tests per file
+            - "${failure_rate|0.1}"          # Failure rate (0.0-1.0)
 
 modules:
   - name: evergreen
