@@ -99,9 +99,7 @@ buildvariants:
       - name: display_task
         execution_tasks:
           - validate_commit_message
-      - name: display_task2
-        execution_tasks:
-          - unit_tests
+
   - display_name: Test Tags
     name: release
     run_on:
@@ -126,6 +124,12 @@ buildvariants:
       - name: task_generator
         create_check_run:
           path_to_outputs: "path"
+      - name: unit_tests
+        activate: false
+    display_tasks:
+      - name: display_task2
+        execution_tasks:
+          - unit_tests
 
   - name: cron-test
     cron: "*/5 * * * *"
