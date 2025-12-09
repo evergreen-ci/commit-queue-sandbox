@@ -12,4 +12,4 @@ tasks:
           - command: shell.exec
             params:
                 script: |
-                    echo "We passing this one"
+                    echo "We passing this one today"
