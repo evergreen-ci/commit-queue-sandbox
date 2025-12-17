@@ -28,7 +28,7 @@ buildvariants:
   - name: test-variant
     display_name: "Test Variant"
     run_on:
-      - amazon2-arm64-atlas-small
+      - ubuntu2204-small
     tasks:
       - name: .tag_1 !.sub_tag_1
       - name: .tag_1 .sub_tag_1
