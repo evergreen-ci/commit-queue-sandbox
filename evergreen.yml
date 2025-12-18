@@ -147,6 +147,13 @@ buildvariants:
       - name: validate_commit_message2
       - name: test-restart-on-fail
 
+  - name: akhi_test_validation
+    display_name: "Test Empty Task Validation"
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: test_empty_task_error
+
 functions:
   create virtualenv:
     - command: shell.exec
@@ -356,10 +363,17 @@ tasks:
           binary: python3
           working_dir: src
           args: ["generate_test_results.py", "test_selection_output.json"]
+  - name: test_empty_task_error
+    #commands:
+      #- command: shell.exec
+        #params:
+          #script: |
+            #echo "test - test_empty_task_error"
+    # Intentionally leaving this task with no commands to trigger the error
 
 modules:
   - name: evergreen
-    ref: 89f947946bff775996fce741dfa45b3b31c63cee
+    ref: 62922605837c2053b87c33e4286f1f29f4d3ab1e
     repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
     branch: main
