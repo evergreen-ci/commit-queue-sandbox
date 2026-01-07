@@ -239,6 +239,11 @@ tasks:
 
   - name: unit_tests
     commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "PARENT PATCH ID: ${parent_patch_id}, PARENT GITHUB ORG: ${parent_github_org}, PARENT GITHUB REPO: ${parent_github_repo}, PARENT GITHUB BRANCH: ${parent_github_branch}"
       - command: host.create
         params:
           num_hosts: 1
