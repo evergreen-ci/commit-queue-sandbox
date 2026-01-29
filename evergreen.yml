@@ -104,6 +104,8 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
+    paths: 
+      - "README.md"
 
   - name: test-selection
     display_name: "Test Selection"
