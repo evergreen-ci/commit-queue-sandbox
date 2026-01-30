@@ -1,6 +1,6 @@
 ## this is a changes
 ignore:
-  - "*.md" # don't schedule tests if a commit only changes markdown files
+  - "*.md" # don't schedule tests if a commit only changes markdown files!!
 stepback: true
 
 
@@ -77,7 +77,7 @@ buildvariants:
       - name: group1
 
   - name: malik-env-test
-    display_name: "Malik Env Test"
+    display_name: "Malik Env Test2"
     modules:
       - evergreen
     run_on:
