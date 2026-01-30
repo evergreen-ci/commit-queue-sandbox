@@ -76,6 +76,15 @@ buildvariants:
     tasks:
       - name: group1
 
+  - name: malik-env-test
+    display_name: "Malik Env Test"
+    modules:
+      - evergreen
+    run_on:
+      - ubuntu2004-small
+    tasks:
+      - name: my_first_generator
+
   - name: git-env-test
     display_name: "Giv Env Test"
     modules:
