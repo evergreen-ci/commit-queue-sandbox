@@ -1,7 +1,18 @@
 stepback: true
 
-# includes:
-#   - include1.yml
+modules:
+  - name: evergreen-ui
+    owner: evergreen-ci
+    repo: evergreen-ui
+    branch: main
+
+include:
+  - filename: include1.yml
+  - filename: functionVar.yml
+  # - filename: .evergreen/shared.yml
+  #   module: evergreen-ui
+  # - filename: .evergreen/attach.yml
+  #   module: evergreen-ui
 
 pre_error_fails_task: true
 pre: &pre
