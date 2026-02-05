@@ -3,6 +3,13 @@ patch_aliases:
     variant_tags: ["commit-queue-variant"]
     task: ".*"
 
+pre_error_fails_task: true
+pre: &pre
+  - command: git.get_project
+    params:
+      directory: src
+  - func: create virtualenv
+
 buildvariants:
   - name: bynns single task thing
     display_name: single task test
@@ -10,6 +17,15 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: checkrun_test
+
+functions:
+  create virtualenv:
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          echo "noop"
+          git describe
 
 tasks:
 
