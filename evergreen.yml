@@ -174,7 +174,7 @@ tasks:
         params:
           script: |
             touch downstream_expansions_pine.yaml
-            echo "pine_repo_name: evergreen" | tee downstream_expansions_pine.yaml
+            echo "pine_repo_name: test-trigger" | tee downstream_expansions_pine.yaml
       - command: downstream_expansions.set
         params:
           file: downstream_expansions_pine.yaml
