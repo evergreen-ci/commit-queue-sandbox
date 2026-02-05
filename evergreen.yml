@@ -1,7 +1,3 @@
-include:
-  - filename: evergreen.yml
-    module: test-trigger-sandbox
-
 patch_aliases:
   - alias: "chaya-tag-from-yaml"
     variant_tags: ["commit-queue-variant"]
@@ -26,10 +22,10 @@ tasks:
             echo "i am become checkrun"
 
 modules:
-  - name: test-trigger-sandbox
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
+  - name: evergreen
+    repo: git@github.com:evergreen-ci/evergreen.git
     prefix: ${workdir}/src
-    branch: test-trigger
+    branch: main
     auto_update: true
 
 build_baron_settings:
