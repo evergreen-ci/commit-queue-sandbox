@@ -14,7 +14,7 @@ buildvariants:
   - name: bynns single task thing
     display_name: single task test
     modules:
-      - evergreen
+      - test-trigger
     run_on:
       - ubuntu2004-small
     tasks:
@@ -40,10 +40,10 @@ tasks:
             echo "i am become checkrun"
 
 modules:
-  - name: evergreen
-    repo: git@github.com:evergreen-ci/evergreen.git
+  - name: test-trigger
+    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
     prefix: ${workdir}/src
-    branch: main
+    branch: test-trigger
     auto_update: true
 
 build_baron_settings:
