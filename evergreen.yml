@@ -195,9 +195,12 @@ tasks:
     commands:
       - command: shell.exec
         params:
-          working_dir: src
           script: |
-            echo "noop2"
+            touch downstream_expansions_pine.yaml
+            echo "pine_repo_name: evergreen" | tee downstream_expansions_pine.yaml
+      - command: downstream_expansions.set
+        params:
+          file: downstream_expansions_pine.yaml
   - name: validate_commit_message
     commands:
       - command: shell.exec
