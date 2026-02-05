@@ -14,7 +14,7 @@ buildvariants:
   - name: bynns single task thing
     display_name: single task test
     modules:
-      - test-trigger
+      - ${pine_repo_name}
     run_on:
       - ubuntu2004-small
     tasks:
