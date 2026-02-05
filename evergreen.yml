@@ -13,6 +13,8 @@ pre: &pre
 buildvariants:
   - name: bynns single task thing
     display_name: single task test
+    modules:
+      - evergreen
     run_on:
       - ubuntu2004-small
     tasks:
