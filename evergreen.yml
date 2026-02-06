@@ -3,13 +3,31 @@ patch_aliases:
     variant_tags: ["commit-queue-variant"]
     task: ".*"
 
+pre_error_fails_task: true
+pre: &pre
+  - command: git.get_project
+    params:
+      directory: src
+  - func: create virtualenv
+
 buildvariants:
   - name: bynns single task thing
     display_name: single task test
+    modules:
+      - ${pine_repo_name}
     run_on:
       - ubuntu2004-small
     tasks:
       - name: checkrun_test
+
+functions:
+  create virtualenv:
+    - command: shell.exec
+      params:
+        working_dir: src
+        script: |
+          echo "noop"
+          git describe
 
 tasks:
   - name: checkrun_test
@@ -21,7 +39,7 @@ tasks:
             echo "i am become checkrun"
 
 modules:
-  - name: test-trigger-sandbox
+  - name: test-trigger
     repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
     prefix: ${workdir}/src
     branch: test-trigger
