@@ -30,7 +30,6 @@ functions:
           git describe
 
 tasks:
-
   - name: checkrun_test
     commands:
       - command: shell.exec
