@@ -20,6 +20,16 @@ buildvariants:
     tasks:
       - name: checkrun_test
 
+  - name: attach-results-perf
+    display_name: "Attach Results Performance Test"
+    run_on: ubuntu2204-small
+    expansions:
+      num_tests: "500"
+      failure_rate: "0.1"
+      log_lines: "20"
+    tasks:
+      - attach-results-perf-test
+
 functions:
   create virtualenv:
     - command: shell.exec
@@ -28,6 +38,11 @@ functions:
         script: |
           echo "noop"
           git describe
+
+post:
+  - command: attach.results
+    params:
+      file_location: src/test_results.json
 
 tasks:
 
@@ -38,6 +53,20 @@ tasks:
           working_dir: src
           script: |
             echo "i am become checkrun"
+
+  # Performance test for attach.results
+  # Generates a large JSON file with many test results to test parallel log uploading.
+  - name: attach-results-perf-test
+    commands:
+      - command: subprocess.exec
+        params:
+          binary: python3
+          working_dir: src
+          args:
+            - "generate_results_file.py"
+            - "${num_tests|500}"        # Number of test results
+            - "${failure_rate|0.1}"     # Failure rate (0.0-1.0)
+            - "${log_lines|20}"         # Log lines per test
 
 modules:
   - name: test-trigger
