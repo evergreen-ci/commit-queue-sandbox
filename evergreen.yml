@@ -40,6 +40,15 @@ buildvariants:
     tasks:
       - gotest-perf-test
 
+  - name: upload-traces-perf
+    display_name: "Upload Traces Performance Test"
+    run_on: ubuntu2204-small
+    expansions:
+      num_files: "74"
+      spans_per_file: "5000"
+    tasks:
+      - upload-traces-perf-test
+
 functions:
   create virtualenv:
     - command: shell.exec
@@ -95,6 +104,23 @@ tasks:
             - "${num_files|10}"          # Number of .suite files
             - "${tests_per_file|100}"    # Tests per file
             - "${failure_rate|0.1}"      # Failure rate (0.0-1.0)
+
+  # Performance test for upload-traces
+  # Generates OTel trace files to test parallel trace uploading.
+  - name: upload-traces-perf-test
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "OTel collector endpoint: '${otel_collector_endpoint}'"
+      - command: subprocess.exec
+        params:
+          binary: python3
+          working_dir: src
+          args:
+            - "generate_trace_files.py"
+            - "${num_files|10}"          # Number of trace files
+            - "${spans_per_file|100}"    # Spans per file
 
 modules:
   - name: test-trigger
