@@ -30,6 +30,16 @@ buildvariants:
     tasks:
       - attach-results-perf-test
 
+  - name: gotest-perf
+    display_name: "GoTest Parse Performance Test"
+    run_on: ubuntu2204-small
+    expansions:
+      num_files: "10"
+      tests_per_file: "100"
+      failure_rate: "0.1"
+    tasks:
+      - gotest-perf-test
+
 functions:
   create virtualenv:
     - command: shell.exec
@@ -43,6 +53,10 @@ post:
   - command: attach.results
     params:
       file_location: src/test_results.json
+  - command: gotest.parse_files
+    params:
+      files:
+        - "src/*.suite"
 
 tasks:
 
@@ -67,6 +81,20 @@ tasks:
             - "${num_tests|500}"        # Number of test results
             - "${failure_rate|0.1}"     # Failure rate (0.0-1.0)
             - "${log_lines|20}"         # Log lines per test
+
+  # Performance test for gotest.parse_files
+  # Generates multiple .suite files with go test output to test parallel log uploading.
+  - name: gotest-perf-test
+    commands:
+      - command: subprocess.exec
+        params:
+          binary: python3
+          working_dir: src
+          args:
+            - "generate_gotest_files.py"
+            - "${num_files|10}"          # Number of .suite files
+            - "${tests_per_file|100}"    # Tests per file
+            - "${failure_rate|0.1}"      # Failure rate (0.0-1.0)
 
 modules:
   - name: test-trigger
