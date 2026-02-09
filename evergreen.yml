@@ -101,8 +101,8 @@ tasks:
           working_dir: src
           args:
             - "generate_gotest_files.py"
-            - "${num_files|10}"          # Number of .suite files
-            - "${tests_per_file|100}"    # Tests per file
+            - "${num_files|100}"          # Number of .suite files
+            - "${tests_per_file|1000}"    # Tests per file
             - "${failure_rate|0.1}"      # Failure rate (0.0-1.0)
 
   # Performance test for upload-traces
