@@ -1,4 +1,6 @@
 include:
+  - filename: evergreen.yml
+    module: test-trigger-sandbox
   - name: downstream_expansions.yml
 
 patch_aliases:
