@@ -1,8 +1,3 @@
-include:
-  - filename: evergreen.yml
-    module: test-trigger-sandbox
-  - name: downstream_expansions.yml
-
 patch_aliases:
   - alias: "chaya-tag-from-yaml"
     variant_tags: ["commit-queue-variant"]
