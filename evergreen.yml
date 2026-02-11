@@ -105,15 +105,14 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
-    paths: 
-      - "README.md"
 
   - name: test-selection
     display_name: "Test Selection"
     run_on: ubuntu2204-small
     tasks:
       - test-selection-example
-
+    paths:
+      - "README.md"
   - name: git-env-test
     display_name: "Giv Env Test"
     modules:
