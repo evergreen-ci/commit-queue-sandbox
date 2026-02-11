@@ -1,0 +1,30 @@
+tasks:
+  - name: 10am_cron
+    commands:
+      - command: shell.exec
+        params:
+          script: "echo 'noop'"
+
+  - name: 10m_batchtime
+    commands:
+      - command: shell.exec
+        params:
+          script: "echo 'noop'"
+
+  - name: 8pm_cron
+    commands:
+      - command: shell.exec
+        params:
+          script: "echo 'noop'"
+
+buildvariants:
+  - name: cron-and-batchtime-variant
+    display_name: "Cron and Batchtime Test Variant"
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: 10am_cron
+        cron: "0 15 * * *" # at 10:00 EST every day (15:00 UTC)
+      - name: 10m_batchtime
+      - name: 8pm_cron
+        cron: "0 1 * * *" # at 20:00 EST every day (1:00 UTC)
