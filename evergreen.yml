@@ -1,3 +1,4 @@
+
 stepback: true
 
 # includes:
@@ -104,6 +105,8 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
+    paths: 
+      - "README.md"
 
   - name: test-selection
     display_name: "Test Selection"
@@ -242,16 +245,6 @@ tasks:
           working_dir: src
           script: |
             echo "PARENT PATCH ID: ${parent_patch_id}, PARENT GITHUB ORG: ${parent_github_org}, PARENT GITHUB REPO: ${parent_github_repo}, PARENT GITHUB BRANCH: ${parent_github_branch}"
-      - command: host.create
-        params:
-          num_hosts: 1
-          provider: docker
-          background: false
-          command: "echo hello evan test"
-          distro: ubuntu1604-container
-          image: amazonlinux
-          stdout_file_name: ${workdir}/garasign_container.out.log
-          stderr_file_name: ${workdir}/garasign_container.err.log
   - name: batchtime_task
     commands:
       - command: shell.exec
@@ -392,3 +385,5 @@ build_baron_settings:
 github_checks_aliases:
   - variant: ".*"
     task: ".*"
+
+
