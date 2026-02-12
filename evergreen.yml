@@ -105,6 +105,7 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
+    paths: evergreen.yml
 
   - name: test-selection
     display_name: "Test Selection"
