@@ -243,7 +243,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "PARENT PATCH ID: ${parent_patch_id}, PARENT GITHUB ORG: ${parent_github_org}, PARENT GITHUB REPO: ${parent_github_repo}, PARENT GITHUB BRANCH: ${parent_github_branch}"
+            echo "PARENT PATCH ID: ${parent_patch_id}, PARENT AS MODULE: ${parent_project_module}, PARENT GITHUB ORG: ${parent_github_org} (should be removed)"
   - name: batchtime_task
     commands:
       - command: shell.exec
