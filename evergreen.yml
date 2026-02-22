@@ -105,6 +105,8 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: group1
+    paths: 
+      - "*.yml"
 
   - name: test-selection
     display_name: "Test Selection"
