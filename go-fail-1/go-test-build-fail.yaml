@@ -1,0 +1,48 @@
+# To use, run `evergreen-staging patch --path go-fail-1/go-test-build-fail.yaml`
+
+tasks:
+    - name: go-test-build-fail
+      commands:
+          - func: clone-project
+          - command: shell.exec
+            params:
+                working_dir: src/go-fail-1
+                shell: bash
+                script: |
+                    mkdir -p bin
+                    go test ./... 2>&1 | tee bin/output.txt || true
+          - type: system
+            command: gotest.parse_files
+            params:
+                files:
+                    - src/go-fail-1/bin/output.txt
+    - name: go-test-build-fail-json
+      commands:
+          - func: clone-project
+          - command: shell.exec
+            params:
+                working_dir: src/go-fail-1
+                shell: bash
+                script: |
+                    mkdir -p bin
+                    go test -json ./... 2>&1 | tee bin/output.json || true
+          - type: system
+            command: gotest.parse_files
+            params:
+                files:
+                    - src/go-fail-1/bin/output.json
+
+buildvariants:
+  - name: go-test
+    display_name: "Go test build fail"
+    tasks:
+      - go-test-build-fail
+      - go-test-build-fail-json
+    run_on:
+        - ubuntu2204-small
+
+functions:
+    clone-project:
+      - command: git.get_project
+        params:
+            directory: src
