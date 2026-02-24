@@ -69,7 +69,6 @@ buildvariants:
     name: ubuntu2004
     paths:
       - "!README.md"
-      - "!evergreen.yml"
     tags: [commit-queue-variant, whaat]
     modules:
       - evergreen
@@ -80,6 +79,8 @@ buildvariants:
     tasks:
       - name: task_generator
       - name: unit_tests
+        create_check_run:
+          path_to_outputs: ""
       - name: validate_commit_message
         create_check_run:
           path_to_outputs: ""
