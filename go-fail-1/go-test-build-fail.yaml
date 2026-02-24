@@ -3,6 +3,7 @@
 tasks:
     - name: go-test-build-fail-forced
       commands:
+          - func: clone-project
           - type: system
             command: gotest.parse_files
             params:
@@ -25,6 +26,7 @@ tasks:
                     - src/go-fail-1/bin/output.txt
     - name: go-test-build-fail-json-forced
       commands:
+          - func: clone-project
           - type: system
             command: gotest.parse_files
             params:
