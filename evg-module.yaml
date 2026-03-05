@@ -1,0 +1,25 @@
+tasks:
+  - name: clone-evg
+    commands:
+      - command: git.get_project
+        params:
+          directory: src
+          revisions:
+            evg: ${evg_rev}
+            shrub: ${shrub_rev}
+
+buildvariants:
+  - name: variant1
+    modules:
+      - evg
+    display_name: "Variant 1"
+    tasks:
+      - name: clone-evg
+    run_on:
+      - ubuntu2204-small
+
+modules:
+  - name: evg
+    owner: evergreen-ci
+    repo: evergreen-ci
+    branch: main
