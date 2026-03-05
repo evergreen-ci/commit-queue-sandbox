@@ -14,7 +14,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "noop2"
+            echo "noop"
   - name: task2
     commands:
       - command: shell.exec
