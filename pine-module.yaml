@@ -22,4 +22,4 @@ modules:
   - name: module1
     owner: evergreen-ci
     repo: commit-queue-sandbox
-    branch: zackary_bisect
+    branch: zackary_module_2
