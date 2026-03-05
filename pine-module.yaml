@@ -1,25 +1,25 @@
+# This doesn't use pine, but is similar to the setup.
 tasks:
-  - name: clone-evg
+  - name: clone
     commands:
       - command: git.get_project
         params:
           directory: src
           revisions:
-            evg: ${evg_rev}
-            shrub: ${shrub_rev}
+            module1: ${module1_rev}
 
 buildvariants:
   - name: variant1
     modules:
-      - evg
+      - module1
     display_name: "Variant 1"
     tasks:
-      - name: clone-evg
+      - name: clone
     run_on:
       - ubuntu2204-small
 
 modules:
-  - name: evg
+  - name: module1
     owner: evergreen-ci
-    repo: evergreen-ci
-    branch: main
+    repo: commit-queue-sandbox
+    branch: zackary_bisect
