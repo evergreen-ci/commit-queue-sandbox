@@ -63,6 +63,7 @@ buildvariants:
     tags: [commit-queue-variant, whaat]
     modules:
       - trigger-sandbox
+      - trigger-sandbox2
     run_on:
       - ubuntu1604-large
     expansions:
@@ -107,6 +108,7 @@ buildvariants:
     display_name: "Giv Env Test"
     modules:
       - trigger-sandbox
+      - trigger-sandbox2
     run_on:
       - ubuntu2004-small
     tasks:
@@ -361,6 +363,10 @@ modules:
     repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
     prefix: ${workdir}/src
     branch: test-trigger
+  - name: trigger-sandbox2
+    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
+    prefix: ${workdir}/src
+    branch: test-trigger2
 
 build_baron_settings:
   ticket_create_project: "EVG"
