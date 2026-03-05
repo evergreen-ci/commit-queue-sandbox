@@ -1,3 +1,4 @@
+
 stepback: true
 
 include:
@@ -62,7 +63,6 @@ buildvariants:
     tags: [commit-queue-variant, whaat]
     modules:
       - trigger-sandbox
-      - evergreen
     run_on:
       - ubuntu1604-large
     expansions:
@@ -107,7 +107,6 @@ buildvariants:
     display_name: "Giv Env Test"
     modules:
       - trigger-sandbox
-      - evergreen
     run_on:
       - ubuntu2004-small
     tasks:
@@ -351,10 +350,10 @@ tasks:
           args: ["generate_test_results.py", "test_selection_output.json"]
   - name: test_empty_task_error
     #commands:
-    #- command: shell.exec
-    #params:
-    #script: |
-    #echo "test - test_empty_task_error"
+      #- command: shell.exec
+        #params:
+          #script: |
+            #echo "test - test_empty_task_error"
     # Intentionally leaving this task with no commands to trigger the error
 
 modules:
@@ -362,10 +361,6 @@ modules:
     repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
     prefix: ${workdir}/src
     branch: test-trigger
-  - name: evergreen
-    owner: evergreen-ci
-    repo: evergreen
-    branch: main
 
 build_baron_settings:
   ticket_create_project: "EVG"
@@ -374,3 +369,5 @@ build_baron_settings:
 github_checks_aliases:
   - variant: ".*"
     task: ".*"
+
+
