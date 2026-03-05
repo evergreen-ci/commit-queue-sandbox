@@ -5,9 +5,17 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: task1
+      - name: task2
 
 tasks:
   - name: task1
+    commands:
+      - command: shell.exec
+        params:
+          working_dir: src
+          script: |
+            echo "noop2"
+  - name: task2
     commands:
       - command: shell.exec
         params:
