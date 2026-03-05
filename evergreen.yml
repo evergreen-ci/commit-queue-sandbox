@@ -357,7 +357,7 @@ tasks:
 
 modules:
   - name: trigger-sandbox
-    repo: git@github.com:evergreen-ci/sandbox.git
+    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
     prefix: ${workdir}/src
     branch: test-trigger
 
