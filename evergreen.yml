@@ -1,6 +1,6 @@
 buildvariants:
   - display_name: Test BV 2
-    name: bv1
+    name: bv2
     run_on:
       - ubuntu2004-small
     tasks:
