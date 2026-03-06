@@ -358,7 +358,7 @@ tasks:
         #params:
           #script: |
             #echo "test - test_empty_task_error"
-    # Intentionally leaving this task with no commands to trigger the error
+    # Intentionally leaving this task with no commands to trigger the error.
 
 modules:
   - name: trigger-sandbox
