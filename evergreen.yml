@@ -4,7 +4,7 @@ stepback: true
 include:
   - filename: evergreen.yml
     module: trigger-sandbox
-  - filename: ex.yml
+  - filename: evergreen.yml
     module: trigger-sandbox2
 
 pre_error_fails_task: true
