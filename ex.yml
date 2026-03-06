@@ -4,7 +4,7 @@ buildvariants:
     run_on:
       - ubuntu2004-small
     tasks:
-      - name: task4
+      - name: task5
 
 tasks:
   - name: task5
