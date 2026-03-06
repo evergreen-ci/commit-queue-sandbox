@@ -183,7 +183,7 @@ task_groups:
       - validate_commit_message2
 
 tasks:
-  # Test how periodic build that only includes taskA interacts with patch_optional dep.
+  # Test how periodic build that only includes taskA interacts with patch_optional dep
   - name: taskA
     depends_on:
       - name: taskB
