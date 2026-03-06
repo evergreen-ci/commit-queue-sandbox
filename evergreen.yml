@@ -4,10 +4,10 @@ buildvariants:
     run_on:
       - ubuntu2004-small
     tasks:
-      - name: task3
+      - name: task4
 
 tasks:
-  - name: task3
+  - name: task4
     commands:
       - command: shell.exec
         params:
