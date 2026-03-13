@@ -18,7 +18,6 @@ patch_trigger_aliases:
   - alias: "some-trigger"
     child_project: sandbox
     status: "success"
-    parent_as_module: "upstream-module-name"
     task_specifiers:
       - patch_alias: "ChayaTags"
       - task_regex: "^lint.*"
