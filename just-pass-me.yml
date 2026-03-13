@@ -1,15 +1,28 @@
 buildvariants:
-    - display_name: Passing
-      name: pass
-      run_on:
-          - ubuntu2204-small
-      tasks:
-          - name: passtest
+  - display_name: Passing
+    name: pass
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: passtest
 
 tasks:
-    - name: passtest
-      commands:
-          - command: shell.exec
-            params:
-                script: |
-                    echo "We passing this one today!"
+  - name: passtest
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "We passing this one today!"
+
+patch_trigger_aliases:
+  - alias: "some-trigger"
+    child_project: sandbox
+    status: "success"
+    parent_as_module: "upstream-module-name"
+    task_specifiers:
+      - patch_alias: "ChayaTags"
+      - task_regex: "^lint.*"
+        variant_regex: "^ubuntu"
+
+github_trigger_aliases:
+  - "some-trigger"
