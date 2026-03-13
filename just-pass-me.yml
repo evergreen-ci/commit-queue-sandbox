@@ -19,9 +19,8 @@ patch_trigger_aliases:
     child_project: sandbox
     status: "success"
     task_specifiers:
-      - patch_alias: "ChayaTags"
-      - task_regex: "^lint.*"
-        variant_regex: "^ubuntu"
+      - task_regex: ".*"
+        variant_regex: ".*"
 
 github_trigger_aliases:
   - "some-trigger"
