@@ -12,7 +12,7 @@ tasks:
       - command: shell.exec
         params:
           script: |
-            echo "We passing this one today!!"
+            echo "We passing this one today!!!"
 
 patch_trigger_aliases:
   - alias: "some-trigger"
