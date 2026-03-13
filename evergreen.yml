@@ -50,6 +50,7 @@ buildvariants:
         run_on:
           - bynntest
       - name: patch_only_task
+        depends_on: taskB
         run_on:
           - bynntest
     paths:
