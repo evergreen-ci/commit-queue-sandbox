@@ -250,7 +250,7 @@ tasks:
           script: |
             set -o verbose
             set -o errexit
-            sleep 240
+            sleep 12
             if [ "${is_commit_queue}" = "true" ]; then
               cat > commit_message.txt <<END_OF_COMMIT_MSG
               ${commit_message}
