@@ -334,7 +334,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "i am become checkrun"
+            echo "i am introducing a change"
   - name: test-selection-example
     commands:
       # Run the test_selection.get command to get the recommended list of tests.
