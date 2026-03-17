@@ -1,10 +1,6 @@
 
 stepback: true
 
-include:
-  - filename: evergreen.yml
-    module: trigger-sandbox
-
 pre_error_fails_task: true
 pre: &pre
   - command: git.get_project
@@ -39,9 +35,6 @@ buildvariants:
       - "!README.md"
       - "!evergreen.yml"
     tags: [commit-queue-variant, whaat]
-    modules:
-      - trigger-sandbox
-      - trigger-sandbox2
     run_on:
       - ubuntu1604-large
     expansions:
@@ -84,13 +77,6 @@ buildvariants:
       - name: validate_commit_message2
       - name: test-restart-on-fail
 
-  - name: akhi_test_validation
-    display_name: "Test Empty Task Validation"
-    run_on:
-      - ubuntu2204-small
-    tasks:
-      - name: test_empty_task_error
-
 functions:
   create virtualenv:
     - command: shell.exec
@@ -113,18 +99,6 @@ post:
     params:
       file_location: src/test_selection_results.json
 
-task_groups:
-  - name: group1
-    max_hosts: 1
-    setup_group:
-      - command: git.get_project
-        params:
-          directory: src
-    tasks:
-      - test-restart-on-fail
-      - validate_commit_message
-      - validate_commit_message2
-
 tasks:
   # Test how periodic build that only includes taskA interacts with patch_optional dep.
   - name: taskA
@@ -140,11 +114,6 @@ tasks:
       - command: shell.exec
         params:
           script: echo ${task_name}
-  - name: gen_task_template
-    depends_on:
-      - name: task_generator
-        variant: release
-    commands:
       - command: shell.exec
         params:
           working_dir: src
@@ -222,48 +191,12 @@ tasks:
 
               echo "$commit_message_content"
             fi
-  - name: test-restart
-    priority: 3
-    commands:
-      - command: shell.exec
-        params:
-          script: |
-            echo "sleeping"
-            ls src
-            sleep 10
-            . src/task.sh
-            echo "triggering restart"
-            post_evergreen_status failed test "test desc" false true
-      - command: shell.exec
-        params:
-          script: |
-            echo "sleeping 2"
-            sleep 10
-      - command: shell.exec
-        params:
-          script: |
-            echo "sleeping 3"
-            sleep 10
-
   - name: task_generator
     commands:
       - command: generate.tasks
         params:
           files:
             - src/generate.json
-  - name: test_release
-    depends_on:
-      - name: unit_tests
-        variant: "*"
-  - name: test_release2
-    depends_on:
-      - name: test_release
-    commands:
-      - command: shell.exec
-        params:
-          working_dir: src
-          script: |
-            echo "i am a script"
   - name: patch_only_task
     patch_only: true
     commands:
@@ -279,39 +212,6 @@ tasks:
           working_dir: src
           script: |
             echo "i am introducing a change"
-  - name: test-selection-example
-    commands:
-      # Run the test_selection.get command to get the recommended list of tests.
-      - command: test_selection.get
-        params:
-          tests_file: src/test_selection_input.json
-          output_file: src/test_selection_output.json
-      - command: shell.exec
-        params:
-          script: cat src/test_selection_output.json
-      # Generate dummy test results from the recommended list of tests.
-      - command: subprocess.exec
-        params:
-          binary: python3
-          working_dir: src
-          args: ["generate_test_results.py", "test_selection_output.json"]
-  - name: test_empty_task_error
-    #commands:
-      #- command: shell.exec
-        #params:
-          #script: |
-            #echo "test - test_empty_task_error"
-    # Intentionally leaving this task with no commands to trigger the error
-
-modules:
-  - name: trigger-sandbox
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: ${workdir}/src
-    branch: test-trigger
-  - name: trigger-sandbox2
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: ${workdir}/src
-    branch: test-trigger2
 
 build_baron_settings:
   ticket_create_project: "EVG"
