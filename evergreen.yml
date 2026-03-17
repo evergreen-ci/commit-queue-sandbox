@@ -119,7 +119,7 @@ task_groups:
       setup_group:
           - command: shell.exec
             params:
-                script: "echo setup_group"
+                script: "echo Hello"
       setup_task_can_fail_task: true
       setup_task:
           - command: shell.exec
