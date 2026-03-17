@@ -61,6 +61,14 @@ buildvariants:
         execution_tasks:
           - validate_commit_message
 
+  - name: test-selection
+    display_name: "Test Selection"
+    run_on: ubuntu2204-small
+    tasks:
+      - test-selection-example
+    paths:
+      - "README.md"
+
   - name: cron-test
     cron: "*/5 * * * *"
     display_name: "Cron Test"
@@ -101,6 +109,23 @@ post:
 
 tasks:
   # Test how periodic build that only includes taskA interacts with patch_optional dep.
+  - name: test-selection-example
+    commands:
+      # Run the test_selection.get command to get the recommended list of tests.
+      - command: test_selection.get
+        params:
+          tests_file: src/test_selection_input.json
+          output_file: src/test_selection_output.json
+      - command: shell.exec
+        params:
+          script: cat src/test_selection_output.json
+      # Generate dummy test results from the recommended list of tests.
+      - command: subprocess.exec
+        params:
+          binary: python3
+          working_dir: src
+          args: ["generate_test_results.py", "test_selection_output.json"]
+
   - name: taskA
     depends_on:
       - name: taskB
