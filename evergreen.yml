@@ -26,6 +26,7 @@ buildvariants:
       - name: taskB
         run_on:
           - bynntest
+        depends_on: patch_only_task
       - name: patch_only_task
         depends_on: taskB
         run_on:
