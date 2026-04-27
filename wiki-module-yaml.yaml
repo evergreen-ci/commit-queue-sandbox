@@ -13,20 +13,20 @@ tasks:
         params:
           script: |
             cd src
-            cd mongo-wiki
+            cd evergreen-wiki
             git remote -v
 
-# Official MongoDB product wiki: https://github.com/mongodb/mongo.wiki
+# Official MongoDB product wiki: https://github.com/mongodb/evergreen.wiki
 modules:
-  - name: mongo-wiki
-    owner: mongodb
-    repo: mongo.wiki
+  - name: evergreen-wiki
+    owner: evergreen-ci
+    repo: evergreen.wiki
 
 buildvariants:
   - name: wiki-module-clone
     display_name: Wiki Module Clone
     modules:
-      - mongo-wiki
+      - evergreen-wiki
     tasks:
       - wikitest
     run_on:
