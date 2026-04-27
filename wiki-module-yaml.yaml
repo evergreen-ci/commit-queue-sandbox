@@ -1,0 +1,33 @@
+# To use, run `evergreen-staging patch --path wiki-module-yaml.yaml`
+
+batch_time: 180
+
+tasks:
+  - name: wikitest
+    commands:
+      - command: git.get_project
+        params:
+          directory: src
+          token: ${github}
+      - command: shell.exec
+        params:
+          script: |
+            cd src
+            cd mongo-wiki
+            git remote -v
+
+# Official MongoDB product wiki: https://github.com/mongodb/mongo.wiki
+modules:
+  - name: mongo-wiki
+    owner: mongodb
+    repo: mongo.wiki
+
+buildvariants:
+  - name: wiki-module-clone
+    display_name: Wiki Module Clone
+    modules:
+      - mongo-wiki
+    tasks:
+      - wikitest
+    run_on:
+      - ubuntu2204-small
