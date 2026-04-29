@@ -18,21 +18,6 @@ patch_aliases:
     task: ".*"
 
 buildvariants:
-  - name: bynns single task thing
-    display_name: single task test
-    run_on:
-      - ubuntu1604-large
-    tasks:
-      - name: taskB
-        run_on:
-          - bynntest
-      - name: patch_only_task
-        depends_on: taskB
-        run_on:
-          - bynntest
-    paths:
-      - "tests/commit-queue-playground/*"
-
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     paths:
