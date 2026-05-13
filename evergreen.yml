@@ -32,6 +32,8 @@ buildvariants:
     expansions:
       module_prefix: hello
     tasks:
+      # generate.tasks JSON only references existing variant ubuntu2004 and adds tasks under it.
+      - name: append_existing_bv_generate
       - name: task_generator
       - name: unit_tests
       - name: validate_commit_message
@@ -269,6 +271,12 @@ tasks:
         params:
           files:
             - src/generate.json
+  - name: append_existing_bv_generate
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/generate_append_existing_bv.json
   - name: test_release
     depends_on:
       - name: unit_tests
