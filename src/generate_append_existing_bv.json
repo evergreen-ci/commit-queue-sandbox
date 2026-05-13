@@ -1,0 +1,30 @@
+{
+  "buildvariants": [
+    {
+      "name": "ubuntu2004",
+      "tasks": [
+        {
+          "name": "dynamic_task_appended_to_existing_bv",
+          "depends_on": [
+            {
+              "name": "append_existing_bv_generate"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "dynamic_task_appended_to_existing_bv",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo 'This task was merged into the pre-existing ubuntu2004 variant (append-to-existing-BV demo).'"
+          }
+        }
+      ]
+    }
+  ]
+}
