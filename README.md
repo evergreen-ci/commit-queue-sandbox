@@ -1,5 +1,7 @@
 # commit-queue-playground
 
+<!-- noop: trigger PR flow -->
+
 Repository here to experiment with the commit queue or whatever else.
 
 ## Testing
