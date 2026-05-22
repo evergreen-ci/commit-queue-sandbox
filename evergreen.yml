@@ -40,6 +40,7 @@ buildvariants:
         create_check_run:
           path_to_outputs: ""
       - name: patch_only_task
+      - name: write_random_test_logs
       - name: batchtime_task
       - name: test_passing_param_to_child
       - name: test-receiving-parent-param
@@ -160,6 +161,47 @@ tasks:
       - command: shell.exec
         params:
           script: echo ${task_name}
+  - name: write_random_test_logs
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            for i in $(seq 1 90000); do
+              echo "$(date +%s%N) This is log line $i"
+            done
+      - command: shell.exec
+        params:
+          script: |
+            cat >> ${workdir}/build/TestLogs/log_spec.yaml <<EOF
+            {
+              "format": "text-timestamp"
+            }
+            EOF
+            echo "1257894000000000000 I am test log.\n1257894003000000000 I should get ingested automatically by the agent.\n" > ${workdir}/build/TestLogs/julian-test
+            echo "1257894000000000000 I am test log number 2 .\n1257894003000000000 I should get also ingested automatically by the agent.\n" > ${workdir}/build/TestLogs/julian-test
+              mkdir -p ${workdir}/build/TestLogs/to-merge
+              echo "1257894001000000000 First file in to-merge folder." > ${workdir}/build/TestLogs/to-merge/file1.log
+              echo "1257894002000000000 Second file in to-merge folder." > ${workdir}/build/TestLogs/to-merge/file2.log
+            cat >> ${workdir}/julian_results.json <<EOF
+            {
+              "results": [
+                {
+                  "test_file": "julian-test-result",
+                  "status": "pass",
+                  "log_info": {
+                    "log_name": "julian-test",
+                      "logs_to_merge": ["to-merge/file1.log", "to-merge/file2.log"]
+                  }
+                }
+              ]
+            }
+            EOF
+      - command: attach.results
+        params:
+          file_location: ${workdir}/julian_results.json
+      # - command: shell.exec
+      #   params:
+      #     script: exit 1
   - name: gen_task_template
     depends_on:
       - name: task_generator
