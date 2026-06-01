@@ -1,5 +1,7 @@
 # commit-queue-playground
 
+hello world
+
 Repository here to experiment with the commit queue or whatever else.
 
 ## Testing
