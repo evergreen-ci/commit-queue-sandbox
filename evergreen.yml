@@ -71,6 +71,7 @@ buildvariants:
       - "README.md"
   - name: git-env-test
     display_name: "Giv Env Test"
+    activate: true
     paths:
       - "README.md"
     modules:
