@@ -71,6 +71,8 @@ buildvariants:
       - "README.md"
   - name: git-env-test
     display_name: "Giv Env Test"
+    paths:
+      - "README.md"
     modules:
       - trigger-sandbox
       - trigger-sandbox2
