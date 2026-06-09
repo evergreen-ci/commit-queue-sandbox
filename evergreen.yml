@@ -171,7 +171,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "noop2"
+            echo "HI"
   - name: test-restart-on-fail
     commands:
       - command: shell.exec
