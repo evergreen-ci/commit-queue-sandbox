@@ -159,7 +159,7 @@ tasks:
     commands:
       - command: shell.exec
         params:
-          script: echo ${task_name}
+          script: echo "HI"
   - name: gen_task_template
     depends_on:
       - name: task_generator
