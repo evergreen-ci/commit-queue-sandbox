@@ -14,6 +14,12 @@ def foo():
     print("foobar")
 
 
+def bar():
+    print("bar")
+    print("baz")
+    print("barbaz")
+
+
 def main():
     """Entry point into commandline."""
     return cli(obj={})
