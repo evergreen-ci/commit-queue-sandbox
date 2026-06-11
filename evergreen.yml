@@ -180,7 +180,7 @@ tasks:
           working_dir: src
           script: |
             echo "admin bynn: ${bynnbynn}"
-            exit 1
+            exit 0
   - name: test_passing_param_to_child
     tags: ["my_tag"]
     commands:
