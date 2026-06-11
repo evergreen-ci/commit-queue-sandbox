@@ -14,6 +14,11 @@ def foo():
     print("foobar")
 
 
+def greeting(name):
+    """Return a greeting for the given name."""
+    return "Hello, {}!".format(name)
+
+
 def main():
     """Entry point into commandline."""
     return cli(obj={})
