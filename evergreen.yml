@@ -9,12 +9,16 @@ pre_error_fails_task: true
 pre: &pre
   - command: shell.exec
     params:
-      script:
+      script: |
         echo the script will fail
         exit 123
   - command: git.get_project
     params:
       directory: src
+  - command: subprocess.exec
+    params:
+      working_dir: src
+      command: bash failing-script.sh
   - func: create virtualenv
 
 patch_aliases:
