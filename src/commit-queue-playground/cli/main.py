@@ -23,3 +23,5 @@ def main():
     """Entry point into commandline."""
     return cli(obj={})
 
+def new_func():
+    return "hi"
