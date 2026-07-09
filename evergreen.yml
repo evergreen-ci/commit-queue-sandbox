@@ -114,6 +114,34 @@ buildvariants:
     tasks:
       - name: test_empty_task_error
 
+  # DEVPROD-33607 manual test: cross-variant dependency into a path-filtered variant.
+  # pathfilter-dep-provider only runs when a *.go file changes, so a PR that
+  # changes only non-Go files (e.g. README.md) path-filters it out. However,
+  # pathfilter_consumer_task (in the always-running consumer variant) depends on
+  # pathfilter_provider_task, so that provider task (and its display task) should
+  # still be scheduled while the unrelated provider task stays filtered out.
+  - name: pathfilter-dep-bv
+    display_name: "Path Filter Dep"
+    run_on:
+      - ubuntu2004-small
+    paths:
+      - "*.go"
+    tasks:
+      - name: pathfilter_task
+      - name: pathfilter_unrelated
+    display_tasks:
+      - name: pathfilter_display
+        execution_tasks:
+          - pathfilter_task
+          - pathfilter_unrelated
+
+  - name: pathfilter-dep-consumer-bv
+    display_name: "Path Filter Dep Consumer"
+    run_on:
+      - ubuntu2004-small
+    tasks:
+      - name: pathfilter_consumer_task
+
 functions:
   create virtualenv:
     - command: shell.exec
@@ -163,6 +191,25 @@ tasks:
       - command: shell.exec
         params:
           script: echo "HI"
+  # DEVPROD-33607 manual test tasks (see pathfilter-dep-provider/consumer variants).
+  - name: pathfilter_task
+    commands:
+      - command: shell.exec
+        params:
+          script: echo "task depended on by a task in an unfiltered variant"
+  - name: pathfilter_unrelated
+    commands:
+      - command: shell.exec
+        params:
+          script: echo "unrelated task that nothing depends on"
+  - name: pathfilter_consumer_task
+    depends_on:
+      - name: pathfilter_task
+        variant: pathfilter-dep-bv
+    commands:
+      - command: shell.exec
+        params:
+          script: echo "consumer task depending on a task in a path-filtered variant"
   - name: gen_task_template
     depends_on:
       - name: task_generator
