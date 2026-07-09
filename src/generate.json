@@ -1,0 +1,25 @@
+{
+  "buildvariants": [
+    {
+      "name": "ubuntu2004",
+      "tasks": [
+        {
+          "name": "task-to-add-via-generator"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "task-to-add-via-generator",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo generated_task"
+          }
+        }
+      ]
+    }
+  ]
+}

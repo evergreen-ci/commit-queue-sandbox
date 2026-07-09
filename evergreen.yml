@@ -32,6 +32,8 @@ buildvariants:
     expansions:
       module_prefix: hello
     tasks:
+      # generate.tasks JSON only references existing variant ubuntu2004 and adds tasks under it.
+      - name: append_existing_bv_generate
       - name: task_generator
       - name: unit_tests
       - name: validate_commit_message
@@ -69,6 +71,9 @@ buildvariants:
       - "README.md"
   - name: git-env-test
     display_name: "Giv Env Test"
+    activate: true
+    paths:
+      - "README.md"
     modules:
       - trigger-sandbox
       - trigger-sandbox2
@@ -157,7 +162,7 @@ tasks:
     commands:
       - command: shell.exec
         params:
-          script: echo ${task_name}
+          script: echo "HI"
   - name: gen_task_template
     depends_on:
       - name: task_generator
@@ -167,7 +172,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "noop2"
+            echo "HI"
   - name: test-restart-on-fail
     commands:
       - command: shell.exec
@@ -269,6 +274,12 @@ tasks:
         params:
           files:
             - src/generate.json
+  - name: append_existing_bv_generate
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/generate_append_existing_bv.json
   - name: test_release
     depends_on:
       - name: unit_tests
