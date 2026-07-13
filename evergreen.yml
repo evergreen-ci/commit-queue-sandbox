@@ -114,7 +114,203 @@ buildvariants:
     tasks:
       - name: test_empty_task_error
 
+  - name: js
+    display_name: "GitHub Volume - js"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: JS_LINT
+      - name: JS_LIBRARY_CHECKS
+
+  - name: bazel_linux_x86_64
+    display_name: "GitHub Volume - bazel_linux_x86_64"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: CHECK_BAZEL_DEPS
+      - name: VALIDATE_PYTHON_DEPENDENCIES
+      - name: GENERATE_UNIT_TESTS_BAZEL
+      - name: GENERATE_INT_TESTS_BAZEL
+      - name: LINT_IDE_CONFIG
+      - name: BUF_PROTO_TEST
+      - name: VERIFY_GAZELLE_GAZELLE_DOES_NOT_MODIFY_FILES
+      - name: VERIFY_GAZELLE_UPDATE_GO_REPOS_DOES_NOT_MODIFY_FILES
+
+  - name: e2e_local_with_daemon
+    display_name: "GitHub Volume - e2e_local_with_daemon"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: E2E_Local_BRS_Restore_ReplicaSet
+      - name: E2E_Local_BRS_Restore_ShardedCluster
+
+  - name: code_health
+    display_name: "GitHub Volume - code_health"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: LINT_PULL_REQUEST_TITLE
+      - name: CHECK_LICENSE_HEADERS
+
+  - name: unit_python
+    display_name: "GitHub Volume - unit_python"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: UNIT_PYTHON
+      - name: VALIDATE_PYTHON_FORMAT
+
+  - name: e2e_local
+    display_name: "GitHub Volume - e2e_local"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: Generate_E2E_Local_Tasks_By_Jira_Issue_Components
+      - name: E2E_Local_Core_Auth
+      - name: E2E_CLIENT_PERFORMANCE_LCP_REGRESSION_CHECK
+
+  - name: unit_prometheus_alerts
+    display_name: "GitHub Volume - unit_prometheus_alerts"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: PROM_ALERT_UNIT_TESTS
+
+  - name: local_openapi_pr_checks
+    display_name: "GitHub Volume - local_openapi_pr_checks"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: LOCAL_OPENAPI_DIFF
+      - name: LOCAL_OPENAPI_VALIDATE
+
+  - name: atlas_search
+    display_name: "GitHub Volume - atlas_search"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: ATLAS_SEARCH_CHECK_AUTOGEN_CODE
+      - name: ATLAS_SEARCH_SCHEMA_COMPILE
+      - name: ATLAS_SEARCH_SCHEMA_VALIDATE
+
+  - name: e2e_cypress
+    display_name: "GitHub Volume - e2e_cypress"
+    run_on: [ubuntu2204-small]
+    tasks:
+      - name: E2E_CYPRESS_SMOKE
+
+  - name: e2e_cypress_generator
+    display_name: "GitHub Volume - e2e_cypress_generator"
+    run_on: [ubuntu2204-small]
+    tasks:
+      - name: GENERATE_E2E_CYPRESS_TASKS
+
+  - name: local_openapi_required
+    display_name: "GitHub Volume - local_openapi_required"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: LOCAL_OPENAPI_REQUIRED
+
+  - name: unit_proto
+    display_name: "GitHub Volume - unit_proto"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: UNIT_PROTO
+
+  - name: unit_go
+    display_name: "GitHub Volume - unit_go"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: UNIT_GO
+
+  - name: run_webpack_stats
+    display_name: "GitHub Volume - run_webpack_stats"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: RUN_WEBPACK_STATS
+
+  - name: e2e_cypress_search_playground
+    display_name: "GitHub Volume - e2e_cypress_search_playground"
+    run_on: [ubuntu2204-small]
+    tasks:
+      - name: E2E_CYPRESS_SEARCH_PLAYGROUND
+
+  - name: ubuntu
+    display_name: "GitHub Volume - ubuntu"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: write_and_set_downstream_expansions
+
+  - name: authn
+    display_name: "GitHub Volume - authn"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: AUTHN_SMOKE
+
+  - name: e2e_local_required
+    display_name: "GitHub Volume - e2e_local_required"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: E2E_LOCAL_REQUIRED_SMOKE
+
+  - name: int_nds_model_verification
+    display_name: "GitHub Volume - int_nds_model_verification"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: INT_NDS_MODEL_VERIFICATION
+
+  - name: int
+    display_name: "GitHub Volume - int"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: INT_SMOKE
+      - name: INT_REGRESSION
+
+  - name: unit_java
+    display_name: "GitHub Volume - unit_java"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: UNIT_JAVA
+      - name: UNIT_JAVA_SMOKE
+
+  - name: int_mms_settings_verification
+    display_name: "GitHub Volume - int_mms_settings_verification"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: INT_MMS_SETTINGS_VERIFICATION
+
+  - name: authz
+    display_name: "GitHub Volume - authz"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: AUTHZ_SMOKE
+
+  - name: e2e_local_apicontract_with_path_filter_acad1
+    display_name: "GitHub Volume - e2e_local_apicontract_with_path_filter_acad1"
+    run_on: [ubuntu2204-small]
+    tasks:
+      - name: E2E_LOCAL_APICONTRACT_REQUIRED
+
+  - name: rate_limit_validation_pr_checks
+    display_name: "GitHub Volume - rate_limit_validation_pr_checks"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: RATE_LIMIT_VALIDATION
+
+  - name: e2e_nds_dry_run
+    display_name: "GitHub Volume - e2e_nds_dry_run"
+    run_on: [ubuntu2004-small]
+    tasks:
+      - name: E2E_NDS_DRY_RUN
+
+  - name: e2e_cypress_irm_pr_smoke
+    display_name: "GitHub Volume - e2e_cypress_irm_pr_smoke"
+    run_on: [ubuntu2204-small]
+    tasks:
+      - name: E2E_CYPRESS_IRM_PR_SMOKE
+
 functions:
+  "run github volume task":
+    - command: shell.exec
+      params:
+        shell: bash
+        script: |
+          set -euxo pipefail
+          echo "variant=${volume_variant}"
+          echo "task=${volume_task}"
+          echo "github-volume-smoke"
+
   create virtualenv:
     - command: shell.exec
       params:
@@ -331,6 +527,236 @@ tasks:
           #script: |
             #echo "test - test_empty_task_error"
     # Intentionally leaving this task with no commands to trigger the error
+
+  - name: JS_LINT
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: js, volume_task: JS_LINT }
+
+  - name: JS_LIBRARY_CHECKS
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: js, volume_task: JS_LIBRARY_CHECKS }
+
+  - name: CHECK_BAZEL_DEPS
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: bazel_linux_x86_64, volume_task: CHECK_BAZEL_DEPS }
+
+  - name: VALIDATE_PYTHON_DEPENDENCIES
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: bazel_linux_x86_64, volume_task: VALIDATE_PYTHON_DEPENDENCIES }
+
+  - name: GENERATE_UNIT_TESTS_BAZEL
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: bazel_linux_x86_64, volume_task: GENERATE_UNIT_TESTS_BAZEL }
+
+  - name: GENERATE_INT_TESTS_BAZEL
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: bazel_linux_x86_64, volume_task: GENERATE_INT_TESTS_BAZEL }
+
+  - name: LINT_IDE_CONFIG
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: bazel_linux_x86_64, volume_task: LINT_IDE_CONFIG }
+
+  - name: BUF_PROTO_TEST
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: bazel_linux_x86_64, volume_task: BUF_PROTO_TEST }
+
+  - name: VERIFY_GAZELLE_GAZELLE_DOES_NOT_MODIFY_FILES
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: bazel_linux_x86_64, volume_task: VERIFY_GAZELLE_GAZELLE_DOES_NOT_MODIFY_FILES }
+
+  - name: VERIFY_GAZELLE_UPDATE_GO_REPOS_DOES_NOT_MODIFY_FILES
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: bazel_linux_x86_64, volume_task: VERIFY_GAZELLE_UPDATE_GO_REPOS_DOES_NOT_MODIFY_FILES }
+
+  - name: E2E_Local_BRS_Restore_ReplicaSet
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_local_with_daemon, volume_task: E2E_Local_BRS_Restore_ReplicaSet }
+
+  - name: E2E_Local_BRS_Restore_ShardedCluster
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_local_with_daemon, volume_task: E2E_Local_BRS_Restore_ShardedCluster }
+
+  - name: LINT_PULL_REQUEST_TITLE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: code_health, volume_task: LINT_PULL_REQUEST_TITLE }
+
+  - name: CHECK_LICENSE_HEADERS
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: code_health, volume_task: CHECK_LICENSE_HEADERS }
+
+  - name: UNIT_PYTHON
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: unit_python, volume_task: UNIT_PYTHON }
+
+  - name: VALIDATE_PYTHON_FORMAT
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: unit_python, volume_task: VALIDATE_PYTHON_FORMAT }
+
+  - name: Generate_E2E_Local_Tasks_By_Jira_Issue_Components
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_local, volume_task: Generate_E2E_Local_Tasks_By_Jira_Issue_Components }
+
+  - name: E2E_Local_Core_Auth
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_local, volume_task: E2E_Local_Core_Auth }
+
+  - name: E2E_CLIENT_PERFORMANCE_LCP_REGRESSION_CHECK
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_local, volume_task: E2E_CLIENT_PERFORMANCE_LCP_REGRESSION_CHECK }
+
+  - name: PROM_ALERT_UNIT_TESTS
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: unit_prometheus_alerts, volume_task: PROM_ALERT_UNIT_TESTS }
+
+  - name: LOCAL_OPENAPI_DIFF
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: local_openapi_pr_checks, volume_task: LOCAL_OPENAPI_DIFF }
+
+  - name: LOCAL_OPENAPI_VALIDATE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: local_openapi_pr_checks, volume_task: LOCAL_OPENAPI_VALIDATE }
+
+  - name: ATLAS_SEARCH_CHECK_AUTOGEN_CODE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: atlas_search, volume_task: ATLAS_SEARCH_CHECK_AUTOGEN_CODE }
+
+  - name: ATLAS_SEARCH_SCHEMA_COMPILE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: atlas_search, volume_task: ATLAS_SEARCH_SCHEMA_COMPILE }
+
+  - name: ATLAS_SEARCH_SCHEMA_VALIDATE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: atlas_search, volume_task: ATLAS_SEARCH_SCHEMA_VALIDATE }
+
+  - name: E2E_CYPRESS_SMOKE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_cypress, volume_task: E2E_CYPRESS_SMOKE }
+
+  - name: GENERATE_E2E_CYPRESS_TASKS
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_cypress_generator, volume_task: GENERATE_E2E_CYPRESS_TASKS }
+
+  - name: LOCAL_OPENAPI_REQUIRED
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: local_openapi_required, volume_task: LOCAL_OPENAPI_REQUIRED }
+
+  - name: UNIT_PROTO
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: unit_proto, volume_task: UNIT_PROTO }
+
+  - name: UNIT_GO
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: unit_go, volume_task: UNIT_GO }
+
+  - name: RUN_WEBPACK_STATS
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: run_webpack_stats, volume_task: RUN_WEBPACK_STATS }
+
+  - name: E2E_CYPRESS_SEARCH_PLAYGROUND
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_cypress_search_playground, volume_task: E2E_CYPRESS_SEARCH_PLAYGROUND }
+
+  - name: write_and_set_downstream_expansions
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: ubuntu, volume_task: write_and_set_downstream_expansions }
+
+  - name: AUTHN_SMOKE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: authn, volume_task: AUTHN_SMOKE }
+
+  - name: E2E_LOCAL_REQUIRED_SMOKE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_local_required, volume_task: E2E_LOCAL_REQUIRED_SMOKE }
+
+  - name: INT_NDS_MODEL_VERIFICATION
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: int_nds_model_verification, volume_task: INT_NDS_MODEL_VERIFICATION }
+
+  - name: INT_SMOKE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: int, volume_task: INT_SMOKE }
+
+  - name: INT_REGRESSION
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: int, volume_task: INT_REGRESSION }
+
+  - name: UNIT_JAVA
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: unit_java, volume_task: UNIT_JAVA }
+
+  - name: UNIT_JAVA_SMOKE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: unit_java, volume_task: UNIT_JAVA_SMOKE }
+
+  - name: INT_MMS_SETTINGS_VERIFICATION
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: int_mms_settings_verification, volume_task: INT_MMS_SETTINGS_VERIFICATION }
+
+  - name: AUTHZ_SMOKE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: authz, volume_task: AUTHZ_SMOKE }
+
+  - name: E2E_LOCAL_APICONTRACT_REQUIRED
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_local_apicontract_with_path_filter_acad1, volume_task: E2E_LOCAL_APICONTRACT_REQUIRED }
+
+  - name: RATE_LIMIT_VALIDATION
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: rate_limit_validation_pr_checks, volume_task: RATE_LIMIT_VALIDATION }
+
+  - name: E2E_NDS_DRY_RUN
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_nds_dry_run, volume_task: E2E_NDS_DRY_RUN }
+
+  - name: E2E_CYPRESS_IRM_PR_SMOKE
+    commands:
+      - func: "run github volume task"
+        vars: { volume_variant: e2e_cypress_irm_pr_smoke, volume_task: E2E_CYPRESS_IRM_PR_SMOKE }
 
 modules:
   - name: trigger-sandbox
