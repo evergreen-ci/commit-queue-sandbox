@@ -29,8 +29,26 @@ tasks:
           script: sleep 60
 
 buildvariants:
-  - name: test
-    display_name: Test
+  - name: main
+    display_name: Main
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: noop
+  - name: module1
+    display_name: Module 1
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: noop
+  - name: mod2
+    display_name: Mod 2
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: noop
+  - name: m3
+    display_name: M 3
     run_on:
       - ubuntu2204-small
     tasks:
