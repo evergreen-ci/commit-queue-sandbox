@@ -30,11 +30,13 @@ tasks:
 
 buildvariants:
   - name: test
+    display_name: Test
     run_on:
       - ubuntu2204-small
     tasks:
       - name: noop
   - name: mq
+    display_name: Merge Queue
     run_on:
       - ubuntu2204-small
     tasks:
