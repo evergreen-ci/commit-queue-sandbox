@@ -1,0 +1,27 @@
+command_type: system
+
+tasks:
+  - name: noop
+    commands:
+      - command: shell.exec
+        params:
+          shell: bash
+          script: echo "module branch"
+  - name: one-minute
+    commands:
+      - command: shell.exec
+        params:
+          shell: bash
+          script: sleep 60
+
+buildvariants:
+  - name: test
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: noop
+  - name: mq
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: one-minute

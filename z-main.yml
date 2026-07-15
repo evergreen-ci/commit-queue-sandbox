@@ -1,0 +1,41 @@
+command_type: system
+
+modules:
+  - name: module1
+    owner: ZackarySantana
+    repo: commit-queue-sandbox
+    branch: z/module1
+  - name: mod2
+    owner: ZackarySantana
+    repo: commit-queue-sandbox
+    branch: z/mod2
+  - name: m3
+    owner: ZackarySantana
+    repo: commit-queue-sandbox
+    branch: z/m3
+
+tasks:
+  - name: noop
+    commands:
+      - command: shell.exec
+        params:
+          shell: bash
+          script: echo "z/main module tracking test"
+  - name: one-minute
+    commands:
+      - command: shell.exec
+        params:
+          shell: bash
+          script: sleep 60
+
+buildvariants:
+  - name: test
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: noop
+  - name: mq
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: one-minute
