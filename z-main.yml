@@ -2,15 +2,15 @@ command_type: system
 
 modules:
   - name: module1
-    owner: ZackarySantana
+    owner: evergreen-ci
     repo: commit-queue-sandbox
     branch: z/module1
   - name: mod2
-    owner: ZackarySantana
+    owner: evergreen-ci
     repo: commit-queue-sandbox
     branch: z/mod2
   - name: m3
-    owner: ZackarySantana
+    owner: evergreen-ci
     repo: commit-queue-sandbox
     branch: z/m3
 
