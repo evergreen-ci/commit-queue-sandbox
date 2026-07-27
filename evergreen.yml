@@ -114,6 +114,16 @@ buildvariants:
       - name: validate_commit_message2
       - name: test-restart-on-fail
 
+  # Perf testing for generate.tasks. Not on a cron/patch alias: run it on demand
+  # with `evergreen patch -v perf-generate -t all`.
+  - name: perf-generate
+    display_name: "generate.tasks perf"
+    run_on:
+      - ubuntu2004-small
+    tasks:
+      - name: perf_generate_medium
+      - name: perf_generate_big
+
   - name: akhi_test_validation
     display_name: "Test Empty Task Validation"
     run_on:
@@ -341,6 +351,20 @@ tasks:
         params:
           files:
             - src/generate_append_existing_bv.json
+  # ~465 variant/task pairs, for a quick sanity run before the big one.
+  - name: perf_generate_medium
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/generate_medium.json
+  # ~38k variant/task pairs across 97 new variants.
+  - name: perf_generate_big
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/generate_big.json
   - name: test_release
     depends_on:
       - name: unit_tests
