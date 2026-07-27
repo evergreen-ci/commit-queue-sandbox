@@ -5,6 +5,11 @@ buildvariants:
       - ubuntu2204-small
     tasks:
       - name: passtest
+  - name: cron-variant
+    display_name: "Cron variant"
+    cron: "*/10 * * * *"
+    run_on: [ubuntu2204-small]
+    tasks: [passtest]
 
 tasks:
   - name: passtest
