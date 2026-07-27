@@ -1,10 +1,6 @@
 
 stepback: true
 
-include:
-  - filename: evergreen.yml
-    module: trigger-sandbox
-
 pre_error_fails_task: true
 pre: &pre
   - command: git.get_project
@@ -24,9 +20,6 @@ buildvariants:
       - "!README.md"
       - "!evergreen.yml"
     tags: [commit-queue-variant, whaat]
-    modules:
-      - trigger-sandbox
-      - trigger-sandbox2
     run_on:
       - ubuntu1604-large
     expansions:
@@ -74,9 +67,6 @@ buildvariants:
     activate: true
     paths:
       - "README.md"
-    modules:
-      - trigger-sandbox
-      - trigger-sandbox2
     run_on:
       - ubuntu2004-small
     tasks:
@@ -331,16 +321,6 @@ tasks:
           #script: |
             #echo "test - test_empty_task_error"
     # Intentionally leaving this task with no commands to trigger the error
-
-modules:
-  - name: trigger-sandbox
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: ${workdir}/src
-    branch: test-trigger
-  - name: trigger-sandbox2
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: ${workdir}/src
-    branch: test-trigger2
 
 build_baron_settings:
   ticket_create_project: "EVG"
