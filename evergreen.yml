@@ -14,23 +14,6 @@ patch_aliases:
     task: ".*"
 
 buildvariants:
-  # kim: TODO: remove after DEVPROD-37530.
-  - name: split-tg-infrequent-cron
-    display_name: "Single Host TG Split (Infrequent Cron)"
-    cron: "*/30 * * * *" # Every 30 mins
-    run_on:
-      - ubuntu2004-small
-    tasks:
-      - name: split_test_tg
-
-  - name: split-tg-frequent-cron
-    display_name: "Single Host TG Split (Frequent Cron with Cross Variant Dependency)"
-    cron: "* * * * *" # Every minute
-    run_on:
-      - ubuntu2004-small
-    tasks:
-      - name: task_with_cross_variant_dep
-
   - display_name: Ubuntu 20.04
     name: ubuntu2004
     paths:
@@ -130,30 +113,6 @@ functions:
           echo "noop"
           git describe
 
-  # kim: TODO: remove after DEVPROD-37530 single-host task group split test.
-  tg-setup-group-log:
-    - command: shell.exec
-      params:
-        script: |
-          echo "kim: SETUP_GROUP host=$(hostname) workdir=${workdir} time=$(date -u +%FT%T)"
-          echo "kim: workdir listing before setup_group:"; ls -la ${workdir} 2>/dev/null || true
-          echo "setup_group host=$(hostname) time=$(date -u +%s)" >> ${workdir}/tg_marker.txt
-          echo "kim: tg_marker.txt after setup_group:"; cat ${workdir}/tg_marker.txt 2>/dev/null || true
-  tg-task-log:
-    - command: shell.exec
-      params:
-        script: |
-          echo "kim: TASK=${task_name} host=$(hostname) workdir=${workdir} time=$(date -u +%FT%T)"
-          echo "kim: setup_group marker seen by this task:"; cat ${workdir}/tg_marker.txt 2>/dev/null || echo "kim: MARKER MISSING (fresh workdir)"
-          echo "kim: prior task history seen by this task:"; cat ${workdir}/tg_task_history.txt 2>/dev/null || echo "kim: NO PRIOR TASK HISTORY (fresh workdir)"
-          echo "${task_name} host=$(hostname) time=$(date -u +%s)" >> ${workdir}/tg_task_history.txt
-  tg-teardown-group-log:
-    - command: shell.exec
-      params:
-        script: |
-          echo "kim: TEARDOWN_GROUP host=$(hostname) workdir=${workdir} time=$(date -u +%FT%T)"
-          echo "kim: final tg_task_history.txt:"; cat ${workdir}/tg_task_history.txt 2>/dev/null || true
-
 parameters:
   - key: my_param
     value: hello world1!
@@ -179,37 +138,7 @@ task_groups:
       - validate_commit_message
       - validate_commit_message2
 
-  # kim: TODO: remove after DEVPROD-37530 single-host task group split test.
-  - name: split_test_tg
-    max_hosts: 1
-    setup_group:
-      - func: tg-setup-group-log
-    teardown_group:
-      - func: tg-teardown-group-log
-    tasks:
-      - split_tg_task_1
-      - split_tg_task_2
-      - split_tg_task_3
-
 tasks:
-  # kim: TODO: remove after DEVPROD-37530 single-host task group split test.
-  - name: split_tg_task_1
-    commands:
-      - func: tg-task-log
-  - name: split_tg_task_2
-    commands:
-      - func: tg-task-log
-  - name: split_tg_task_3
-    commands:
-      - func: tg-task-log
-  # Cross-variant dependency on the first SHTG task, so split_tg_task_1 activates first.
-  - name: task_with_cross_variant_dep
-    depends_on:
-      - name: split_tg_task_1
-        variant: split-tg-infrequent-cron
-    commands:
-      - func: tg-task-log
-
   # Test how periodic build that only includes taskA interacts with patch_optional dep.
   - name: taskA
     depends_on:
