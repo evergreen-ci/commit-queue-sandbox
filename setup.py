@@ -43,7 +43,7 @@ setup(
     install_requires=[
         'Click==7.0',
         'PyYAML==5.1',
-        'requests==2.21.0',
+        'requests==2.31.0',
     ],
     entry_points='''
         [console_scripts]
