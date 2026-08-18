@@ -1,10 +1,6 @@
 
 stepback: true
 
-include:
-  - filename: evergreen.yml
-    module: trigger-sandbox
-
 pre_error_fails_task: true
 pre: &pre
   - command: git.get_project
@@ -161,7 +157,7 @@ tasks:
     commands:
       - command: shell.exec
         params:
-          script: echo ${task_name}
+          script: echo "HI"
   - name: gen_task_template
     depends_on:
       - name: task_generator
@@ -171,7 +167,7 @@ tasks:
         params:
           working_dir: src
           script: |
-            echo "noop2"
+            echo "HI"
   - name: test-restart-on-fail
     commands:
       - command: shell.exec
@@ -330,16 +326,6 @@ tasks:
           #script: |
             #echo "test - test_empty_task_error"
     # Intentionally leaving this task with no commands to trigger the error
-
-modules:
-  - name: trigger-sandbox
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: ${workdir}/src
-    branch: test-trigger
-  - name: trigger-sandbox2
-    repo: git@github.com:evergreen-ci/commit-queue-sandbox.git
-    prefix: ${workdir}/src
-    branch: test-trigger2
 
 build_baron_settings:
   ticket_create_project: "EVG"
