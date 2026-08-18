@@ -19,7 +19,10 @@ buildvariants:
     paths:
       - "!README.md"
       - "!evergreen.yml"
-    tags: [commit-queue-variant, whaat]
+    tags: [commit-queue-variant, whaat, pr-default]
+    modules:
+      - trigger-sandbox
+      - trigger-sandbox2
     run_on:
       - ubuntu1604-large
     expansions:
@@ -50,6 +53,7 @@ buildvariants:
 
   - display_name: Test Tags
     name: release
+    tags: [pr-extra]
     run_on:
       - ubuntu2004-small
     tasks:
@@ -63,10 +67,11 @@ buildvariants:
     paths:
       - "README.md"
   - name: git-env-test
-    display_name: "Giv Env Test"
-    activate: true
-    paths:
-      - "README.md"
+    display_name: "Git Env Test"
+    tags: [pr-e2e]
+    modules:
+      - trigger-sandbox
+      - trigger-sandbox2
     run_on:
       - ubuntu2004-small
     tasks:
@@ -315,16 +320,26 @@ tasks:
           working_dir: src
           args: ["generate_test_results.py", "test_selection_output.json"]
   - name: test_empty_task_error
-    #commands:
+      #commands:
       #- command: shell.exec
-        #params:
-          #script: |
-            #echo "test - test_empty_task_error"
+      #params:
+      #script: |
+    #echo "test - test_empty_task_error"
     # Intentionally leaving this task with no commands to trigger the error
 
 build_baron_settings:
   ticket_create_project: "EVG"
   ticket_search_projects: ["EVG"]
+
+github_pr_aliases:
+  - variant_tags: ["pr-default"]
+    task: ".*"
+  - variant_tags: ["pr-e2e"]
+    task: ".*"
+    required_labels: ["evergreen:e2e"]
+  - variant_tags: ["pr-extra"]
+    task: ".*"
+    required_labels: ["evergreen:extra"]
 
 github_checks_aliases:
   - variant: ".*"
