@@ -16,9 +16,6 @@ patch_aliases:
 buildvariants:
   - display_name: Ubuntu 20.04
     name: ubuntu2004
-    paths:
-      - "!README.md"
-      - "!evergreen.yml"
     tags: [commit-queue-variant, whaat]
     run_on:
       - ubuntu1604-large
