@@ -152,7 +152,7 @@ tasks:
     commands:
       - command: shell.exec
         params:
-          script: echo "HI"
+          script: echo "CHANGED"
   - name: gen_task_template
     depends_on:
       - name: task_generator
