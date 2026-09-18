@@ -21,7 +21,7 @@ buildvariants:
       - "!evergreen.yml"
     tags: [commit-queue-variant, whaat]
     run_on:
-      - ubuntu1604-large
+      - ubuntu2204-small
     expansions:
       module_prefix: hello
     tasks:
@@ -96,13 +96,6 @@ buildvariants:
       - name: validate_commit_message
       - name: validate_commit_message2
       - name: test-restart-on-fail
-
-  - name: akhi_test_validation
-    display_name: "Test Empty Task Validation"
-    run_on:
-      - ubuntu2204-small
-    tasks:
-      - name: test_empty_task_error
 
 functions:
   create virtualenv:
