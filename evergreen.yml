@@ -25,8 +25,6 @@ buildvariants:
     expansions:
       module_prefix: hello
     tasks:
-      # generate.tasks JSON only references existing variant ubuntu2004 and adds tasks under it.
-      - name: task_generator
       - name: unit_tests
       - name: validate_commit_message
         create_check_run:
@@ -70,6 +68,7 @@ buildvariants:
       - ubuntu2004-small
     tasks:
       - name: test-restart-on-fail
+      - name: task_generator
       - name: unit_tests
         activate: false
     display_tasks:

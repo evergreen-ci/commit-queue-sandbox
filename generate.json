@@ -1,7 +1,7 @@
 {
   "buildvariants": [
     {
-      "name": "ubuntu2004",
+      "name": "git-env-test",
       "tasks": [
         {
           "name": "virtual-generated-task"
