@@ -17,7 +17,7 @@
         {
           "command": "shell.exec",
           "params": {
-            "script": "echo virtual_generated_task"
+            "script": "exit 123"
           }
         }
       ]
