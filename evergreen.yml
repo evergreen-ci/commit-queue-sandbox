@@ -43,6 +43,7 @@ buildvariants:
           path_to_outputs: "output.json"
       - taskA
       - taskB
+      - name: test-virtual
     display_tasks:
       - name: display_task
         execution_tasks:
@@ -103,6 +104,52 @@ buildvariants:
       - ubuntu2204-small
     tasks:
       - name: test_empty_task_error
+
+  # --- Virtual task activation lifecycle test variants (DEVPROD-43102) ---
+  # dependency: regular-depends-on-virtual is held inactive (activate: false)
+  # so it can be manually scheduled; scheduling it should also activate
+  # virtual-dep via the dependency cascade. test-virtual (on ubuntu2004) has no
+  # dependents and stays inactive.
+  - name: dependency
+    display_name: "Virtual task dependency cascade"
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: regular-depends-on-virtual
+        activate: false
+      - name: virtual-dep
+  # batchtime: elapsed-build cron/batchtime path. On a mainline run all tasks
+  # start inactive; after the 1-minute variant batchtime elapses, regular-batchtime
+  # should activate and virtual-batchtime-dep should activate via the dependency
+  # cascade, while the standalone virtual-batchtime stays inactive. Requires a
+  # mainline version (batchtime is not applied to patches).
+  - name: batchtime
+    display_name: "Virtual task batchtime (elapsed build)"
+    run_on:
+      - ubuntu2204-small
+    batchtime: 1
+    tasks:
+      - name: regular-batchtime
+      - name: virtual-batchtime
+      - name: virtual-batchtime-dep
+  # batchtime-task: elapsed-task cron/batchtime path. On a mainline run,
+  # regular-immediate activates right away; the per-task batchtime tasks start
+  # inactive and are reconsidered after 1 minute. regular-batchtime should
+  # activate and virtual-batchtime-dep should activate via the dependency
+  # cascade, while the standalone virtual-batchtime stays inactive. Requires a
+  # mainline version.
+  - name: batchtime-task
+    display_name: "Virtual task batchtime (elapsed task)"
+    run_on:
+      - ubuntu2204-small
+    tasks:
+      - name: regular-immediate
+      - name: regular-batchtime
+        batchtime: 1
+      - name: virtual-batchtime
+        batchtime: 1
+      - name: virtual-batchtime-dep
+        batchtime: 1
 
 functions:
   create virtualenv:
@@ -321,6 +368,71 @@ tasks:
           #script: |
             #echo "test - test_empty_task_error"
     # Intentionally leaving this task with no commands to trigger the error
+
+  # --- Virtual task activation lifecycle tests (DEVPROD-43102) ---
+  # test-virtual is a standalone virtual task. It starts inactive; manually
+  # scheduling it should run it on a host. It fails (exit 1) so that on a
+  # mainline version, manually activating it and letting it fail can trigger
+  # stepback to activate the previous instance.
+  - name: test-virtual
+    virtual: true
+    stepback: true
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "virtual task running on a host"
+            exit 1
+  # virtual-dep is a virtual task that a regular task depends on. It starts
+  # inactive and should only activate via the dependency cascade when
+  # regular-depends-on-virtual is activated.
+  - name: virtual-dep
+    virtual: true
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "virtual task activated via dependency cascade"
+  - name: regular-depends-on-virtual
+    depends_on:
+      - name: virtual-dep
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "regular task that depends on a virtual task"
+  # virtual-batchtime is a standalone virtual task with batchtime; cron/batchtime
+  # must NOT activate it. virtual-batchtime-dep is a virtual task that
+  # regular-batchtime depends on; it should still activate via the dependency
+  # cascade even though cron/batchtime does not activate virtual tasks directly.
+  - name: virtual-batchtime
+    virtual: true
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "standalone virtual task with batchtime (should stay inactive after batchtime elapses)"
+  - name: virtual-batchtime-dep
+    virtual: true
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "virtual dependency of a regular batchtime task (should activate via cascade)"
+  - name: regular-batchtime
+    depends_on:
+      - name: virtual-batchtime-dep
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "regular task with batchtime (should activate after batchtime elapses)"
+  - name: regular-immediate
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "regular task that activates immediately"
 
 build_baron_settings:
   ticket_create_project: "EVG"

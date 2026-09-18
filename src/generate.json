@@ -5,6 +5,13 @@
       "tasks": [
         {
           "name": "task-to-add-via-generator"
+        },
+        {
+          "name": "virtual-generated-task"
+        },
+        {
+          "name": "regular-generated-depends-on-virtual",
+          "depends_on": ["virtual-generated-task"]
         }
       ]
     }
@@ -17,6 +24,29 @@
           "command": "shell.exec",
           "params": {
             "script": "echo generated_task"
+          }
+        }
+      ]
+    },
+    {
+      "name": "virtual-generated-task",
+      "virtual": true,
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo virtual_generated_task"
+          }
+        }
+      ]
+    },
+    {
+      "name": "regular-generated-depends-on-virtual",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo regular_generated_task_that_depends_on_a_virtual_task"
           }
         }
       ]
