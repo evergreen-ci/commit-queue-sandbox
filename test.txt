@@ -17,3 +17,5 @@ DEVPROD-43102 redo rev 4 (stepback trigger)
 DEVPROD-43102 stepback rev 6 (fixed distro)
 
 DEVPROD-43102 stepback pair A (ubuntu2004 valid distro)
+
+DEVPROD-43102 stepback pair B (trigger failure)
