@@ -21,7 +21,7 @@ buildvariants:
       - "!evergreen.yml"
     tags: [commit-queue-variant, whaat]
     run_on:
-      - ubuntu1604-large
+      - ubuntu2204-small
     expansions:
       module_prefix: hello
     tasks:
@@ -40,6 +40,7 @@ buildvariants:
           path_to_outputs: "output.json"
       - taskA
       - taskB
+      - name: test-virtual
     display_tasks:
       - name: display_task
         execution_tasks:
@@ -144,16 +145,6 @@ buildvariants:
         batchtime: 1
       - name: virtual-batchtime-dep
         batchtime: 1
-  # virtual-stepback is a dedicated variant on a valid distro for the stepback
-  # test. test-virtual fails (exit 1); manually activating it on a mainline
-  # version and letting it fail triggers stepback, which activates the previous
-  # revision's test-virtual instance so it runs on a host.
-  - name: virtual-stepback
-    display_name: "Virtual task stepback"
-    run_on:
-      - ubuntu2204-small
-    tasks:
-      - name: test-virtual
 
 functions:
   create virtualenv:
