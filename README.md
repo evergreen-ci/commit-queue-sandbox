@@ -1,3 +1,4 @@
+<!-- Shrek -->
 # commit-queue-playground
 
 Repository here to experiment with the commit queue or whatever else.
