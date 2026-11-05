@@ -8,6 +8,25 @@ tasks:
           revisions:
             module1: ${module1_rev}
 
+  - name: check_parent_pr_changes
+    commands:
+      - command: git.get_project
+        params:
+          directory: src
+          revisions:
+            module1: ${module1_rev}
+      - command: shell.exec
+        params:
+          working_dir: src/module1
+          script: |
+            set -o errexit
+            git log --oneline -n 3
+            if [ ! -f parent-pr-marker.txt ]; then
+              echo "parent-pr-marker.txt is missing, the module was not checked out at the parent PR's changes"
+              exit 1
+            fi
+            cat parent-pr-marker.txt
+
 buildvariants:
   - name: variant1
     modules:
@@ -15,6 +34,7 @@ buildvariants:
     display_name: "Variant 1"
     tasks:
       - name: clone
+      - name: check_parent_pr_changes
     run_on:
       - ubuntu2204-small
 
