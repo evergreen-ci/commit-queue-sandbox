@@ -1,0 +1,26 @@
+{
+  "buildvariants": [
+    {
+      "name": "ubuntu2004",
+      "tasks": [
+        {
+          "name": "generated_existing_bv_batchtime",
+          "batchtime": 1
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "generated_existing_bv_batchtime",
+      "commands": [
+        {
+          "command": "shell.exec",
+          "params": {
+            "script": "echo 'generated existing bv batchtime'"
+          }
+        }
+      ]
+    }
+  ]
+}
