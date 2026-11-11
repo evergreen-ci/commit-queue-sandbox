@@ -28,6 +28,7 @@ buildvariants:
       # generate.tasks JSON only references existing variant ubuntu2004 and adds tasks under it.
       - name: append_existing_bv_generate
       - name: task_generator
+      - name: generate_new_bv
       - name: unit_tests
       - name: validate_commit_message
         create_check_run:
@@ -103,6 +104,14 @@ buildvariants:
       - ubuntu2204-small
     tasks:
       - name: test_empty_task_error
+
+  - name: batchtime
+    display_name: "Batchtime"
+    run_on:
+      - ubuntu2004-small
+    tasks:
+      - name: batchtime_noop
+        batchtime: 1
 
 functions:
   create virtualenv:
@@ -201,6 +210,12 @@ tasks:
           working_dir: src
           script: |
             echo "noop2"
+  - name: batchtime_noop
+    commands:
+      - command: shell.exec
+        params:
+          script: |
+            echo "batchtime noop"
   - name: validate_commit_message
     commands:
       - command: shell.exec
@@ -270,6 +285,12 @@ tasks:
         params:
           files:
             - src/generate_append_existing_bv.json
+  - name: generate_new_bv
+    commands:
+      - command: generate.tasks
+        params:
+          files:
+            - src/generate_new_bv.json
   - name: test_release
     depends_on:
       - name: unit_tests
