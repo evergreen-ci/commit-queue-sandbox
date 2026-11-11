@@ -29,7 +29,6 @@ buildvariants:
       - name: append_existing_bv_generate
       - name: task_generator
       - name: generate_new_bv
-      - name: generate_existing_bv_batchtime
       - name: unit_tests
       - name: validate_commit_message
         create_check_run:
@@ -292,12 +291,6 @@ tasks:
         params:
           files:
             - src/generate_new_bv.json
-  - name: generate_existing_bv_batchtime
-    commands:
-      - command: generate.tasks
-        params:
-          files:
-            - src/generate_existing_bv_batchtime.json
   - name: test_release
     depends_on:
       - name: unit_tests
