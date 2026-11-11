@@ -2,6 +2,7 @@
   "buildvariants": [
     {
       "name": "batchtime_generated",
+      "display_name": "Batchtime Generated",
       "run_on": [
         "ubuntu2004-small"
       ],
