@@ -2,12 +2,9 @@
   "buildvariants": [
     {
       "name": "batchtime_generated",
-      "run_on": [
-        "ubuntu2004-small"
-      ],
       "tasks": [
         {
-          "name": "generated_batchtime_noop",
+          "name": "batchtime_noop",
           "batchtime": 1
         }
       ]
@@ -15,7 +12,7 @@
   ],
   "tasks": [
     {
-      "name": "generated_batchtime_noop",
+      "name": "batchtime_noop",
       "commands": [
         {
           "command": "shell.exec",
