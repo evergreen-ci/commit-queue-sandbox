@@ -19,7 +19,10 @@ buildvariants:
     paths:
       - "!README.md"
       - "!evergreen.yml"
-    tags: [commit-queue-variant, whaat]
+    tags: [commit-queue-variant, whaat, pr-default]
+    modules:
+      - trigger-sandbox
+      - trigger-sandbox2
     run_on:
       - ubuntu1604-large
     expansions:
@@ -50,6 +53,7 @@ buildvariants:
 
   - display_name: Test Tags
     name: release
+    tags: [pr-extra]
     run_on:
       - ubuntu2004-small
     tasks:
@@ -63,10 +67,11 @@ buildvariants:
     paths:
       - "README.md"
   - name: git-env-test
-    display_name: "Giv Env Test"
-    activate: true
-    paths:
-      - "README.md"
+    display_name: "Git Env Test"
+    tags: [pr-e2e]
+    modules:
+      - trigger-sandbox
+      - trigger-sandbox2
     run_on:
       - ubuntu2004-small
     tasks:
@@ -325,6 +330,16 @@ tasks:
 build_baron_settings:
   ticket_create_project: "EVG"
   ticket_search_projects: ["EVG"]
+
+github_pr_aliases:
+  - variant_tags: ["pr-default"]
+    task: ".*"
+  - variant_tags: ["pr-e2e"]
+    task: ".*"
+    required_labels: ["evergreen:e2e"]
+  - variant_tags: ["pr-extra"]
+    task: ".*"
+    required_labels: ["evergreen:extra"]
 
 github_checks_aliases:
   - variant: ".*"
