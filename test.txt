@@ -11,3 +11,4 @@ a test
 something
 new new new
 1234
+new
