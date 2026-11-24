@@ -4,7 +4,7 @@ stepback: true
 modules:
   - name: sandbox-module
     repo: git@github.com:evergreen-ci/github-merge-queue-sandbox.git
-    branch: module-include-test
+    branch: main
 
 include:
   - filename: module-variant.yml
