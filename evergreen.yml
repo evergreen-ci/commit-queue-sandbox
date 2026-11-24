@@ -1,6 +1,15 @@
 
 stepback: true
 
+modules:
+  - name: sandbox-module
+    repo: git@github.com:evergreen-ci/github-merge-queue-sandbox.git
+    branch: main
+
+include:
+  - filename: module-variant.yml
+    module: sandbox-module
+
 pre_error_fails_task: true
 pre: &pre
   - command: git.get_project
